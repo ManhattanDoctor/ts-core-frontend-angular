@@ -9,7 +9,6 @@
             "numeral": "numeral",
             "ngx-cookie": "ngxCookie",
             "interactjs": "interactjs",
-            "ng2-smart-table": "ng2SmartTable",
             "css-element-queries": "cssElementQueries",
             "@ts-core/common": "@ts-core/common",
             "@ts-core/common/dto": "@ts-core/common/dto",
