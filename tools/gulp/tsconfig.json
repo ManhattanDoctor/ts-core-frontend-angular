@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "noUnusedParameters": false,
+        "noUnusedLocals": false,
+        "lib": ["es2015", "dom", "es2016.array.include"],
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "outDir": "../../dist/tools/gulp",
+        "strictNullChecks": false,
+        "strictFunctionTypes": true,
+        "noImplicitThis": true,
+        "noEmitOnError": true,
+        "noImplicitAny": false,
+        "target": "es2015",
+        "types": ["node"],
+        "typeRoots": ["./typings", "../../node_modules/@types/", "../../node_modules/fabric-client/@types/"],
+        "baseUrl": "."
+    },
+    "files": ["gulpfile.ts"]
+}

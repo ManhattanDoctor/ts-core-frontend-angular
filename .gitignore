@@ -1,0 +1,16 @@
+# dependencies
+node_modules/
+
+# IDE
+/.idea
+/.awcache
+/.vscode
+*.code-workspace
+
+# bundle
+dist/**/*
+src/**/*.d.ts
+src/**/*.js
+
+# misc
+.DS_Store
