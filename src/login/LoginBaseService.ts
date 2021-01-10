@@ -208,7 +208,11 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
     }
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
+
         this.reset();
     }
 

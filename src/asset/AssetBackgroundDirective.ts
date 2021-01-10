@@ -68,10 +68,11 @@ export class AssetBackgroundDirective extends Destroyable {
     // --------------------------------------------------------------------------
 
     public destroy(): void {
-        super.destroy();
         if (this.isDestroyed) {
             return;
         }
+        super.destroy();
+
         this.element = null;
     }
 

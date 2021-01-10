@@ -301,14 +301,19 @@ export class WindowService extends Destroyable {
     }
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
+        super.destroy();
+
         this.removeAll();
 
-        if (this.observer) {
+        if (!_.isNil(this.observer)) {
             this.observer.complete();
             this.observer = null;
         }
 
-        if (this.properties) {
+        if (!_.isNil(this.properties)) {
             this.properties.destroy();
             this.properties = null;
         }
@@ -406,10 +411,11 @@ export class PropertiesManager extends Destroyable {
     }
 
     public destroy(): void {
-        super.destroy();
         if (this.isDestroyed) {
             return;
         }
+        super.destroy();
+
         this.cookies = null;
     }
 }

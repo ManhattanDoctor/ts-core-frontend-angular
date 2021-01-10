@@ -36,10 +36,11 @@ export class WindowDragAreaDirective extends Destroyable {
     // --------------------------------------------------------------------------
 
     public destroy(): void {
-        super.destroy();
         if (this.isDestroyed) {
             return;
         }
+        super.destroy();
+
         if (!_.isNil(this._interactable)) {
             this._interactable.unset();
             this._interactable = null;

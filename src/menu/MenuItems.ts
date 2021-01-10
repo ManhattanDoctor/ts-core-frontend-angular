@@ -114,7 +114,11 @@ export class MenuItems extends DestroyableContainer {
     // --------------------------------------------------------------------------
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
+
         this._items = null;
         this._enabledItems = null;
     }

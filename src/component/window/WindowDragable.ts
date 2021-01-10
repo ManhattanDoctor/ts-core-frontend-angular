@@ -71,8 +71,12 @@ export class WindowDragable extends WindowResizeable {
     // --------------------------------------------------------------------------
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
+        super.destroy();
+
         this.dragMoveHandlerProxy = null;
         this.dragStartHandlerProxy = null;
-        super.destroy();
     }
 }

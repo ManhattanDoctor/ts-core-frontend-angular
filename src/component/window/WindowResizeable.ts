@@ -61,13 +61,17 @@ export class WindowResizeable extends WindowImpl {
     // --------------------------------------------------------------------------
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
+        super.destroy();
+
         if (this._interactable) {
             this._interactable.unset();
             this._interactable = null;
         }
 
         this.resizeMoveHandlerProxy = null;
-        super.destroy();
     }
 
     // --------------------------------------------------------------------------

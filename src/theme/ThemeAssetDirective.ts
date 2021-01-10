@@ -123,14 +123,14 @@ export class ThemeAssetDirective extends Destroyable implements OnInit {
     }
 
     public destroy(): void {
-        super.destroy();
         if (this.isDestroyed) {
             return;
         }
+        super.destroy();
 
         this.theme = null;
         this.element = null;
-        if (this.subscription) {
+        if (!_.isNil(this.subscription)) {
             this.subscription.unsubscribe();
             this.subscription = null;
         }

@@ -70,14 +70,15 @@ export class AspectRatioResizeDirective extends DestroyableContainer implements 
         }
     }
 
-    public ngOnDestroy(): void {
-        this.destroy();
-    }
-
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
+        super.destroy();
+
         this.element = null;
 
-        if (this.sensor) {
+        if (!_.isNil(this.sensor)) {
             this.sensor.destroy();
             this.sensor = null;
         }

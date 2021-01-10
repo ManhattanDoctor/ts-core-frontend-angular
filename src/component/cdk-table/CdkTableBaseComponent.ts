@@ -90,6 +90,8 @@ export abstract class CdkTableBaseComponent<
         if (this.isDestroyed) {
             return;
         }
+        super.destroy();
+
         this.table = null;
         if (!_.isNil(this.cellClicked)) {
             this.cellClicked.complete();

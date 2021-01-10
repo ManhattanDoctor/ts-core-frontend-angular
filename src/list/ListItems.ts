@@ -96,6 +96,9 @@ export class ListItems<U extends IListItem<V>, V = any> extends FilterableMapCol
     }
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
 
         this.language = null;

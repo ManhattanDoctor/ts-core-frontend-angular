@@ -129,6 +129,9 @@ export class WindowBaseComponent extends WindowDragable {
     // --------------------------------------------------------------------------
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
         // Components will destroy automatically
         this.closeWindow = null;

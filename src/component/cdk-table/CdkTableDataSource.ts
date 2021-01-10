@@ -55,6 +55,9 @@ export class CdkTableDataSource<U> extends DestroyableContainer {
     // --------------------------------------------------------------------------
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
 
         this.subject.complete();

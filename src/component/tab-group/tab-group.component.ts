@@ -55,10 +55,11 @@ export class TabGroupComponent<T = any> extends DestroyableContainer {
     // --------------------------------------------------------------------------
 
     public destroy(): void {
-        super.destroy();
         if (this.isDestroyed) {
             return;
         }
+        super.destroy();
+
         this.list = null;
     }
 

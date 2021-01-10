@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { DestroyableContainer } from '@ts-core/common';
 import { IWindow, WindowEvent } from './IWindow';
 import { WindowConfig } from './WindowConfig';
+import * as _ from 'lodash';
 
 export abstract class IWindowContent<T = any> extends DestroyableContainer implements AfterViewInit {
     // --------------------------------------------------------------------------
@@ -50,13 +51,13 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
     }
 
     public blink(): void {
-        if (this.window) {
+        if (!_.isNil(this.window)) {
             this.window.blink();
         }
     }
 
     public shake(): void {
-        if (this.window) {
+        if (!_.isNil(this.window)) {
             this.window.shake();
         }
     }
@@ -74,7 +75,11 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
     }
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
+
         this.window = null;
         this.container = null;
     }

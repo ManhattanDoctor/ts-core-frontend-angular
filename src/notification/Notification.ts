@@ -8,6 +8,7 @@ import { INotification, NotificationEvent } from './INotification';
 import { INotificationContent } from './INotificationContent';
 import { NotificationConfig } from './NotificationConfig';
 import { NotificationProperties } from './NotificationProperties';
+import * as _ from 'lodash';
 
 export class Notification extends WindowBase implements INotification {
     // --------------------------------------------------------------------------
@@ -110,8 +111,12 @@ export class Notification extends WindowBase implements INotification {
     }
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
-        if (this.observer) {
+
+        if (!_.isNil(this.observer)) {
             this.observer.complete();
             this.observer = null;
         }

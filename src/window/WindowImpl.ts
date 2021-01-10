@@ -7,6 +7,7 @@ import { IWindowContent } from './IWindowContent';
 import { WindowBase } from './WindowBase';
 import { WindowConfig } from './WindowConfig';
 import { WindowProperties } from './WindowProperties';
+import * as _ from 'lodash';
 
 export class WindowImpl extends WindowBase implements IWindow {
     // --------------------------------------------------------------------------
@@ -198,16 +199,19 @@ export class WindowImpl extends WindowBase implements IWindow {
     }
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
 
         this._container.removeEventListener('click', this.mouseClickHandlerProxy, true);
         this._container.removeEventListener('mousedown', this.mouseDownHandlerProxy);
 
-        if (this.content) {
+        if (!_.isNil(this.content)) {
             this.content.destroy();
         }
 
-        if (this.observer) {
+        if (!_.isNil(this.observer)) {
             this.observer.complete();
             this.observer = null;
         }

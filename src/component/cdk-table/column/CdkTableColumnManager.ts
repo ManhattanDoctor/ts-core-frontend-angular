@@ -74,7 +74,11 @@ export class CdkTableColumnManager<U> extends DestroyableContainer {
     }
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
+
         if (!_.isNil(this._valueCache)) {
             this._valueCache.destroy();
             this._valueCache = null;

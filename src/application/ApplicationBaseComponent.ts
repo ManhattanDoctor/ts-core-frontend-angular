@@ -75,7 +75,11 @@ export abstract class ApplicationBaseComponent extends DestroyableContainer impl
     }
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
+
         this.element = null;
 
         if (this.timeout) {

@@ -43,15 +43,13 @@ export class FocusDirective<T = any> extends Destroyable {
     // --------------------------------------------------------------------------
 
     public destroy(): void {
-        super.destroy();
         if (this.isDestroyed) {
             return;
         }
+        super.destroy();
 
-        if (!_.isNil(this.manager)) {
-            this.manager.destroy();
-            this.manager = null;
-        }
+        this.manager.destroy();
+        this.manager = null;
     }
 
     // --------------------------------------------------------------------------

@@ -61,7 +61,11 @@ export class WindowElement extends DestroyableContainer implements AfterViewInit
     }
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
+
         this.destroyChildren();
 
         this.element = null;

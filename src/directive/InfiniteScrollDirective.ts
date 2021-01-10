@@ -47,7 +47,11 @@ export class InfiniteScrollDirective extends ScrollDirective {
     // --------------------------------------------------------------------------
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
+
         this.top = null;
         this.bottom = null;
     }

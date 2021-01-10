@@ -57,10 +57,11 @@ export class ValueAccessor<T> extends Destroyable implements ControlValueAccesso
     }
 
     public destroy(): void {
-        super.destroy();
         if (this.isDestroyed) {
             return;
         }
+        super.destroy();
+
         this.changed = null;
         this.touched = null;
     }

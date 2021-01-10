@@ -45,6 +45,9 @@ export class CdkRowColumnManager<U> extends DestroyableContainer {
     }
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
 
         if (!_.isNil(this._classNameCache)) {

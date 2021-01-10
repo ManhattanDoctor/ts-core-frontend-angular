@@ -125,10 +125,10 @@ export class SelectListItems<U extends ISelectListItem<V>, V = any> extends List
     }
 
     public destroy(): void {
-        super.destroy();
         if (this.isDestroyed) {
             return;
         }
+        super.destroy();
 
         if (!_.isNil(this._changed)) {
             this._changed.complete();

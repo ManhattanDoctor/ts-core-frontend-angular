@@ -56,7 +56,11 @@ export abstract class CdkTableFilterableMapCollection<U, V> extends FilterableDa
     }
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
+
         if (!_.isNil(this._table)) {
             this._table.destroy();
             this._table = null;

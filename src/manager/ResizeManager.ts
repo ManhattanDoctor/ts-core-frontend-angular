@@ -1,5 +1,6 @@
 import { ResizeSensor } from 'css-element-queries';
 import { IDestroyable } from '@ts-core/common';
+import * as _ from 'lodash';
 
 export class ResizeManager implements IDestroyable {
     // --------------------------------------------------------------------------
@@ -61,11 +62,11 @@ export class ResizeManager implements IDestroyable {
     // --------------------------------------------------------------------------
 
     public destroy(): void {
-        if (this.timer) {
+        if (!_.isNil(this.timer)) {
             clearTimeout(this.timer);
             this.timer = null;
         }
-        if (this.sensor) {
+        if (!_.isNil(this.sensor)) {
             this.sensor.detach(this.resizeHandler);
             this.sensor = null;
         }

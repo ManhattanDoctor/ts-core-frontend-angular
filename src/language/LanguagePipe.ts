@@ -56,10 +56,11 @@ export class LanguagePipe extends DestroyableContainer implements PipeTransform 
     }
 
     public destroy(): void {
-        super.destroy();
         if (this.isDestroyed) {
             return;
         }
+        super.destroy();
+
         this.key = null;
         this.params = null;
     }

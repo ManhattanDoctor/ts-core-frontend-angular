@@ -81,6 +81,9 @@ export class AutoScrollBottomDirective extends InfiniteScrollDirective {
     // --------------------------------------------------------------------------
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
 
         clearTimeout(this.triggerTimer);
