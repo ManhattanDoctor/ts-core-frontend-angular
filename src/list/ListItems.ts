@@ -57,6 +57,10 @@ export class ListItems<U extends IListItem<V>, V = any> extends FilterableMapCol
         this.collection.forEach(this.translateIfNeed);
     };
 
+    protected sort(): void {
+        ArrayUtil.sort(this.collection);
+    }
+
     // --------------------------------------------------------------------------
     //
     // 	Public Methods
@@ -64,8 +68,8 @@ export class ListItems<U extends IListItem<V>, V = any> extends FilterableMapCol
     // --------------------------------------------------------------------------
 
     public complete(): void {
-        ArrayUtil.sort(this.collection);
         this.translateItemsIfNeed();
+        this.sort();
     }
 
     public refresh(...params): void {

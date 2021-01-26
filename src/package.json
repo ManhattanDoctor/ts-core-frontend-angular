@@ -1,6 +1,6 @@
 {
     "name": "@ts-core/frontend-angular",
-    "version": "8.0.92",
+    "version": "8.0.93",
     "description": "Modules for frontend based on angular",
     "main": "public-api.js",
     "author": {
