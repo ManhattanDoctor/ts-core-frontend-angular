@@ -111,7 +111,6 @@ export abstract class CdkTableBaseComponent<
 
     public cellClickHandler(item: U, column: ICdkTableColumn<U>): void {
         this.cellClicked.emit({ data: item, column: column.name });
-        this.rowClicked.emit(item);
     }
 
     // --------------------------------------------------------------------------

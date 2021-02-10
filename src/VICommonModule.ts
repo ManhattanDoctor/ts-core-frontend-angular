@@ -13,6 +13,7 @@ import { AutoScrollBottomDirective } from './directive/AutoScrollBottomDirective
 import { ClickToCopyDirective } from './directive/ClickToCopyDirective';
 import { ClickToSelectDirective } from './directive/ClickToSelectDirective';
 import { FocusDirective } from './directive/FocusDirective';
+import { HTMLContentTitleDirective } from './directive/HTMLContentTitleDirective';
 import { InfiniteScrollDirective } from './directive/InfiniteScrollDirective';
 import { ResizeDirective } from './directive/ResizeDirective';
 import { ScrollDirective } from './directive/ScrollDirective';
@@ -51,6 +52,7 @@ const DECLARATIONS = [
     ClickToCopyDirective,
     ClickToSelectDirective,
     InfiniteScrollDirective,
+    HTMLContentTitleDirective,
     AutoScrollBottomDirective,
     AspectRatioResizeDirective
 ];

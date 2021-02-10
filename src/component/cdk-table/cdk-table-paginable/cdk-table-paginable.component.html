@@ -9,15 +9,15 @@
             </mat-header-cell>
             <mat-cell class="px-2" [ngClass]="table?.columns.getClass(row, item)" [ngStyle]="table?.columns.getStyle(row, item)" (click)="cellClickHandler(row, item)" *matCellDef="let row" >
                 <span [ngClass]="{'text-multi-line':item.isMultiline, 'text-one-line': !item.isMultiline}"
-                    [innerHTML]="table?.columns.getValue(row, item)"></span>
+                    [vi-html-content-title]="table?.columns.getValue(row, item)"></span>
             </mat-cell>
         </ng-container>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="columnNames"></mat-header-row>
     
-    <mat-row class="mat-list-item" [ngClass]="{'mouse-active':settings?.isInteractive}"
-        *matRowDef="let row; columns: columnNames"></mat-row>
+    <mat-row class="mat-list-item" *matRowDef="let row; columns: columnNames"
+        (click)="rowClicked.emit(row)" [ngClass]="{'mouse-active':settings?.isInteractive}"></mat-row>
 
 </mat-table>
 

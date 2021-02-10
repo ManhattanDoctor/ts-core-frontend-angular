@@ -7,12 +7,13 @@ import { LanguageMatPaginatorIntl } from './LanguageMatPaginatorIntl';
 import { LanguagePipe } from './LanguagePipe';
 import { LanguagePurePipe } from './LanguagePurePipe';
 import { LanguageResolver } from './LanguageResolver';
+import { LanguageDirective } from './LanguageDirective';
 import { MatPaginatorIntl } from '@angular/material';
 
 @NgModule({
     imports: [CookieModule],
-    declarations: [LanguagePipe, LanguagePurePipe],
-    exports: [LanguagePipe, LanguagePurePipe]
+    declarations: [LanguagePipe, LanguagePurePipe, LanguageDirective],
+    exports: [LanguagePipe, LanguagePurePipe, LanguageDirective]
 })
 export class LanguageModule {
     // --------------------------------------------------------------------------

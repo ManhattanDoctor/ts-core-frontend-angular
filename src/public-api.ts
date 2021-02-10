@@ -58,6 +58,7 @@ export * from './directive/FocusDirective';
 export * from './directive/InfiniteScrollDirective';
 export * from './directive/ResizeDirective';
 export * from './directive/ScrollDirective';
+export * from './directive/HTMLContentTitleDirective';
 /* ======= */
 export * from './form/FormElementAsync';
 export * from './form/FormElementSync';
@@ -68,6 +69,7 @@ export * from './language/LanguageMomentDateAdapter';
 export * from './language/LanguagePipe';
 export * from './language/LanguagePurePipe';
 export * from './language/LanguageResolver';
+export * from './language/LanguageDirective';
 /* ======= */
 export * from './login/LoginBaseService';
 export * from './login/LoginGuard';

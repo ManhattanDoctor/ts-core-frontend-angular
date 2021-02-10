@@ -368,7 +368,6 @@ export class ViewUtil {
         if (_.isNil(name)) {
             return;
         }
-
         container = ViewUtil.parseElement(container);
         if (!_.isNil(container) && !_.isNil(ViewUtil.RENDERER)) {
             ViewUtil.RENDERER.setProperty(container, name, value);
