@@ -1,25 +1,24 @@
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
-import { LanguageService } from '@ts-core/frontend/language';
+import { ThemeService } from '@ts-core/frontend/theme';
 import * as _ from 'lodash';
 import { takeUntil } from 'rxjs/operators';
 import { ViewUtil } from '../util/ViewUtil';
 
 @Directive({
-    selector: '[vi-translate]'
+    selector: '[vi-theme-style]'
 })
-export class LanguageDirective extends Destroyable {
+export class ThemeStyleDirective extends Destroyable implements OnInit {
     // --------------------------------------------------------------------------
     //
     //	Properties
     //
     // --------------------------------------------------------------------------
 
-    @Input()
-    public isNeedTitle: boolean;
+    protected _name: string = 'color';
+    protected _value: string;
 
-    protected _key: string;
-    protected _params: any;
+    protected element: HTMLElement;
 
     // --------------------------------------------------------------------------
     //
@@ -27,9 +26,12 @@ export class LanguageDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    constructor(protected element: ElementRef, protected language: LanguageService) {
+    constructor(element: ElementRef, protected theme: ThemeService) {
         super();
-        language.completed.pipe(takeUntil(this.destroyed)).subscribe(() => this.translate);
+        this.element = ViewUtil.parseElement(element.nativeElement);
+        this.theme.changed.pipe(takeUntil(this.destroyed)).subscribe(() => {
+            this.updateStyleProperties();
+        });
     }
 
     // --------------------------------------------------------------------------
@@ -38,15 +40,9 @@ export class LanguageDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    protected translate(): void {
-        if (_.isNil(this.key)) {
-            return;
-        }
-
-        let value = this.language.translate(this.key, this.params);
-        ViewUtil.setProperty(this.element, 'innerHTML', value);
-        if (this.isNeedTitle) {
-            ViewUtil.setProperty(this.element, 'title', value);
+    protected updateStyleProperties(): void {
+        if (!_.isNil(this.theme.theme) && !_.isNil(this.name)) {
+            ViewUtil.setStyle(this.element, this.name, this.theme.getStyle(this.value));
         }
     }
 
@@ -56,16 +52,18 @@ export class LanguageDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
+    public ngOnInit(): void {
+        this.updateStyleProperties();
+    }
+
     public destroy(): void {
         if (this.isDestroyed) {
             return;
         }
-
         super.destroy();
-        this.language = null;
 
-        this._key = null;
-        this._params = null;
+        this.theme = null;
+        this.element = null;
     }
 
     // --------------------------------------------------------------------------
@@ -74,29 +72,30 @@ export class LanguageDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    @Input('vi-translate')
-    public set key(value: string) {
-        if (value === this._key) {
+    public get name(): string {
+        return this._name;
+    }
+    public set name(value: string) {
+        if (value === this._name) {
             return;
         }
-        this._key = value;
+        this._name = value;
         if (!_.isNil(value)) {
-            this.translate();
+            this.updateStyleProperties();
         }
-    }
-    public get key(): string {
-        return this._key;
     }
 
-    @Input()
-    public set params(value: any) {
-        if (value === this._params) {
+    public get value(): string {
+        return this._value;
+    }
+    @Input('vi-theme-style')
+    public set value(value: string) {
+        if (value === this._value) {
             return;
         }
-        this._params = value;
-        this.translate();
-    }
-    public get params(): any {
-        return this._params;
+        this._value = value;
+        if (!_.isNil(value)) {
+            this.updateStyleProperties();
+        }
     }
 }

@@ -9,6 +9,7 @@ import { MomentDateAdaptivePipe } from '../pipe/MomentDateAdaptivePipe';
 import { MomentDateFromNowPipe } from '../pipe/MomentDateFromNowPipe';
 import { MomentDatePipe } from '../pipe/MomentDatePipe';
 import { MomentTimePipe } from '../pipe/MomentTimePipe';
+import { PrettifyPipe } from '../pipe/PrettifyPipe';
 import { SanitizePipe } from '../pipe/SanitizePipe';
 import { TruncatePipe } from '../pipe/TruncatePipe';
 
@@ -21,6 +22,7 @@ export class PipeBaseService extends DestroyableContainer {
 
     private static DATE: DatePipe = null;
     private static FINANCE: FinancePipe = null;
+    private static PRETTIFY: PrettifyPipe = null;
     private static TRUNCATE: TruncatePipe = null;
     private static SANITIZE: SanitizePipe = null;
 
@@ -96,6 +98,13 @@ export class PipeBaseService extends DestroyableContainer {
             PipeBaseService.TRUNCATE = new TruncatePipe();
         }
         return PipeBaseService.TRUNCATE;
+    }
+
+    public get prettify(): PrettifyPipe {
+        if (!PipeBaseService.PRETTIFY) {
+            PipeBaseService.PRETTIFY = new PrettifyPipe();
+        }
+        return PipeBaseService.PRETTIFY;
     }
 
     public get momentDate(): MomentDatePipe {

@@ -236,6 +236,15 @@
 
     .text-underline {
         text-decoration: underline !important;
+        &.dashed {
+            text-decoration-style: dashed !important;
+        }
+        &.double {
+            text-decoration-style: double !important;
+        }
+        &.dotted {
+            text-decoration-style: dotted !important;
+        }
     }
     .text-highlight {
         color: inherit;
@@ -346,6 +355,10 @@
                 background-color: mat-color($foreground, divider);
             }
         }
+    }
+
+    .mat-color-base {
+        color: map-get($foreground, base) !important;
     }
 
     .mat-menu-panel {

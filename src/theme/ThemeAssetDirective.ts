@@ -4,6 +4,7 @@ import { Assets } from '@ts-core/frontend/asset';
 import { Theme, ThemeService, ThemeServiceEvent } from '@ts-core/frontend/theme';
 import * as _ from 'lodash';
 import { Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ViewUtil } from '../util/ViewUtil';
 
 @Directive({
@@ -28,7 +29,6 @@ export class ThemeAssetDirective extends Destroyable implements OnInit {
     protected element: HTMLElement;
 
     private isTriedThemeDefault: boolean;
-    private subscription: Subscription;
 
     // --------------------------------------------------------------------------
     //
@@ -39,6 +39,11 @@ export class ThemeAssetDirective extends Destroyable implements OnInit {
     constructor(element: ElementRef, protected theme: ThemeService) {
         super();
         this.element = ViewUtil.parseElement(element.nativeElement);
+
+        this.theme.changed.pipe(takeUntil(this.destroyed)).subscribe(() => {
+            this.isTriedThemeDefault = false;
+            this.updateSourceProperties();
+        });
     }
 
     // --------------------------------------------------------------------------
@@ -110,16 +115,9 @@ export class ThemeAssetDirective extends Destroyable implements OnInit {
     // --------------------------------------------------------------------------
 
     public ngOnInit(): void {
-        if (this.theme.theme) {
+        if (!_.isNil(this.theme.theme)) {
             this.updateSourceProperties();
         }
-
-        this.subscription = this.theme.events.subscribe(event => {
-            if (event === ThemeServiceEvent.CHANGED) {
-                this.isTriedThemeDefault = false;
-                this.updateSourceProperties();
-            }
-        });
     }
 
     public destroy(): void {
@@ -130,10 +128,6 @@ export class ThemeAssetDirective extends Destroyable implements OnInit {
 
         this.theme = null;
         this.element = null;
-        if (!_.isNil(this.subscription)) {
-            this.subscription.unsubscribe();
-            this.subscription = null;
-        }
     }
 
     // --------------------------------------------------------------------------
@@ -151,7 +145,7 @@ export class ThemeAssetDirective extends Destroyable implements OnInit {
             return;
         }
         this._name = value;
-        if (this.name) {
+        if (!_.isNil(this.name)) {
             this.updateSourceProperties();
         }
     }
@@ -165,7 +159,7 @@ export class ThemeAssetDirective extends Destroyable implements OnInit {
             return;
         }
         this._extension = value;
-        if (this.extension) {
+        if (!_.isNil(this.extension)) {
             this.updateSourceProperties();
         }
     }

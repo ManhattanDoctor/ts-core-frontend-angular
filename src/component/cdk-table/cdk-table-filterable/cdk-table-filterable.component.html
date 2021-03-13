@@ -15,14 +15,9 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="columnNames"></mat-header-row>
-    
-    <mat-row class="mat-list-item" [ngClass]="{'mouse-active':settings?.isInteractive}"
-        *matRowDef="let row; columns: columnNames"></mat-row>
 
     <mat-row class="mat-list-item" *matRowDef="let row; columns: columnNames"
         (click)="rowClicked.emit(row)" [ngClass]="{'mouse-active':settings?.isInteractive}"></mat-row>
-
-
 
 </mat-table>
 

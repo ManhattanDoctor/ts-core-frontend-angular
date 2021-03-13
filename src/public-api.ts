@@ -110,6 +110,7 @@ export * from './pipe/NgModelErrorPipe';
 export * from './pipe/SanitizePipe';
 export * from './pipe/StartCasePipe';
 export * from './pipe/TruncatePipe';
+export * from './pipe/PrettifyPipe';
 /* ======= */
 export * from './question/IQuestion';
 export * from './question/QuestionManager';

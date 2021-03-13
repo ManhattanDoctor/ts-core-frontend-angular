@@ -54,7 +54,7 @@ export abstract class CdkTableBaseComponent<
     // --------------------------------------------------------------------------
 
     protected commitTableProperties(): void {
-        let sort = CdkTablePaginableMapCollection.getSort(this.table as FilterableDataSourceMapCollection<U, V>);
+        let sort = CdkTableFilterableMapCollection.getSort(this.table as FilterableDataSourceMapCollection<U, V>);
         if (!_.isNil(sort)) {
             this.sortActive = sort.active;
             this.sortDirection = sort.direction;

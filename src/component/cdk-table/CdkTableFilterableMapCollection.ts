@@ -3,8 +3,42 @@ import { FilterableDataSourceMapCollection } from '@ts-core/common/map/dataSourc
 import { CdkTableColumnManager } from './column/CdkTableColumnManager';
 import * as _ from 'lodash';
 import { CdkTablePaginableMapCollection, SortData } from './CdkTablePaginableMapCollection';
+import { ObjectUtil } from '@ts-core/common/util';
+import { SortDirection } from '@angular/material';
 
 export abstract class CdkTableFilterableMapCollection<U, V> extends FilterableDataSourceMapCollection<U, V> {
+    // --------------------------------------------------------------------------
+    //
+    // 	Static Methods
+    //
+    // --------------------------------------------------------------------------
+
+    public static getSort<U, V = any>(collection: FilterableDataSourceMapCollection<U, V>): SortData<U> {
+        if (_.isNil(collection) || _.isEmpty(collection.sort)) {
+            return null;
+        }
+        let active: keyof U = ObjectUtil.keys(collection.sort)[0];
+        let direction: SortDirection = collection.sort[active] ? 'asc' : 'desc';
+        return { active, direction };
+    }
+
+    public static applySortEvent<U, V = any>(item: FilterableDataSourceMapCollection<U, V>, event: SortData<U>): boolean {
+        let value = undefined;
+        if (event.direction === 'asc') {
+            value = true;
+        }
+        if (event.direction === 'desc') {
+            value = false;
+        }
+
+        if (value === item.sort[event.active]) {
+            return false;
+        }
+        ObjectUtil.clear(item.sort);
+        item.sort[event.active] = value;
+        return true;
+    }
+
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -41,7 +75,9 @@ export abstract class CdkTableFilterableMapCollection<U, V> extends FilterableDa
     // --------------------------------------------------------------------------
 
     public sortEventHandler(event: SortData<U>): void {
-        CdkTablePaginableMapCollection.sortEventHandler(this, event);
+        if (CdkTableFilterableMapCollection.applySortEvent(this, event)) {
+            this.reload();
+        }
     }
 
     // --------------------------------------------------------------------------

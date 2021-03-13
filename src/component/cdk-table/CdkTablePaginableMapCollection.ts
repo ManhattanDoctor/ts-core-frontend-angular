@@ -1,43 +1,11 @@
 import { CdkTableDataSource } from './CdkTableDataSource';
-import { FilterableDataSourceMapCollection, PaginableDataSourceMapCollection } from '@ts-core/common/map/dataSource';
+import { PaginableDataSourceMapCollection } from '@ts-core/common/map/dataSource';
 import { PageEvent, SortDirection } from '@angular/material';
 import { CdkTableColumnManager } from './column/CdkTableColumnManager';
 import * as _ from 'lodash';
-import { ObjectUtil } from '@ts-core/common/util';
+import { CdkTableFilterableMapCollection } from './CdkTableFilterableMapCollection';
 
 export abstract class CdkTablePaginableMapCollection<U, V> extends PaginableDataSourceMapCollection<U, V> {
-    // --------------------------------------------------------------------------
-    //
-    // 	Static Methods
-    //
-    // --------------------------------------------------------------------------
-
-    public static getSort<U, V = any>(collection: FilterableDataSourceMapCollection<U, V>): SortData<U> {
-        if (_.isNil(collection) || _.isEmpty(collection.sort)) {
-            return null;
-        }
-        let active: keyof U = ObjectUtil.keys(collection.sort)[0];
-        let direction: SortDirection = collection.sort[active] ? 'asc' : 'desc';
-        return { active, direction };
-    }
-
-    public static sortEventHandler<U, V = any>(item: FilterableDataSourceMapCollection<U, V>, event: SortData<U>): void {
-        let value = undefined;
-        if (event.direction === 'asc') {
-            value = true;
-        }
-        if (event.direction === 'desc') {
-            value = false;
-        }
-
-        if (value === item.sort[event.active]) {
-            return;
-        }
-        ObjectUtil.clear(item.sort);
-        item.sort[event.active] = value;
-        item.load();
-    }
-
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -74,7 +42,9 @@ export abstract class CdkTablePaginableMapCollection<U, V> extends PaginableData
     // --------------------------------------------------------------------------
 
     public sortEventHandler(event: SortData<U>): void {
-        CdkTablePaginableMapCollection.sortEventHandler(this, event);
+        if (CdkTableFilterableMapCollection.applySortEvent(this, event)) {
+            this.load();
+        }
     }
 
     public pageEventHandler(event: PageEvent): void {

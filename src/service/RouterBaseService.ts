@@ -156,9 +156,7 @@ export class RouterBaseService extends Loadable<void, void> {
 
     public getParams<T = any>(): T {
         let params = {} as any;
-        this.map.forEach((value, key) => {
-            params[key] = value;
-        });
+        this.map.forEach((value, key) => (params[key] = value));
         return params;
     }
 
@@ -192,6 +190,14 @@ export class RouterBaseService extends Loadable<void, void> {
         if (this.hasParam(name)) {
             this.setParam(name, null, extras);
         }
+    }
+
+    public clearParams(extras?: NavigationExtras): void {
+        this.map.clear();
+        if (!_.isNil(extras)) {
+            extras = { replaceUrl: true };
+        }
+        this.applyExtras(extras);
     }
 
     public get hasParams(): boolean {

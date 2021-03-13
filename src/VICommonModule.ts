@@ -29,6 +29,7 @@ import { NgModelErrorPipe } from './pipe/NgModelErrorPipe';
 import { SanitizePipe } from './pipe/SanitizePipe';
 import { StartCasePipe } from './pipe/StartCasePipe';
 import { TruncatePipe } from './pipe/TruncatePipe';
+import { PrettifyPipe } from './pipe/PrettifyPipe';
 import { ThemeModule } from './theme/ThemeModule';
 import { WindowModule } from './window/WindowModule';
 
@@ -43,6 +44,7 @@ const DECLARATIONS = [
     MomentDateFromNowPipe,
     SanitizePipe,
     TruncatePipe,
+    PrettifyPipe,
     CamelCasePipe,
     StartCasePipe,
 

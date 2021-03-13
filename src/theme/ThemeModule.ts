@@ -6,12 +6,14 @@ import { CookieService } from '../cookie/CookieService';
 import { ThemeAssetBackgroundDirective } from './ThemeAssetBackgroundDirective';
 import { ThemeAssetDirective } from './ThemeAssetDirective';
 import { ThemeImageDirective } from './ThemeImageDirective';
+import { ThemeStyleDirective } from './ThemeStyleDirective';
 import { ThemeToggleDirective } from './ThemeToggleDirective';
+import * as _ from 'lodash';
 
 @NgModule({
     imports: [CookieModule],
-    declarations: [ThemeAssetDirective, ThemeImageDirective, ThemeToggleDirective, ThemeAssetBackgroundDirective],
-    exports: [ThemeAssetDirective, ThemeImageDirective, ThemeToggleDirective, ThemeAssetBackgroundDirective]
+    declarations: [ThemeAssetDirective, ThemeImageDirective, ThemeToggleDirective, ThemeAssetBackgroundDirective, ThemeStyleDirective],
+    exports: [ThemeAssetDirective, ThemeImageDirective, ThemeToggleDirective, ThemeAssetBackgroundDirective, ThemeStyleDirective]
 })
 export class ThemeModule {
     // --------------------------------------------------------------------------
@@ -39,7 +41,7 @@ export class ThemeModule {
 }
 
 export function themeServiceFactory(cookie: ICookieService, options?: IThemeServiceOptions): ThemeService {
-    if (options && !options.service) {
+    if (!_.isNil(options) && !_.isNil(options.service)) {
         options.service = cookie;
     }
     return new ThemeService(options);

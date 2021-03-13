@@ -1,7 +1,8 @@
 import { Renderer2 } from '@angular/core';
 import { LoadableEvent } from '@ts-core/common';
 import { Assets } from '@ts-core/frontend/asset';
-import { Language, LanguageService } from '@ts-core/frontend/language';
+import { Language } from '@ts-core/language';
+import { LanguageService } from '@ts-core/frontend/language';
 import { SettingsBaseService } from '@ts-core/frontend/service';
 import { ThemeService } from '@ts-core/frontend/theme';
 import moment from 'moment';

@@ -3,6 +3,7 @@ import { CdkTableDataSource } from './CdkTableDataSource';
 import { CdkTablePaginableMapCollection, SortData } from './CdkTablePaginableMapCollection';
 import { CdkTableColumnManager } from './column/CdkTableColumnManager';
 import * as _ from 'lodash';
+import { CdkTableFilterableMapCollection } from './CdkTableFilterableMapCollection';
 
 export abstract class CdkTablePaginableBookmarkMapCollection<U, V> extends PaginableBookmarkDataSourceMapCollection<U, V> {
     // --------------------------------------------------------------------------
@@ -41,7 +42,9 @@ export abstract class CdkTablePaginableBookmarkMapCollection<U, V> extends Pagin
     // --------------------------------------------------------------------------
 
     public sortEventHandler(event: SortData<U>): void {
-        CdkTablePaginableMapCollection.sortEventHandler(this, event);
+        if (CdkTableFilterableMapCollection.applySortEvent(this, event)) {
+            this.load();
+        }
     }
 
     // --------------------------------------------------------------------------
