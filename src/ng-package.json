@@ -18,6 +18,7 @@
             "@ts-core/common/promise": "@ts-core/common/promise",
             "@ts-core/common/observer": "@ts-core/common/observer",
             "@ts-core/common/transport": "@ts-core/common/transport",
+            "@ts-core/common/map": "@ts-core/common/map",
             "@ts-core/common/map/dataSource": "@ts-core/common/map/dataSource",
             "@ts-core/common/api/http": "@ts-core/common/api/http",
             "@ts-core/common/api/http/map": "@ts-core/common/api/http/map",
@@ -29,5 +30,5 @@
             "@ts-core/frontend/language": "@ts-core/frontend/language"
         }
     },
-    "whitelistedNonPeerDependencies": []
+    "allowedNonPeerDependencies": []
 }

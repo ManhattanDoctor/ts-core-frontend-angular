@@ -1,4 +1,4 @@
-import { MatPaginatorIntl } from '@angular/material';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 import { LanguageService } from '@ts-core/frontend/language';
 import { Subscription } from 'rxjs';
 import { OnDestroy } from '@angular/core';

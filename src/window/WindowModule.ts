@@ -19,7 +19,7 @@ export class WindowModule {
     //
     // --------------------------------------------------------------------------
 
-    public static forRoot(): ModuleWithProviders {
+    public static forRoot(): ModuleWithProviders<WindowModule> {
         return {
             ngModule: WindowModule,
             providers: [

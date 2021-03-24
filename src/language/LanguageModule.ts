@@ -8,7 +8,7 @@ import { LanguagePipe } from './LanguagePipe';
 import { LanguagePipePure } from './LanguagePipePure';
 import { LanguageResolver } from './LanguageResolver';
 import { LanguageDirective } from './LanguageDirective';
-import { MatPaginatorIntl } from '@angular/material';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 import { LanguagePipeHas } from './LanguagePipeHas';
 import { LanguagePipeHasPure } from './LanguagePipeHasPure';
 import { LanguageHasDirective } from './LanguageHasDirective';
@@ -25,7 +25,7 @@ export class LanguageModule {
     //
     // --------------------------------------------------------------------------
 
-    public static forRoot(options?: ILanguageServiceOptions): ModuleWithProviders {
+    public static forRoot(options?: ILanguageServiceOptions): ModuleWithProviders<LanguageModule> {
         return {
             ngModule: LanguageModule,
             providers: [

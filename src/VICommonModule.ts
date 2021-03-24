@@ -71,7 +71,7 @@ export class VICommonModule {
     //
     // --------------------------------------------------------------------------
 
-    public static forRoot(options?: IVICommonOptions): ModuleWithProviders {
+    public static forRoot(options?: IVICommonOptions): ModuleWithProviders<VICommonModule> {
         return {
             ngModule: VICommonModule,
             providers: [

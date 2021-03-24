@@ -1,6 +1,6 @@
 import { PaginableBookmarkDataSourceMapCollection } from '@ts-core/common/map/dataSource';
 import { CdkTableDataSource } from './CdkTableDataSource';
-import { CdkTablePaginableMapCollection, SortData } from './CdkTablePaginableMapCollection';
+import { SortData } from './CdkTablePaginableMapCollection';
 import { CdkTableColumnManager } from './column/CdkTableColumnManager';
 import * as _ from 'lodash';
 import { CdkTableFilterableMapCollection } from './CdkTableFilterableMapCollection';

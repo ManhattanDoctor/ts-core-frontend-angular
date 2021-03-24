@@ -2,9 +2,9 @@ import { CdkTableDataSource } from './CdkTableDataSource';
 import { FilterableDataSourceMapCollection } from '@ts-core/common/map/dataSource';
 import { CdkTableColumnManager } from './column/CdkTableColumnManager';
 import * as _ from 'lodash';
-import { CdkTablePaginableMapCollection, SortData } from './CdkTablePaginableMapCollection';
+import { SortData } from './CdkTablePaginableMapCollection';
 import { ObjectUtil } from '@ts-core/common/util';
-import { SortDirection } from '@angular/material';
+import { SortDirection } from '@angular/material/sort';
 
 export abstract class CdkTableFilterableMapCollection<U, V> extends FilterableDataSourceMapCollection<U, V> {
     // --------------------------------------------------------------------------

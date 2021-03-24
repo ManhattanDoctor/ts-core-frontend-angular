@@ -71,15 +71,8 @@ export class WindowImpl extends WindowBase implements IWindow {
         this.setProperties();
         this.setPosition();
 
-        this.getReference()
-            .afterOpen()
-            .pipe(takeUntil(this.destroyed))
-            .subscribe(this.setOpened);
-
-        this.getReference()
-            .afterClosed()
-            .pipe(takeUntil(this.destroyed))
-            .subscribe(this.setClosed);
+        this.getReference().afterOpened().pipe(takeUntil(this.destroyed)).subscribe(this.setOpened);
+        this.getReference().afterClosed().pipe(takeUntil(this.destroyed)).subscribe(this.setClosed);
 
         this.events
             .pipe(

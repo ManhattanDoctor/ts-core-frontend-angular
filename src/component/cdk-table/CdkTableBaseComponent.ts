@@ -4,7 +4,7 @@ import * as _ from 'lodash';
 import { ICdkTableColumn } from './column/ICdkTableColumn';
 import { CdkTablePaginableMapCollection } from './CdkTablePaginableMapCollection';
 import { CdkTableFilterableMapCollection } from './CdkTableFilterableMapCollection';
-import { SortDirection } from '@angular/material';
+import { SortDirection } from '@angular/material/sort';
 import { FilterableDataSourceMapCollection } from '@ts-core/common/map/dataSource';
 
 export abstract class CdkTableBaseComponent<

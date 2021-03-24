@@ -22,7 +22,7 @@ export class ThemeModule {
     //
     // --------------------------------------------------------------------------
 
-    public static forRoot(options?: IThemeServiceOptions): ModuleWithProviders {
+    public static forRoot(options?: IThemeServiceOptions): ModuleWithProviders<ThemeModule> {
         return {
             ngModule: ThemeModule,
             providers: [

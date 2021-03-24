@@ -43,15 +43,8 @@ export class Notification extends WindowBase implements INotification {
         this.setProperties();
         this.setPosition();
 
-        this.getReference()
-            .afterOpen()
-            .pipe(takeUntil(this.destroyed))
-            .subscribe(this.setOpened);
-
-        this.getReference()
-            .afterClosed()
-            .pipe(takeUntil(this.destroyed))
-            .subscribe(this.setClosed);
+        this.getReference().afterOpened().pipe(takeUntil(this.destroyed)).subscribe(this.setOpened);
+        this.getReference().afterClosed().pipe(takeUntil(this.destroyed)).subscribe(this.setClosed);
 
         this.observer
             .pipe(

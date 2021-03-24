@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatTabChangeEvent } from '@angular/material';
+import { Component, Input } from '@angular/core';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 import { DestroyableContainer } from '@ts-core/common';
 
 import * as _ from 'lodash';

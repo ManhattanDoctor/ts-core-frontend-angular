@@ -15,7 +15,7 @@ export class NotificationModule {
     //
     // --------------------------------------------------------------------------
 
-    public static forRoot(): ModuleWithProviders {
+    public static forRoot(): ModuleWithProviders<NotificationModule> {
         return {
             ngModule: NotificationService,
             providers: [
