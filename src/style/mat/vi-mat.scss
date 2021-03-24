@@ -255,13 +255,14 @@
         @include text-one-line();
     }
     .text-multi-line {
-        @include text-word-wrap-break-all();
-    }
-    .text-word-wrap-break-all {
-        @include text-word-wrap-break-all();
+        @include text-word-wrap-break-word();
+        @include text-word-break-break-all();
     }
     .text-word-wrap-break-word {
         @include text-word-wrap-break-word();
+    }
+    .text-word-break-break-all {
+        @include text-word-break-break-all();
     }
     .scroll-no {
         @include scroll-no();

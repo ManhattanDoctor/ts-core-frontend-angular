@@ -44,10 +44,10 @@ export abstract class ApplicationComponent<T extends SettingsBaseService> extend
         this.language.events.pipe(takeUntil(this.destroyed)).subscribe(data => {
             switch (data.type) {
                 case LoadableEvent.COMPLETE:
-                    this.languageLoadingComplete(data.data);
+                    this.languageLoadingComplete(data.data as Language);
                     break;
                 case LoadableEvent.ERROR:
-                    this.languageLoadingError(data.data, data.error);
+                    this.languageLoadingError(data.data as Language, data.error);
                     break;
             }
         });

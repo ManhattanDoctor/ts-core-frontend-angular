@@ -1,17 +1,20 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { DestroyableContainer } from '@ts-core/common';
 import { LanguageService } from '@ts-core/frontend/language';
 
 @Pipe({
     name: 'viTranslatePure'
 })
-export class LanguagePurePipe implements PipeTransform {
+export class LanguagePipePure extends DestroyableContainer implements PipeTransform {
     // --------------------------------------------------------------------------
     //
     //	Constructor
     //
     // --------------------------------------------------------------------------
 
-    constructor(private language: LanguageService) {}
+    constructor(private language: LanguageService) {
+        super();
+    }
 
     // --------------------------------------------------------------------------
     //
@@ -21,5 +24,13 @@ export class LanguagePurePipe implements PipeTransform {
 
     public transform(key: string, params?: any): string {
         return this.language.translate(key, params);
+    }
+
+    public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
+        super.destroy();
+        this.language = null;
     }
 }

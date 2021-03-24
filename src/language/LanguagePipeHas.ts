@@ -5,10 +5,10 @@ import { takeUntil } from 'rxjs/operators';
 import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viTranslate',
+    name: 'viTranslateHas',
     pure: false
 })
-export class LanguagePipe extends DestroyableContainer implements PipeTransform {
+export class LanguagePipeHas extends DestroyableContainer implements PipeTransform {
     // --------------------------------------------------------------------------
     //
     //	Properties
@@ -16,8 +16,7 @@ export class LanguagePipe extends DestroyableContainer implements PipeTransform 
     // --------------------------------------------------------------------------
 
     private key: string;
-    private params: string;
-    private _value: string;
+    private _value: boolean;
 
     // --------------------------------------------------------------------------
     //
@@ -37,7 +36,7 @@ export class LanguagePipe extends DestroyableContainer implements PipeTransform 
     // --------------------------------------------------------------------------
 
     private valueUpdate = (): void => {
-        this._value = this.language.translate(this.key, this.params);
+        this._value = this.language.isHasTranslation(this.key);
     };
 
     // --------------------------------------------------------------------------
@@ -46,9 +45,8 @@ export class LanguagePipe extends DestroyableContainer implements PipeTransform 
     //
     // --------------------------------------------------------------------------
 
-    public transform(key: string, params?: any): string {
+    public transform(key: string): boolean {
         this.key = key;
-        this.params = params;
         if (_.isNil(this._value)) {
             this.valueUpdate();
         }
@@ -63,6 +61,5 @@ export class LanguagePipe extends DestroyableContainer implements PipeTransform 
         this.language = null;
 
         this.key = null;
-        this.params = null;
     }
 }

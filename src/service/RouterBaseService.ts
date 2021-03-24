@@ -13,7 +13,7 @@ export class RouterBaseService extends Loadable<void, void> {
     //
     // --------------------------------------------------------------------------
 
-    protected map: Map<string, string>;
+    protected params: Map<string, string>;
 
     protected extrasToApply: any;
     protected isNeedUpdateExtras: boolean = false;
@@ -28,11 +28,11 @@ export class RouterBaseService extends Loadable<void, void> {
 
     constructor(protected _router: Router, protected window: NativeWindowService) {
         super();
-        this.map = new Map();
+        this.params = new Map();
         this.observer = new Subject();
 
         this._lastUrl = this.url;
-        this.window.getParams().forEach((value, key) => this.map.set(key, value));
+        this.window.getParams().forEach((value, key) => this.params.set(key, value));
         this.initializeObservers();
     }
 
@@ -73,7 +73,7 @@ export class RouterBaseService extends Loadable<void, void> {
 
     protected getQueryParams(): any {
         let params = {} as any;
-        this.map.forEach((value, key) => (params[key] = value));
+        this.params.forEach((value, key) => (params[key] = value));
         return params;
     }
 
@@ -104,7 +104,11 @@ export class RouterBaseService extends Loadable<void, void> {
     //
     // --------------------------------------------------------------------------
 
-    public async navigate(url: string, extras?: NavigationExtras): Promise<boolean> {
+    public async navigate(url: string, extras?: NavigationExtras, isClearParams?: boolean): Promise<boolean> {
+        if (isClearParams) {
+            this.params.clear();
+        }
+
         let params = {} as NavigationExtras;
         params.queryParams = this.getQueryParams();
         if (!_.isNil(extras)) {
@@ -156,16 +160,16 @@ export class RouterBaseService extends Loadable<void, void> {
 
     public getParams<T = any>(): T {
         let params = {} as any;
-        this.map.forEach((value, key) => (params[key] = value));
+        this.params.forEach((value, key) => (params[key] = value));
         return params;
     }
 
     public hasParam(name: string): boolean {
-        return this.map.has(name);
+        return this.params.has(name);
     }
 
     public getParam<T = string>(name: string, defaultValue?: T): T {
-        return this.hasParam(name) ? (this.map.get(name) as any) : defaultValue;
+        return this.hasParam(name) ? (this.params.get(name) as any) : defaultValue;
     }
 
     public setParam(name: string, value: any, extras?: NavigationExtras): void {
@@ -176,9 +180,9 @@ export class RouterBaseService extends Loadable<void, void> {
             }
         }
         if (!_.isNil(value)) {
-            this.map.set(name, value);
+            this.params.set(name, value);
         } else {
-            this.map.delete(name);
+            this.params.delete(name);
         }
         if (!_.isNil(extras)) {
             extras = { replaceUrl: true };
@@ -193,7 +197,7 @@ export class RouterBaseService extends Loadable<void, void> {
     }
 
     public clearParams(extras?: NavigationExtras): void {
-        this.map.clear();
+        this.params.clear();
         if (!_.isNil(extras)) {
             extras = { replaceUrl: true };
         }
@@ -201,7 +205,7 @@ export class RouterBaseService extends Loadable<void, void> {
     }
 
     public get hasParams(): boolean {
-        return this.map.size > 0;
+        return this.params.size > 0;
     }
 
     // --------------------------------------------------------------------------

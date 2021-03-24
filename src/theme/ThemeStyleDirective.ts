@@ -75,6 +75,7 @@ export class ThemeStyleDirective extends Destroyable implements OnInit {
     public get name(): string {
         return this._name;
     }
+    @Input()
     public set name(value: string) {
         if (value === this._name) {
             return;

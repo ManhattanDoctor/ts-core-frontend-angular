@@ -5,15 +5,18 @@ import { CookieModule } from '../cookie/CookieModule';
 import { CookieService } from '../cookie/CookieService';
 import { LanguageMatPaginatorIntl } from './LanguageMatPaginatorIntl';
 import { LanguagePipe } from './LanguagePipe';
-import { LanguagePurePipe } from './LanguagePurePipe';
+import { LanguagePipePure } from './LanguagePipePure';
 import { LanguageResolver } from './LanguageResolver';
 import { LanguageDirective } from './LanguageDirective';
 import { MatPaginatorIntl } from '@angular/material';
+import { LanguagePipeHas } from './LanguagePipeHas';
+import { LanguagePipeHasPure } from './LanguagePipeHasPure';
+import { LanguageHasDirective } from './LanguageHasDirective';
 
 @NgModule({
     imports: [CookieModule],
-    declarations: [LanguagePipe, LanguagePurePipe, LanguageDirective],
-    exports: [LanguagePipe, LanguagePurePipe, LanguageDirective]
+    declarations: [LanguagePipe, LanguagePipePure, LanguagePipeHas, LanguagePipeHasPure, LanguageHasDirective, LanguageDirective],
+    exports: [LanguagePipe, LanguagePipePure, LanguagePipeHas, LanguagePipeHasPure, LanguageHasDirective, LanguageDirective]
 })
 export class LanguageModule {
     // --------------------------------------------------------------------------

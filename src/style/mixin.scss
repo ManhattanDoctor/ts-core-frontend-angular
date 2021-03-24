@@ -45,8 +45,8 @@
 @mixin text-word-wrap-break-word() {
     word-wrap: break-word;
 }
-@mixin text-word-wrap-break-all() {
-    word-wrap: break-all;
+@mixin text-word-break-break-all() {
+    word-break: break-all;
 }
 
 @mixin text-one-line() {

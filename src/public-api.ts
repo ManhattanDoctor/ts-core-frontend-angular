@@ -67,9 +67,12 @@ export * from './language/LanguageMatPaginatorIntl';
 export * from './language/LanguageModule';
 export * from './language/LanguageMomentDateAdapter';
 export * from './language/LanguagePipe';
-export * from './language/LanguagePurePipe';
+export * from './language/LanguagePipePure';
+export * from './language/LanguagePipeHas';
+export * from './language/LanguagePipeHasPure';
 export * from './language/LanguageResolver';
 export * from './language/LanguageDirective';
+export * from './language/LanguageHasDirective';
 /* ======= */
 export * from './login/LoginBaseService';
 export * from './login/LoginGuard';

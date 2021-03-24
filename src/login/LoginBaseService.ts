@@ -173,6 +173,22 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
 
     public abstract registration(param: any): void;
 
+    public async loginByResponse(param: U): Promise<void> {
+        if (this.isLoggedIn || this.isLoading) {
+            return;
+        }
+
+        this.status = LoadableStatus.LOADING;
+        this.observer.next(new ObservableData(LoadableEvent.STARTED));
+        this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_STARTED));
+
+        this.parseLoginResponse(param);
+        this.status = !this.isCanLoginWithSid() ? LoadableStatus.LOADED : LoadableStatus.LOADING;
+        if (this.isLoading) {
+            await this.loginBySid();
+        }
+    }
+
     public tryLoginBySid(): boolean {
         if (!this.isCanLoginWithSid()) {
             return false;
