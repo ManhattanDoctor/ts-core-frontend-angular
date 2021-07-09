@@ -16,11 +16,27 @@ export class FinancePipe implements PipeTransform {
 
     // --------------------------------------------------------------------------
     //
+    //	Static Methods
+    //
+    // --------------------------------------------------------------------------
+
+    public static format(value: number | string, format: string): string {
+        value = Number(value);
+        try {
+            return numeral(value).format(format);
+        } catch (error) {
+            return value.toString();
+        }
+    }
+
+    // --------------------------------------------------------------------------
+    //
     //	Public Methods
     //
     // --------------------------------------------------------------------------
 
-    public transform(value: number, format?: string, isNeedPlus: boolean = false): string {
+    public transform(value: number | string, format?: string, isNeedPlus: boolean = false): string {
+        value = Number(value);
         if (_.isNaN(value)) {
             return '---';
         }
@@ -30,14 +46,6 @@ export class FinancePipe implements PipeTransform {
         if (isNeedPlus) {
             format = '+' + format;
         }
-        return this.format(value, format);
-    }
-
-    public format(value: number, format: string): string {
-        try {
-            return numeral(value).format(format);
-        } catch (error) {
-            return value.toString();
-        }
+        return FinancePipe.format(value, format);
     }
 }

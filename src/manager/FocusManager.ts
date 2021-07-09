@@ -1,6 +1,7 @@
 import { ElementRef } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
 import { ViewUtil } from '../util/ViewUtil';
+import * as _ from 'lodash';
 
 export class FocusManager extends Destroyable {
     // --------------------------------------------------------------------------
@@ -31,8 +32,8 @@ export class FocusManager extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    private focusElement = () => {
-        if (this.element) {
+    private focusElement = (): void => {
+        if (!_.isNil(this.element)) {
             ViewUtil.focusInput(this.element as any);
         }
     };
@@ -45,7 +46,7 @@ export class FocusManager extends Destroyable {
 
     public focus(): void {
         clearTimeout(this.timer);
-        this.timer = setTimeout(this.focusElement, 100);
+        this.timer = setTimeout(this.focusElement, this.delay);
     }
 
     public destroy(): void {
@@ -54,7 +55,7 @@ export class FocusManager extends Destroyable {
         }
         super.destroy();
 
-        if (this.timer) {
+        if (!_.isNil(this.timer)) {
             clearTimeout(this.timer);
             this.timer = null;
         }

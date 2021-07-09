@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DateUtil } from '@ts-core/common/util';
+import { MomentAvailableType, MomentDatePipe } from './MomentDatePipe';
+import * as _ from 'lodash';
 import moment from 'moment';
-import numeral from 'numeral';
 
 @Pipe({
     name: 'viMomentTime'
@@ -9,22 +9,25 @@ import numeral from 'numeral';
 export class MomentTimePipe implements PipeTransform {
     // --------------------------------------------------------------------------
     //
+    //	Constants
+    //
+    // --------------------------------------------------------------------------
+
+    public static DEFAULT_FORMAT = 'hh:mm:ss';
+    // --------------------------------------------------------------------------
+    //
     //	Public Methods
     //
     // --------------------------------------------------------------------------
 
-    public transform(time: number, isDigital?: boolean): string {
-        return isDigital ? this.transformDigitalTime(time) : this.transformTime(time);
-    }
+    public transform(timeMilliseconds: number, format?: string): string {
+        if (_.isNil(timeMilliseconds)) {
+            return '---';
+        }
 
-    public transformTime(time: number): string {
-        let value = moment();
-        value.add(time, 'milliseconds');
-        return value.fromNow();
-    }
-
-    public transformDigitalTime(time: number): string {
-        let seconds = time / DateUtil.MILISECONDS_SECOND;
-        return numeral(seconds).format('00:00:00');
+        return moment()
+            .startOf('day')
+            .add(timeMilliseconds, 'milliseconds')
+            .format(format || MomentTimePipe.DEFAULT_FORMAT);
     }
 }

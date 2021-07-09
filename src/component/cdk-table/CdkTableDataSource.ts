@@ -68,7 +68,7 @@ export class CdkTableDataSource<U> extends DestroyableContainer {
 
     // --------------------------------------------------------------------------
     //
-    // 	Public Propertie
+    // 	Public Properties
     //
     // --------------------------------------------------------------------------
 

@@ -1,6 +1,7 @@
 import { Component, ElementRef } from '@angular/core';
 import { ViewUtil } from '../../../util/ViewUtil';
 import { WindowElement } from '../WindowElement';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'vi-close-window-element',
@@ -60,7 +61,7 @@ export class CloseWindowElementComponent extends WindowElement {
 
     private mouseClickHandler = (event: MouseEvent): void => {
         event.stopPropagation();
-        if (this.window) {
+        if (!_.isNil(this.window)) {
             this.window.close();
         }
     };

@@ -14,4 +14,4 @@ export interface ICdkTableColumn<U = any> {
 
 export type ICdkTableColumnValueFunction<U> = (item: U, column: ICdkTableColumn<U>) => U[keyof U] | string | number;
 export type ICdkTableColumnClassNameFunction<U> = (item: U, column: ICdkTableColumn<U>) => string;
-export type ICdkTableColumnStyleNameFunction<U> = (item: U, column: ICdkTableColumn<U>) => { [key: string]: string };
+export type ICdkTableColumnStyleNameFunction<U> = (item: U, column: ICdkTableColumn<U>) => { [key: string]: any };

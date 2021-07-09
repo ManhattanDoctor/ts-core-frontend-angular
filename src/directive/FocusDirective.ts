@@ -32,9 +32,7 @@ export class FocusDirective<T = any> extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    protected focus = (): void => {
-        this.manager.focus();
-    };
+    protected focus = (): void => this.manager.focus();
 
     // --------------------------------------------------------------------------
     //

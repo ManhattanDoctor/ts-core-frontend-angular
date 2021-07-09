@@ -1,0 +1,29 @@
+{
+    "general": {
+        "yes": "Да",
+        "not": "Нет",
+        "close": "Закрыть",
+        "locale": "Язык",
+        "refresh": "Обновить",
+        "noDataFound": "Нет данных"
+    },
+    "paginator": {
+        "firstPage": "На первую страницу",
+        "itemsPerPage": "На странице",
+        "lastPage": "На последнюю страницу",
+        "nextPage": "Следующая страница",
+        "pageRange": "{current} из {total}",
+        "previousPage": "Предыдущая страница"
+    },
+    "error": {
+        "form": {
+            "max": "Максимальное число {max}",
+            "min": "Минимальное число {min}",
+            "required": "Необходимо заполнить",
+            "email": "Неверный формат электронной почты",
+            "pattern": "Не выполнено условие {requiredPattern}",
+            "minlength": "Минимальная длина {minlength,plural,one {# символ} few {# символа} many{# символов} other{}}",
+            "maxlength": "Максимальная длина {maxlength,plural,one {# символ} few {# символа} many{# символов} other{}}"
+        }
+    }
+}

@@ -168,14 +168,8 @@ export class WindowService extends Destroyable {
     }
 
     private getById<T>(id: string): IWindow<T> {
-        let result: IWindowContent = null;
-        this.windows.forEach(item => {
-            if (item.config.id === id) {
-                result = item;
-                return true;
-            }
-        });
-        return !_.isNil(result) ? result.window : null;
+        let item = _.find(Array.from(this._windows.values()), item => item.config.id === id);
+        return !_.isNil(item) ? item.window : null;
     }
 
     private setDefaultProperties(config: WindowConfig): void {
@@ -255,7 +249,7 @@ export class WindowService extends Destroyable {
                     break;
 
                 case WindowEvent.RESIZED:
-                    if (config.propertiesId) {
+                    if (!_.isNil(config.propertiesId)) {
                         this.properties.save(config.propertiesId, window);
                     }
                     break;
@@ -305,7 +299,6 @@ export class WindowService extends Destroyable {
             return;
         }
         super.destroy();
-
         this.removeAll();
 
         if (!_.isNil(this.observer)) {

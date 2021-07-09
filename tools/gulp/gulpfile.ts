@@ -94,8 +94,10 @@ const packageBuild = async (): Promise<void> => {
     await packageCompile();
     // Build files
     await run(`npm --prefix ${projectDirectory} run build`)();
-    // Copy files
+    // Copy Styles
     await filesCopy([`${projectDirectory}/src/style/**/*.scss`], `${output}/style`);
+    // Copy Languages
+    await filesCopy([`${projectDirectory}/src/language/**/*.json`], `${output}/asset`);
 };
 
 const packagePublish = async (type: 'patch' | 'minor' | 'major'): Promise<void> => {

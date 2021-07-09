@@ -15,9 +15,6 @@ export class CdkTableFilterableComponent<U = any, V = any> extends CdkTableBaseC
     // --------------------------------------------------------------------------
 
     constructor() {
-        super({
-            noDataId: 'general.noDataFound',
-            isInteractive: true
-        });
+        super();
     }
 }

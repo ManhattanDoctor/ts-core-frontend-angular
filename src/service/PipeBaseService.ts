@@ -11,6 +11,7 @@ import { MomentDatePipe } from '../pipe/MomentDatePipe';
 import { MomentTimePipe } from '../pipe/MomentTimePipe';
 import { PrettifyPipe } from '../pipe/PrettifyPipe';
 import { SanitizePipe } from '../pipe/SanitizePipe';
+import { TimePipe } from '../pipe/TimePipe';
 import { TruncatePipe } from '../pipe/TruncatePipe';
 
 export class PipeBaseService extends DestroyableContainer {
@@ -21,6 +22,7 @@ export class PipeBaseService extends DestroyableContainer {
     // --------------------------------------------------------------------------
 
     private static DATE: DatePipe = null;
+    private static TIME: TimePipe = null;
     private static FINANCE: FinancePipe = null;
     private static PRETTIFY: PrettifyPipe = null;
     private static TRUNCATE: TruncatePipe = null;
@@ -53,9 +55,7 @@ export class PipeBaseService extends DestroyableContainer {
         if (this.language.isLoaded) {
             this.commitLanguageProperties();
         }
-        this.language.completed.pipe(takeUntil(this.destroyed)).subscribe(() => {
-            this.commitLanguageProperties();
-        });
+        this.language.completed.pipe(takeUntil(this.destroyed)).subscribe(() => this.commitLanguageProperties());
     }
 
     // --------------------------------------------------------------------------
@@ -84,6 +84,13 @@ export class PipeBaseService extends DestroyableContainer {
             PipeBaseService.DATE = new DatePipe(this.locale);
         }
         return PipeBaseService.DATE;
+    }
+
+    public get time(): TimePipe {
+        if (!PipeBaseService.TIME) {
+            PipeBaseService.TIME = new TimePipe();
+        }
+        return PipeBaseService.TIME;
     }
 
     public get finance(): FinancePipe {

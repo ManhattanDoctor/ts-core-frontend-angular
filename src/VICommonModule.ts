@@ -13,6 +13,7 @@ import { AutoScrollBottomDirective } from './directive/AutoScrollBottomDirective
 import { ClickToCopyDirective } from './directive/ClickToCopyDirective';
 import { ClickToSelectDirective } from './directive/ClickToSelectDirective';
 import { FocusDirective } from './directive/FocusDirective';
+import { SelectOnFocusDirective } from './directive/SelectOnFocusDirective';
 import { HTMLContentTitleDirective } from './directive/HTMLContentTitleDirective';
 import { InfiniteScrollDirective } from './directive/InfiniteScrollDirective';
 import { ResizeDirective } from './directive/ResizeDirective';
@@ -28,6 +29,7 @@ import { MomentTimePipe } from './pipe/MomentTimePipe';
 import { NgModelErrorPipe } from './pipe/NgModelErrorPipe';
 import { SanitizePipe } from './pipe/SanitizePipe';
 import { StartCasePipe } from './pipe/StartCasePipe';
+import { TimePipe } from './pipe/TimePipe';
 import { TruncatePipe } from './pipe/TruncatePipe';
 import { PrettifyPipe } from './pipe/PrettifyPipe';
 import { ThemeModule } from './theme/ThemeModule';
@@ -37,6 +39,7 @@ const IMPORTS = [CookieModule, ThemeModule, LanguageModule, AssetModule, WindowM
 
 const DECLARATIONS = [
     NgModelErrorPipe,
+    TimePipe,
     FinancePipe,
     MomentDateAdaptivePipe,
     MomentDatePipe,
@@ -52,6 +55,7 @@ const DECLARATIONS = [
     ResizeDirective,
     ScrollDirective,
     ClickToCopyDirective,
+    SelectOnFocusDirective,
     ClickToSelectDirective,
     InfiniteScrollDirective,
     HTMLContentTitleDirective,

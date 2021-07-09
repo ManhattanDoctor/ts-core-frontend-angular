@@ -54,7 +54,6 @@ export class ThemeToggleDirective extends Destroyable {
             return;
         }
         super.destroy();
-
         this.theme = null;
     }
 }

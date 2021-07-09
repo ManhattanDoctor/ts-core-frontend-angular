@@ -14,19 +14,12 @@ export class AssetBackgroundDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    @Input()
-    public isUrl: boolean = false;
-    @Input()
-    public isIcon: boolean = false;
-    @Input()
-    public isImage: boolean = false;
+    private _isUrl: boolean = false;
+    private _isIcon: boolean = false;
+    private _isImage: boolean = false;
 
-    @Input('background-repeat')
-    public repeat: string = 'repeat';
-
-    @Input('background-extension')
-    public extension: string = 'png';
-
+    private _repeat: string = 'repeat';
+    private _extension: string = 'png';
     private _background: string;
 
     // --------------------------------------------------------------------------
@@ -44,6 +37,11 @@ export class AssetBackgroundDirective extends Destroyable {
     //	Private Methods
     //
     // --------------------------------------------------------------------------
+
+    protected setStyleProperties(): void {
+        let url = this.getUrl(this.background, this.isImage, this.isIcon, this.isUrl);
+        ViewUtil.setBackground(this.element, url, this.repeat);
+    }
 
     private getUrl(id: string, isImage?: boolean, isIcon?: boolean, isUrl?: boolean): string {
         if (_.isNil(id)) {
@@ -72,7 +70,6 @@ export class AssetBackgroundDirective extends Destroyable {
             return;
         }
         super.destroy();
-
         this.element = null;
     }
 
@@ -82,14 +79,73 @@ export class AssetBackgroundDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
+    @Input()
+    public set isIcon(value: boolean) {
+        if (value === this._isIcon) {
+            return;
+        }
+        this._isIcon = value;
+        this.setStyleProperties();
+    }
+    public get isIcon(): boolean {
+        return this._isIcon;
+    }
+
+    @Input()
+    public set isImage(value: boolean) {
+        if (value === this._isImage) {
+            return;
+        }
+        this._isImage = value;
+        this.setStyleProperties();
+    }
+    public get isImage(): boolean {
+        return this._isImage;
+    }
+
+    @Input()
+    public set isUrl(value: boolean) {
+        if (value === this._isUrl) {
+            return;
+        }
+        this._isUrl = value;
+        this.setStyleProperties();
+    }
+    public get isUrl(): boolean {
+        return this._isUrl;
+    }
+
+    @Input()
+    public set repeat(value: string) {
+        if (value === this._repeat) {
+            return;
+        }
+        this._repeat = value;
+        this.setStyleProperties();
+    }
+    public get repeat(): string {
+        return this._repeat;
+    }
+
+    @Input()
+    public set extension(value: string) {
+        if (value === this._extension) {
+            return;
+        }
+        this._extension = value;
+        this.setStyleProperties();
+    }
+    public get extension(): string {
+        return this._extension;
+    }
+
     @Input('vi-asset-background')
     public set background(value: string) {
         if (value === this._background) {
             return;
         }
         this._background = value;
-        let url = this.getUrl(value, this.isImage, this.isIcon, this.isUrl);
-        ViewUtil.setBackground(this.element.nativeElement, url, this.repeat);
+        this.setStyleProperties();
     }
     public get background(): string {
         return this._background;

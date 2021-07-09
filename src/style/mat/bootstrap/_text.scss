@@ -1,0 +1,43 @@
+@mixin vi-mat-theme-bootstrap-text($theme, $text-primary-default, $text-accent-default) {
+    $warn: map-get($theme, warn);
+    $accent: map-get($theme, accent);
+    $primary: map-get($theme, primary);
+    $is-dark: map-get($theme, is-dark);
+    $foreground: map-get($theme, foreground);
+
+    $text-color: map-get($foreground, text);
+    $text-base-color: map-get($foreground, base);
+    $text-accent-color: mat-color($accent, $text-accent-default);
+    $text-primary-color: mat-color($primary, $text-primary-default);
+
+    @if $is-dark {
+        $text-accent-color: mat-color($accent);
+        $text-primary-color: mat-color($primary);
+    }
+
+    .text-base {
+        color: $text-base-color !important;
+    }
+    .text-base-invert {
+        color: $text-base-color !important;
+        @include filter-invert(1);
+    }
+    .text-accent {
+        color: $text-accent-color !important;
+    }
+    .text-primary {
+        color: $text-primary-color !important;
+    }
+    .text-danger {
+        color: mat-color($warn) !important;
+    }
+    .text-warning {
+        color: map-get($foreground, warning-text) !important;
+    }
+    .text-success {
+        color: map-get($foreground, success-text) !important;
+    }
+    .text-secondary {
+        color: map-get($foreground, secondary-text) !important;
+    }
+}

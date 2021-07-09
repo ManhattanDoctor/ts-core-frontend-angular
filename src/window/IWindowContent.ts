@@ -63,13 +63,13 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
     }
 
     public emit(event: string): void {
-        if (this.window) {
+        if (!_.isNil(this.window)) {
             this.window.emit(event);
         }
     }
 
     public close(): void {
-        if (this.window) {
+        if (!_.isNil(this.window)) {
             this.window.close();
         }
     }
@@ -91,27 +91,27 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
     // --------------------------------------------------------------------------
 
     public get data(): T {
-        return this.config ? this.config.data : null;
+        return !_.isNil(this.config) ? this.config.data : null;
     }
 
     public get isOnTop(): boolean {
-        return this.window ? this.window.isOnTop : false;
+        return !_.isNil(this.window) ? this.window.isOnTop : false;
     }
 
     public get isMinimized(): boolean {
-        return this.window ? this.window.isMinimized : false;
+        return !_.isNil(this.window) ? this.window.isMinimized : false;
     }
 
     public get events(): Observable<string> {
-        return this.window ? this.window.events : null;
+        return !_.isNil(this.window) ? this.window.events : null;
     }
 
     public get isDisabled(): boolean {
-        return this.window ? this.window.isDisabled : false;
+        return !_.isNil(this.window) ? this.window.isDisabled : false;
     }
 
     public set isDisabled(value: boolean) {
-        if (this.window) {
+        if (!_.isNil(this.window)) {
             this.window.isDisabled = value;
         }
     }
@@ -138,7 +138,7 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
             return;
         }
         this._window = value;
-        if (this._window) {
+        if (!_.isNil(value)) {
             this.commitWindowProperties();
         }
     }

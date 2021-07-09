@@ -239,10 +239,10 @@ export class WindowImpl extends WindowBase implements IWindow {
         this.shakeTimer = setInterval(this.stopShaking, WindowImpl.SHAKE_DELAY);
     }
 
-    public setOnTop = (): void => {
+    public setOnTop(): void {
         this.isWasOnTop = this.isOnTop;
         this.emit(WindowEvent.SET_ON_TOP);
-    };
+    }
 
     // --------------------------------------------------------------------------
     //

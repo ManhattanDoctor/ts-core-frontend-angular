@@ -1,23 +1,26 @@
-<mat-table matSort [ngClass]="{'mat-nav-list':settings?.isInteractive}" [dataSource]="table?.table.dataSource" 
-    [matSortActive]="sortActive" [matSortDirection]="sortDirection" (matSortChange)="table.sortEventHandler($event)">
+<mat-table matSort [dataSource]="table?.table?.dataSource" [trackBy]="table.trackByFn" [matSortActive]="sortActive" [matSortDirection]="sortDirection"
+    [class.mat-nav-list]="settings?.isInteractive" (matSortChange)="table.sortEventHandler($event)">
   
-    <ng-container *ngFor="let item of columns;trackBy:table?.columns.trackBy">
-        <ng-container [matColumnDef]="item.name">
-            <mat-header-cell class="px-2" mat-sort-header [disableClear]="true" [disabled]="item.isDisableSort" [ngClass]="item.headerClassName" 
+    <ng-container *ngFor="let column of columns;trackBy:columnTrackBy">
+        <ng-container [matColumnDef]="column.name">
+            <mat-header-cell class="px-2" mat-sort-header [disableClear]="true" [disabled]="column.isDisableSort" [ngClass]="column.headerClassName" 
                 *matHeaderCellDef>
-                <span [innerHTML]="item.headerId | viTranslate"></span>
+                <span [innerHTML]="column.headerId | viTranslate"></span>
             </mat-header-cell>
-            <mat-cell class="px-2" [ngClass]="table?.columns.getClass(row, item)" [ngStyle]="table?.columns.getStyle(row, item)" (click)="cellClickHandler(row, item)" *matCellDef="let row" >
-                <span [ngClass]="{'text-multi-line':item.isMultiline, 'text-one-line': !item.isMultiline}"
-                    [vi-html-content-title]="table?.columns.getValue(row, item)"></span>
+  
+            <mat-cell class="px-2" (click)="cellClickHandler(row, column)" *matCellDef="let row" 
+                [ngClass]="row | viCdkTableColumnClassName: column" [ngStyle]="row | viCdkTableColumnStyleName: column" >
+                <span [ngClass]="column | viCdkTableCellClassName" [vi-html-content-title]="row | viCdkTableColumnValue: column"></span>
             </mat-cell>
+
         </ng-container>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="columnNames"></mat-header-row>
     
     <mat-row class="mat-list-item" *matRowDef="let row; columns: columnNames"
-        (click)="rowClicked.emit(row)" [ngClass]="{'mouse-active':settings?.isInteractive}"></mat-row>
+        [ngClass]="row | viCdkTableRowClassName: rows : selectedRows" [ngStyle]="row | viCdkTableRowStyleName: rows : selectedRows"
+        (click)="rowClicked.emit(row)"></mat-row>
 
 </mat-table>
 
@@ -26,7 +29,7 @@
 <mat-progress-bar class="flex-shrink-0 border transparent" mode="indeterminate" *ngIf="table?.isLoading"
     style="margin-bottom: -1px;"></mat-progress-bar>
 
-<mat-paginator class="justify-content-center border-top" [pageSize]="table?.pageSize" [pageIndex]="table?.pageIndex" [length]="table?.total"
+<mat-paginator class="justify-content-center border-sm-top" [pageSize]="table?.pageSize" [pageIndex]="table?.pageIndex" [length]="table?.total"
     (page)="table?.pageEventHandler($event)"
     [pageSizeOptions]="paginator?.pageSizes" [showFirstLastButtons]="paginator?.showFirstLastButtons" 
     [hidePageSize]="paginator?.hidePageSize" *ngIf="paginator && table?.length > 0"></mat-paginator>

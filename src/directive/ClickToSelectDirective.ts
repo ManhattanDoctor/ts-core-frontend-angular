@@ -49,7 +49,6 @@ export class ClickToSelectDirective extends Destroyable {
             return;
         }
         super.destroy();
-
         this.element = null;
     }
 }

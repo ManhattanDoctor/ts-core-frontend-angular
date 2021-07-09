@@ -1,19 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-/*
-import {
-    MatButtonModule,
-    MatListModule,
-    MatMenuModule,
-    MatPaginatorModule,
-    MatProgressBarModule,
-    MatSelectModule,
-    MatSortModule,
-    MatTableModule,
-    MatTabsModule
-} from '@angular/material';
-*/
 import { VICommonModule } from '../VICommonModule';
 import { LanguageSelectorComponent } from './language/language-selector/language-selector.component';
 import { NotificationComponent } from './notification/notification/notification.component';
@@ -36,6 +23,13 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
+import { CdkTableColumnValuePipe } from './cdk-table/column/CdkTableColumnValuePipe';
+import { CdkTableColumnStyleNamePipe } from './cdk-table/column/CdkTableColumnStyleNamePipe';
+import { CdkTableColumnClassNamePipe } from './cdk-table/column/CdkTableColumnClassNamePipe';
+import { CdkTableRowClassNamePipe } from './cdk-table/row/CdkTableRowClassNamePipe';
+import { CdkTableRowStyleNamePipe } from './cdk-table/row/CdkTableRowStyleNamePipe';
+import { CdkTableCellClassNamePipe } from './cdk-table/column/CdkTableCellClassNamePipe';
+
 const IMPORTS = [
     CommonModule,
     FormsModule,
@@ -52,6 +46,13 @@ const IMPORTS = [
 ];
 const ENTRY_COMPONENTS = [QuestionComponent, NotificationComponent, CloseWindowElementComponent, ResizeWindowElementComponent, MinimizeWindowElementComponent];
 const DECLARATIONS = [
+    CdkTableColumnValuePipe,
+    CdkTableColumnClassNamePipe,
+    CdkTableColumnStyleNamePipe,
+    CdkTableRowStyleNamePipe,
+    CdkTableRowClassNamePipe,
+    CdkTableCellClassNamePipe,
+
     LanguageSelectorComponent,
     TabGroupComponent,
     MenuListComponent,
@@ -65,7 +66,7 @@ const EXPORTS = [...DECLARATIONS];
 @NgModule({
     imports: IMPORTS,
     declarations: DECLARATIONS,
-    entryComponents: ENTRY_COMPONENTS,
-    exports: EXPORTS
+    exports: EXPORTS,
+    entryComponents: ENTRY_COMPONENTS
 })
 export class VIComponentModule {}

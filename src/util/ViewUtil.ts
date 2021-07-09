@@ -1,4 +1,4 @@
-import { Renderer2 } from '@angular/core';
+import { ElementRef, Renderer2, RendererStyleFlags2 } from '@angular/core';
 import { ObjectUtil } from '@ts-core/common/util';
 import * as _ from 'lodash';
 
@@ -33,11 +33,11 @@ export class ViewUtil {
         ViewUtil.RENDERER = renderer;
     }
 
-    public static parseElement(element: any): HTMLElement {
+    public static parseElement<T extends HTMLElement = HTMLElement>(element: HTMLElement | ElementRef<T>): HTMLElement {
         if (element instanceof HTMLElement) {
             return element;
         }
-        return ObjectUtil.hasOwnProperty(element, 'nativeElement') ? element.nativeElement : null;
+        return !_.isNil(element) ? element.nativeElement : null;
     }
 
     public static createBase64(element: HTMLImageElement | HTMLCanvasElement | HTMLVideoElement): string {
@@ -84,18 +84,18 @@ export class ViewUtil {
         }
     }
 
-    public static setBackground(container: HTMLElement, value: string, repeat: string = 'repeat'): void {
-        if (!value) {
-            ViewUtil.setStyle(container, 'backgroundImage', 'none');
-            ViewUtil.setStyle(container, 'backgroundRepeat', 'none');
+    public static setBackground(container: any, image: string, repeat: string = 'repeat'): void {
+        if (_.isNil(image)) {
+            ViewUtil.removeStyle(container, 'backgroundImage');
+            ViewUtil.removeStyle(container, 'backgroundRepeat');
             return;
         }
 
-        if (value.indexOf('url(') === -1) {
-            value = 'url(' + value + ')';
+        if (!image.includes('url(')) {
+            image = 'url(' + image + ')';
         }
 
-        ViewUtil.setStyle(container, 'backgroundImage', value);
+        ViewUtil.setStyle(container, 'backgroundImage', image);
         ViewUtil.setStyle(container, 'backgroundRepeat', repeat);
     }
 
@@ -406,23 +406,27 @@ export class ViewUtil {
         return !_.isNil(container) ? container.style[name] : null;
     }
 
-    public static setStyle(container: any, name: string, value: any): void {
+    public static setStyle(container: any, name: string, value: any, flags?: RendererStyleFlags2): void {
         if (_.isNil(name)) {
             return;
         }
         container = ViewUtil.parseElement(container);
-        if (!_.isNil(container) && !_.isNil(ViewUtil.RENDERER)) {
-            ViewUtil.RENDERER.setStyle(container, name, value);
+        if (_.isNil(container) || _.isNil(ViewUtil.RENDERER)) {
+            return;
+        }
+
+        if (value !== ViewUtil.getStyle(container, name)) {
+            ViewUtil.RENDERER.setStyle(container, name, value, flags);
         }
     }
 
-    public static removeStyle(container: any, name: string): void {
+    public static removeStyle(container: any, name: string, flags?: RendererStyleFlags2): void {
         if (_.isNil(name)) {
             return;
         }
         container = ViewUtil.parseElement(container);
         if (!_.isNil(container) && !_.isNil(ViewUtil.RENDERER)) {
-            ViewUtil.RENDERER.removeStyle(container, name);
+            ViewUtil.RENDERER.removeStyle(container, name, flags);
         }
     }
 
@@ -481,7 +485,7 @@ export class ViewUtil {
 
     public static playVideo(video: HTMLVideoElement): Promise<void> {
         if (_.isNil(video)) {
-            return;
+            return null;
         }
 
         try {

@@ -114,14 +114,8 @@ export class NotificationService {
     // --------------------------------------------------------------------------
 
     private getById(id: string): INotification {
-        let value = null;
-        this._notifications.forEach(item => {
-            if (item.config.id === id) {
-                value = item;
-                return true;
-            }
-        });
-        return value;
+        let item = _.find(Array.from(this._notifications.values()), item => item.config.id === id);
+        return !_.isNil(item) ? item.notification : null;
     }
 
     private setDefaultProperties(config: NotificationConfig): void {
@@ -156,7 +150,7 @@ export class NotificationService {
 
     private checkPosition(item: INotification): void {
         let previous = this.getPrevious(item);
-        if (previous) {
+        if (!_.isNil(previous)) {
             item.setY(previous.getY() + previous.getHeight() + this.gapY);
         }
     }
@@ -175,6 +169,7 @@ export class NotificationService {
                 return items[i - 1].notification;
             }
         }
+        return null;
     }
 
     // --------------------------------------------------------------------------
@@ -241,11 +236,11 @@ export class NotificationService {
     public close(value: NotificationId): INotification {
         let config = this.get(value);
         if (_.isNil(config)) {
-            return;
+            return null;
         }
 
         let notification = this._notifications.get(config);
-        if (!notification) {
+        if (_.isNil(notification)) {
             return null;
         }
 
@@ -254,6 +249,7 @@ export class NotificationService {
 
         this._closedConfigs.push(config);
         this.observer.next(new ObservableData(NotificationServiceEvent.CLOSED, notification.notification));
+        return notification.notification;
     }
 
     public info(translationId?: string, translation?: any, questionOptions?: IQuestionOptions, configOptions?: NotificationConfigOptions): IQuestion {

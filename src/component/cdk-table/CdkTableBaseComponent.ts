@@ -1,6 +1,7 @@
 import { EventEmitter, Input, Output } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import * as _ from 'lodash';
+import { ICdkTableRow } from './row/ICdkTableRow';
 import { ICdkTableColumn } from './column/ICdkTableColumn';
 import { CdkTablePaginableMapCollection } from './CdkTablePaginableMapCollection';
 import { CdkTableFilterableMapCollection } from './CdkTableFilterableMapCollection';
@@ -10,8 +11,7 @@ import { FilterableDataSourceMapCollection } from '@ts-core/common/map/dataSourc
 export abstract class CdkTableBaseComponent<
     T extends CdkTablePaginableMapCollection<U, V> | CdkTableFilterableMapCollection<U, V>,
     U,
-    V,
-    S = ICdkTableSettings
+    V
 > extends DestroyableContainer {
     // --------------------------------------------------------------------------
     //
@@ -20,9 +20,13 @@ export abstract class CdkTableBaseComponent<
     // --------------------------------------------------------------------------
 
     protected _table: T;
-    protected _settings: S;
+    protected _settings: ICdkTableSettings<U>;
+    protected _rows: ICdkTableRow<U>;
     protected _columns: Array<ICdkTableColumn<U>>;
     protected _columnNames: Array<keyof U>;
+
+    protected _selectedRow: U;
+    protected _selectedRows: Array<U>;
 
     @Output()
     public rowClicked: EventEmitter<U>;
@@ -38,11 +42,12 @@ export abstract class CdkTableBaseComponent<
     //
     // --------------------------------------------------------------------------
 
-    protected constructor(settings?: S) {
+    constructor() {
         super();
 
-        this._settings = settings;
         this._columnNames = [];
+
+        this.settings = {};
         this.rowClicked = new EventEmitter();
         this.cellClicked = new EventEmitter();
     }
@@ -60,10 +65,6 @@ export abstract class CdkTableBaseComponent<
             this.sortDirection = sort.direction;
         }
 
-        if (!_.isEmpty(this.table.columns.items)) {
-            this.columns = this.table.columns.items;
-        }
-
         if (!this.table.isDirty) {
             this.table.reload();
         }
@@ -78,13 +79,36 @@ export abstract class CdkTableBaseComponent<
         }
     }
 
-    protected commitSettingsProperties(): void {}
+    protected commitSelectedRowsProperties(): void {
+        this._selectedRow = !_.isEmpty(this.selectedRows) && this.selectedRows.length === 1 ? this.selectedRows[0] : null;
+    }
+
+    protected commitSettingsProperties(): void {
+        if (_.isNil(this.settings.noDataId)) {
+            this.settings.noDataId = 'general.noDataFound';
+        }
+        if (_.isNil(this.settings.isInteractive)) {
+            this.settings.isInteractive = true;
+        }
+        if (_.isNil(this.rows) && !_.isEmpty(this.settings.rows)) {
+            this.rows = this.settings.rows;
+        }
+        if (_.isNil(this.columns) && !_.isEmpty(this.settings.columns)) {
+            this.columns = this.settings.columns;
+        }
+    }
+
+    protected commitRowProperties(): void {}
 
     //--------------------------------------------------------------------------
     //
     // 	Public Methods
     //
     //--------------------------------------------------------------------------
+
+    public columnTrackBy(index: number, item: ICdkTableColumn<U>): keyof U {
+        return item.name;
+    }
 
     public destroy(): void {
         if (this.isDestroyed) {
@@ -93,6 +117,8 @@ export abstract class CdkTableBaseComponent<
         super.destroy();
 
         this.table = null;
+        this.selectedRows = null;
+
         if (!_.isNil(this.cellClicked)) {
             this.cellClicked.complete();
             this.cellClicked = null;
@@ -133,6 +159,43 @@ export abstract class CdkTableBaseComponent<
         }
     }
 
+    public get selectedRows(): Array<U> {
+        return this._selectedRows;
+    }
+    @Input()
+    public set selectedRows(value: Array<U>) {
+        if (value === this._selectedRows) {
+            return;
+        }
+        this._selectedRows = value;
+        this.commitSelectedRowsProperties();
+    }
+
+    public get selectedRow(): U {
+        return this._selectedRow;
+    }
+    @Input()
+    public set selectedRow(value: U) {
+        if (value === this._selectedRow) {
+            return;
+        }
+        this.selectedRows = !_.isNil(value) ? [value] : [];
+    }
+
+    public get rows(): ICdkTableRow<U> {
+        return this._rows;
+    }
+    @Input()
+    public set rows(value: ICdkTableRow<U>) {
+        if (value === this._rows) {
+            return;
+        }
+        this._rows = value;
+        if (!_.isNil(value)) {
+            this.commitRowProperties();
+        }
+    }
+
     public get columns(): Array<ICdkTableColumn<U>> {
         return this._columns;
     }
@@ -147,11 +210,11 @@ export abstract class CdkTableBaseComponent<
         }
     }
 
-    public get settings(): S {
+    public get settings(): ICdkTableSettings<U> {
         return this._settings;
     }
     @Input()
-    public set settings(value: S) {
+    public set settings(value: ICdkTableSettings<U>) {
         if (value === this._settings) {
             return;
         }
@@ -171,7 +234,10 @@ export interface ICdkTableCellEvent<U> {
     column: keyof U;
 }
 
-export interface ICdkTableSettings {
+export interface ICdkTableSettings<U> {
     noDataId?: string;
     isInteractive?: boolean;
+
+    rows?: ICdkTableRow<U>;
+    columns?: Array<ICdkTableColumn<U>>;
 }

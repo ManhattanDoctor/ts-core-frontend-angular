@@ -1,32 +1,29 @@
-import { Directive, ElementRef, HostListener, Input, OnInit } from '@angular/core';
+import { ElementRef, HostListener, Input } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
 import { Assets } from '@ts-core/frontend/asset';
-import { Theme, ThemeService, ThemeServiceEvent } from '@ts-core/frontend/theme';
+import { Theme, ThemeService } from '@ts-core/frontend/theme';
 import * as _ from 'lodash';
-import { Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ViewUtil } from '../util/ViewUtil';
 
-@Directive({
-    selector: '[vi-theme-asset]'
-})
-export class ThemeAssetDirective extends Destroyable implements OnInit {
+export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> extends Destroyable {
     // --------------------------------------------------------------------------
     //
     //	Properties
     //
     // --------------------------------------------------------------------------
 
-    @Input()
-    public isImage: boolean = false;
-    @Input()
-    public isBackground: boolean = false;
-
     protected _name: string;
     protected _extension: string = 'png';
 
+    protected _isFile: boolean = false;
+    protected _isImage: boolean = false;
+    protected _isVideo: boolean = false;
+    protected _isSound: boolean = false;
+    protected _isBackground: boolean = false;
+
     protected source: string;
-    protected element: HTMLElement;
+    protected element: T;
 
     private isTriedThemeDefault: boolean;
 
@@ -38,11 +35,11 @@ export class ThemeAssetDirective extends Destroyable implements OnInit {
 
     constructor(element: ElementRef, protected theme: ThemeService) {
         super();
-        this.element = ViewUtil.parseElement(element.nativeElement);
+        this.element = ViewUtil.parseElement(element.nativeElement) as T;
 
         this.theme.changed.pipe(takeUntil(this.destroyed)).subscribe(() => {
             this.isTriedThemeDefault = false;
-            this.updateSourceProperties();
+            this.setSourceProperties();
         });
     }
 
@@ -61,6 +58,15 @@ export class ThemeAssetDirective extends Destroyable implements OnInit {
         }
         if (this.isBackground) {
             return Assets.getBackground(id, this.extension);
+        }
+        if (this.isSound) {
+            return Assets.getSound(id, this.extension);
+        }
+        if (this.isVideo) {
+            return Assets.getVideo(id, this.extension);
+        }
+        if (this.isFile) {
+            return Assets.getFile(id, this.extension);
         }
         return Assets.getIcon(id, this.extension);
     }
@@ -91,7 +97,7 @@ export class ThemeAssetDirective extends Destroyable implements OnInit {
     //
     // --------------------------------------------------------------------------
 
-    protected updateSourceProperties(): void {
+    protected setSourceProperties(): void {
         this.source = this.getSource(this.getSourceId(this.theme.theme));
         this.commitSourceProperties();
     }
@@ -106,7 +112,9 @@ export class ThemeAssetDirective extends Destroyable implements OnInit {
         return value;
     }
 
-    protected commitSourceProperties(): void {}
+    protected abstract commitSourceProperties(): void;
+
+    protected abstract removeSourceProperties(): void;
 
     // --------------------------------------------------------------------------
     //
@@ -114,18 +122,13 @@ export class ThemeAssetDirective extends Destroyable implements OnInit {
     //
     // --------------------------------------------------------------------------
 
-    public ngOnInit(): void {
-        if (!_.isNil(this.theme.theme)) {
-            this.updateSourceProperties();
-        }
-    }
-
     public destroy(): void {
         if (this.isDestroyed) {
             return;
         }
         super.destroy();
 
+        this.name = null;
         this.theme = null;
         this.element = null;
     }
@@ -136,6 +139,66 @@ export class ThemeAssetDirective extends Destroyable implements OnInit {
     //
     // --------------------------------------------------------------------------
 
+    @Input()
+    public set isSound(value: boolean) {
+        if (value === this._isSound) {
+            return;
+        }
+        this._isSound = value;
+        this.setSourceProperties();
+    }
+    public get isSound(): boolean {
+        return this._isSound;
+    }
+
+    @Input()
+    public set isVideo(value: boolean) {
+        if (value === this._isVideo) {
+            return;
+        }
+        this._isVideo = value;
+        this.setSourceProperties();
+    }
+    public get isVideo(): boolean {
+        return this._isVideo;
+    }
+
+    @Input()
+    public set isFile(value: boolean) {
+        if (value === this._isFile) {
+            return;
+        }
+        this._isFile = value;
+        this.setSourceProperties();
+    }
+    public get isFile(): boolean {
+        return this._isFile;
+    }
+
+    @Input()
+    public set isImage(value: boolean) {
+        if (value === this._isImage) {
+            return;
+        }
+        this._isImage = value;
+        this.setSourceProperties();
+    }
+    public get isImage(): boolean {
+        return this._isImage;
+    }
+
+    @Input()
+    public set isBackground(value: boolean) {
+        if (value === this._isBackground) {
+            return;
+        }
+        this._isBackground = value;
+        this.setSourceProperties();
+    }
+    public get isBackground(): boolean {
+        return this._isBackground;
+    }
+
     public get name(): string {
         return this._name;
     }
@@ -144,9 +207,12 @@ export class ThemeAssetDirective extends Destroyable implements OnInit {
         if (value === this._name) {
             return;
         }
+        if (!_.isNil(this._name)) {
+            this.removeSourceProperties();
+        }
         this._name = value;
-        if (!_.isNil(this.name)) {
-            this.updateSourceProperties();
+        if (!_.isNil(value)) {
+            this.setSourceProperties();
         }
     }
 
@@ -159,8 +225,8 @@ export class ThemeAssetDirective extends Destroyable implements OnInit {
             return;
         }
         this._extension = value;
-        if (!_.isNil(this.extension)) {
-            this.updateSourceProperties();
+        if (!_.isNil(value)) {
+            this.setSourceProperties();
         }
     }
 }

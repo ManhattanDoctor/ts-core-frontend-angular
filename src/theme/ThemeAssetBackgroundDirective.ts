@@ -27,4 +27,8 @@ export class ThemeAssetBackgroundDirective extends ThemeAssetDirective {
         let value = 'url(' + this.source + ')';
         ViewUtil.setStyle(this.element, 'backgroundImage', value);
     }
+
+    protected removeSourceProperties(): void {
+        ViewUtil.removeStyle(this.element, 'backgroundImage');
+    }
 }

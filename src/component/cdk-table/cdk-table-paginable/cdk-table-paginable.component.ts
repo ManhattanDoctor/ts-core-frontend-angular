@@ -23,15 +23,8 @@ export class CdkTablePaginableComponent<U = any, V = any> extends CdkTableBaseCo
     // --------------------------------------------------------------------------
 
     constructor() {
-        super({
-            noDataId: 'general.noDataFound',
-            isInteractive: true
-        });
-        this.paginator = {
-            pageSizes: [10, 25, 100],
-            hidePageSize: false,
-            showFirstLastButtons: true
-        };
+        super();
+        this._paginator = { pageSizes: [10, 25, 100], hidePageSize: false, showFirstLastButtons: true };
     }
 
     // --------------------------------------------------------------------------

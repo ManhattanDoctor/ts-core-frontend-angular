@@ -2,7 +2,6 @@
 @import 'vi-mat-bootstrap';
 @import '../mixin';
 @import '../mouse';
-@import '../flex';
 
 /*--------------------------------------------------------------------------
 //
@@ -117,7 +116,7 @@
         &.tabs-stretch {
             .mat-tab-label {
                 min-width: 0;
-                @include flex-grow();
+                flex-grow: 1;
             }
         }
     }
@@ -131,10 +130,36 @@
         }
     }
 
+    mat-expansion-panel {
+        &:last-child {
+            border-bottom: none !important;
+        }
+        &:not([class*='mat-elevation-z']) {
+            box-shadow: none !important;
+        }
+        &.mat-expansion-panel-spacing {
+            margin: 0 !important;
+        }
+        .mat-expansion-panel-body {
+            padding: 0 !important;
+        }
+    }
+
+    mat-expansion-panel-header {
+        &.mat-expanded {
+            height: 48px !important;
+        }
+    }
+
     mat-form-field {
         &.mat-focused {
             .mat-form-field-label {
                 color: inherit !important;
+            }
+        }
+        &.mat-form-field-disabled {
+            .mat-form-field-underline {
+                background-image: none !important;
             }
         }
 
@@ -172,6 +197,10 @@
     mat-list-item,
     mat-selection-list {
         font-weight: inherit;
+    }
+
+    mat-table {
+        background: transparent !important;
     }
 
     mat-paginator {
@@ -287,9 +316,6 @@
     }
     .mouse-active {
         @include mouse-active();
-        &.underline {
-            text-decoration: underline !important;
-        }
     }
     .mouse-enabled {
         @include mouse-enabled();
@@ -358,19 +384,37 @@
         }
     }
 
+    mat-expansion-panel {
+        background-color: transparent !important;
+        border-bottom: 1px solid map-get($foreground, divider);
+        &:last-child {
+            border-bottom: none !important;
+        }
+        &:not([class*='mat-elevation-z']) {
+            box-shadow: none !important;
+        }
+    }
+
+    mat-table {
+        mat-row {
+            border-color: map-get($foreground, divider);
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+        mat-cell {
+            &.active {
+                background-color: map-get($background, hover) !important;
+            }
+        }
+    }
+
     .mat-color-base {
         color: map-get($foreground, base) !important;
     }
 
     .mat-menu-panel {
         color: mat-color($foreground, text);
-    }
-
-    .mat-row {
-        border-color: map-get($foreground, divider);
-        &:last-child {
-            border-bottom: none;
-        }
     }
 
     .cdk-overlay-pane {
@@ -383,7 +427,6 @@
 
     @if map-get($theme, is-dark) {
         $thumb-color: rgba(255, 255, 255, 0.15);
-
         .mat-drawer-backdrop.mat-drawer-shown {
             background-color: rgba(0, 0, 0, 0.8);
         }

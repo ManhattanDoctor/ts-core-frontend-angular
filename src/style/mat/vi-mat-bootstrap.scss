@@ -1,4 +1,8 @@
 @import '~@angular/material/theming';
+@import 'bootstrap/variables';
+@import 'bootstrap/background';
+@import 'bootstrap/border';
+@import 'bootstrap/text';
 
 /*--------------------------------------------------------------------------
 //
@@ -7,7 +11,6 @@
 //-------------------------------------------------------------------------*/
 
 @mixin vi-mat-core-bootstrap($typography) {
-    // _reset.scss
     body {
         @include mat-typography-level-to-styles($typography, body-1);
     }
@@ -32,16 +35,8 @@
         $text-primary-color: mat-color($primary);
     }
 
-    // _reset.scss
     color: $text-color;
     background-color: map-get($background, body) !important;
-
-    .bg-primary {
-        background-color: $text-primary-color !important;
-    }
-    .border-primary {
-        border-color: $text-primary-color !important;
-    }
 
     .form-control {
         background: transparent;
@@ -49,66 +44,7 @@
         border-color: $divider-color;
     }
 
-    .border {
-        border-color: $divider-color !important;
-        &.solid {
-            border: 1px solid $divider-color !important;
-        }
-        &.dashed {
-            border: 1px dashed $divider-color !important;
-        }
-    }
-    .border-top {
-        border-color: $divider-color !important;
-        &.dashed {
-            border-top: 1px dashed $divider-color !important;
-        }
-    }
-    .border-left {
-        border-color: $divider-color !important;
-        &.dashed {
-            border-left: 1px dashed $divider-color !important;
-        }
-    }
-    .border-right {
-        border-color: $divider-color !important;
-        &.dashed {
-            border-right: 1px dashed $divider-color !important;
-        }
-    }
-    .border-bottom {
-        border-color: $divider-color !important;
-        &.dashed {
-            border-bottom: 1px dashed $divider-color !important;
-        }
-    }
-
-    .background {
-        background-color: map-get($background, background) !important;
-    }
-    .background-body {
-        background-color: map-get($background, body) !important;
-    }
-
-    .text-base {
-        color: $text-color !important;
-    }
-    .text-accent {
-        color: $text-accent-color !important;
-    }
-    .text-primary {
-        color: $text-primary-color !important;
-    }
-    .text-danger {
-        color: mat-color($warn) !important;
-    }
-    .text-warning {
-        color: map-get($foreground, warning-text) !important;
-    }
-    .text-success {
-        color: map-get($foreground, success-text) !important;
-    }
-    .text-secondary {
-        color: map-get($foreground, secondary-text) !important;
-    }
+    @include vi-mat-theme-bootstrap-text($theme, $text-primary-default, $text-accent-default);
+    @include vi-mat-theme-bootstrap-border($theme, $text-primary-default, $text-accent-default);
+    @include vi-mat-theme-bootstrap-background($theme, $text-primary-default, $text-accent-default);
 }

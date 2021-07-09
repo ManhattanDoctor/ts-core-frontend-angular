@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { WindowEvent } from '../window/IWindow';
 import { INotification } from './INotification';
 import { NotificationConfig } from './NotificationConfig';
+import * as _ from 'lodash';
 
 export abstract class INotificationContent<T = any> extends DestroyableContainer implements AfterViewInit {
     // --------------------------------------------------------------------------
@@ -44,15 +45,13 @@ export abstract class INotificationContent<T = any> extends DestroyableContainer
     }
 
     protected clearTimer(): void {
-        if (this.timer) {
+        if (!_.isNil(this.timer)) {
             clearTimeout(this.timer);
             this.timer = null;
         }
     }
 
-    protected timerHandler = (): void => {
-        this.handleCloseClick();
-    };
+    protected timerHandler = (): void => this.handleCloseClick();
 
     // --------------------------------------------------------------------------
     //
@@ -61,24 +60,27 @@ export abstract class INotificationContent<T = any> extends DestroyableContainer
     // --------------------------------------------------------------------------
 
     public close(): void {
-        if (this.notification) {
+        if (!_.isNil(this.notification)) {
             this.notification.close();
         }
     }
 
     public remove(): void {
-        if (this.notification) {
+        if (!_.isNil(this.notification)) {
             this.notification.remove();
         }
     }
 
     public emit(event: string): void {
-        if (this.notification) {
+        if (!_.isNil(this.notification)) {
             this.notification.emit(event);
         }
     }
 
     public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
         super.destroy();
         this.clearTimer();
         this.config = null;

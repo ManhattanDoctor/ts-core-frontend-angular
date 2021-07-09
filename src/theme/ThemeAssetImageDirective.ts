@@ -5,7 +5,7 @@ import { ThemeAssetDirective } from './ThemeAssetDirective';
 @Directive({
     selector: '[vi-theme-image]'
 })
-export class ThemeImageDirective extends ThemeAssetDirective {
+export class ThemeAssetImageDirective extends ThemeAssetDirective<HTMLImageElement> {
     // --------------------------------------------------------------------------
     //
     //	Constructor
@@ -23,6 +23,9 @@ export class ThemeImageDirective extends ThemeAssetDirective {
     // --------------------------------------------------------------------------
 
     protected commitSourceProperties(): void {
-        (this.element as HTMLImageElement).src = this.source;
+        this.element.src = this.source;
+    }
+    protected removeSourceProperties(): void {
+        this.element.src = null;
     }
 }

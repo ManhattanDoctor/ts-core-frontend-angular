@@ -1,0 +1,10 @@
+@mixin vi-mat-theme-bootstrap-background($theme, $text-primary-default, $text-accent-default) {
+    $background: map-get($theme, background);
+
+    .background {
+        background-color: map-get($background, background) !important;
+    }
+    .background-body {
+        background-color: map-get($background, body) !important;
+    }
+}

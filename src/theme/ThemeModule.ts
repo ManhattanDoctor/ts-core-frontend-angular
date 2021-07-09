@@ -4,16 +4,18 @@ import { IThemeServiceOptions, ThemeService } from '@ts-core/frontend/theme';
 import { CookieModule } from '../cookie/CookieModule';
 import { CookieService } from '../cookie/CookieService';
 import { ThemeAssetBackgroundDirective } from './ThemeAssetBackgroundDirective';
-import { ThemeAssetDirective } from './ThemeAssetDirective';
-import { ThemeImageDirective } from './ThemeImageDirective';
-import { ThemeStyleDirective } from './ThemeStyleDirective';
+import { ThemeAssetImageDirective } from './ThemeAssetImageDirective';
 import { ThemeToggleDirective } from './ThemeToggleDirective';
+import { ThemeStyleDirective } from './ThemeStyleDirective';
+import { ThemeStyleHoverDirective } from './ThemeStyleHoverDirective';
 import * as _ from 'lodash';
+
+let declarations = [ThemeToggleDirective, ThemeAssetImageDirective, ThemeAssetBackgroundDirective, ThemeStyleDirective, ThemeStyleHoverDirective];
 
 @NgModule({
     imports: [CookieModule],
-    declarations: [ThemeAssetDirective, ThemeImageDirective, ThemeToggleDirective, ThemeAssetBackgroundDirective, ThemeStyleDirective],
-    exports: [ThemeAssetDirective, ThemeImageDirective, ThemeToggleDirective, ThemeAssetBackgroundDirective, ThemeStyleDirective]
+    declarations,
+    exports: declarations
 })
 export class ThemeModule {
     // --------------------------------------------------------------------------

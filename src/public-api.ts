@@ -33,18 +33,13 @@ export * from './component/window/WindowDragAreaDirective';
 export * from './component/window/WindowElement';
 export * from './component/window/WindowQuestionBaseComponent';
 export * from './component/window/WindowResizeable';
-export * from './component/cdk-table/CdkTableBaseComponent';
 export * from './component/cdk-table/CdkTableDataSource';
 export * from './component/cdk-table/CdkTablePaginableMapCollection';
 export * from './component/cdk-table/CdkTableFilterableMapCollection';
 export * from './component/cdk-table/CdkTablePaginableBookmarkMapCollection';
+export * from './component/cdk-table/row/ICdkTableRow';
 export * from './component/cdk-table/column/ICdkTableColumn';
-export * from './component/cdk-table/column/CdkTableColumnManager';
-export * from './component/cdk-table/column/cache/CdkTableColumnCache';
-export * from './component/cdk-table/column/cache/CdkTableColumnValueCache';
-export * from './component/cdk-table/column/cache/CdkTableColumnClassNameCache';
-export * from './component/cdk-table/column/cache/CdkTableColumnStyleNameCache';
-export * from './component/cdk-table/cdk-table-paginable/cdk-table-paginable.component';
+export * from './component/cdk-table/CdkTableBaseComponent';
 /* ======= */
 export * from './cookie/CookieModule';
 export * from './cookie/CookieOptions';
@@ -55,6 +50,7 @@ export * from './directive/AutoScrollBottomDirective';
 export * from './directive/ClickToCopyDirective';
 export * from './directive/ClickToSelectDirective';
 export * from './directive/FocusDirective';
+export * from './directive/SelectOnFocusDirective';
 export * from './directive/InfiniteScrollDirective';
 export * from './directive/ResizeDirective';
 export * from './directive/ScrollDirective';
@@ -71,6 +67,7 @@ export * from './language/LanguagePipePure';
 export * from './language/LanguagePipeHas';
 export * from './language/LanguagePipeHasPure';
 export * from './language/LanguageResolver';
+export * from './language/LanguageRequireResolver';
 export * from './language/LanguageDirective';
 export * from './language/LanguageHasDirective';
 /* ======= */
@@ -114,6 +111,7 @@ export * from './pipe/SanitizePipe';
 export * from './pipe/StartCasePipe';
 export * from './pipe/TruncatePipe';
 export * from './pipe/PrettifyPipe';
+export * from './pipe/TimePipe';
 /* ======= */
 export * from './question/IQuestion';
 export * from './question/QuestionManager';
@@ -123,9 +121,11 @@ export * from './service/RouterBaseService';
 export * from './service/route/CanDeactivateGuard';
 export * from './service/route/IRouterDeactivatable';
 /* ======= */
+export * from './theme/ThemeStyleHoverDirective';
+export * from './theme/ThemeStyleDirective';
 export * from './theme/ThemeAssetBackgroundDirective';
+export * from './theme/ThemeAssetImageDirective';
 export * from './theme/ThemeAssetDirective';
-export * from './theme/ThemeImageDirective';
 export * from './theme/ThemeModule';
 export * from './theme/ThemeToggleDirective';
 /* ======= */

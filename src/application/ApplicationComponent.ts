@@ -1,15 +1,17 @@
 import { Renderer2 } from '@angular/core';
+import { DateAdapter } from '@angular/material/core';
 import { LoadableEvent } from '@ts-core/common';
 import { Assets } from '@ts-core/frontend/asset';
 import { Language } from '@ts-core/language';
 import { LanguageService } from '@ts-core/frontend/language';
 import { SettingsBaseService } from '@ts-core/frontend/service';
 import { ThemeService } from '@ts-core/frontend/theme';
-import moment from 'moment';
-import numeral from 'numeral';
 import { takeUntil } from 'rxjs/operators';
 import { ViewUtil } from '../util/ViewUtil';
 import { ApplicationBaseComponent } from './ApplicationBaseComponent';
+import * as _ from 'lodash';
+import moment from 'moment';
+import numeral from 'numeral';
 
 export abstract class ApplicationComponent<T extends SettingsBaseService> extends ApplicationBaseComponent {
     // --------------------------------------------------------------------------
@@ -27,16 +29,9 @@ export abstract class ApplicationComponent<T extends SettingsBaseService> extend
     // --------------------------------------------------------------------------
 
     protected initialize(): void {
-        // View
         ViewUtil.initialize(this.renderer);
-
-        // Settings
         this.settings.initialize(this.config, this.routerParams);
-
-        // Assets
         Assets.initialize(this.settings.assetsUrl);
-
-        // Theme
         this.theme.initialize(this.settings.themes);
 
         // Language
@@ -64,14 +59,21 @@ export abstract class ApplicationComponent<T extends SettingsBaseService> extend
     // --------------------------------------------------------------------------
 
     protected languageLoadingComplete(item: Language): void {
-        moment.locale(item.locale);
-        numeral.locale(item.locale);
         this.isLanguageLoaded = true;
+        this.setLocale(item);
         this.checkReady();
     }
 
     protected viewReadyHandler(): void {
         this.initialize();
+    }
+
+    protected setLocale(item: Language): void {
+        moment.locale(item.locale);
+        numeral.locale(item.locale);
+        if (!_.isNil(this.dateAdapter)) {
+            this.dateAdapter.setLocale(item.locale);
+        }
     }
 
     protected abstract languageLoadingError(item: Language, error: Error): void;
@@ -96,4 +98,5 @@ export abstract class ApplicationComponent<T extends SettingsBaseService> extend
     protected abstract get theme(): ThemeService;
     protected abstract get language(): LanguageService;
     protected abstract get renderer(): Renderer2;
+    protected abstract get dateAdapter(): DateAdapter<any>;
 }
