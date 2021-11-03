@@ -1,6 +1,6 @@
 {
     "name": "@ts-core/angular",
-    "version": "11.0.51",
+    "version": "11.0.63",
     "description": "Modules for frontend based on angular",
     "main": "public-api.js",
     "author": {
@@ -21,8 +21,8 @@
         "@angular/platform-browser": "^11.2.14",
         "@angular/platform-browser-dynamic": "^11.2.14",
         "@angular/router": "^11.2.14",
-        "@ts-core/common": "^1.0.180",
-        "@ts-core/frontend": "^1.0.38",
+        "@ts-core/common": "^1.0.184",
+        "@ts-core/frontend": "^1.0.41",
         "@types/numeral": "0.0.25",
         "bootstrap": "^4.6.0",
         "css-element-queries": "1.2.0",
@@ -32,7 +32,7 @@
         "ngx-cookie": "4.0.2",
         "numeral": "2.0.6",
         "rxjs": "^6.6.7",
-        "tslib": "^2.3.0",
+        "tslib": "^2.3.1",
         "zone.js": "^0.11.3"
     },
     "repository": {

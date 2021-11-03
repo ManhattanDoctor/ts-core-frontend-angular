@@ -127,13 +127,13 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
     }
 
     public get config(): WindowConfig<T> {
-        return this.window ? this._window.config : null;
+        return this.window ? this.window.config : null;
     }
 
-    public get window(): IWindow {
+    public get window(): IWindow<T> {
         return this._window;
     }
-    public set window(value: IWindow) {
+    public set window(value: IWindow<T>) {
         if (value === this._window) {
             return;
         }

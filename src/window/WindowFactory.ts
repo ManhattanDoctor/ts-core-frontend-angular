@@ -1,5 +1,4 @@
 import { IWindow } from './IWindow';
-import { WindowConfig } from './WindowConfig';
 import { WindowProperties } from './WindowProperties';
 
 export class WindowFactory<U extends IWindow> {
@@ -9,7 +8,7 @@ export class WindowFactory<U extends IWindow> {
     //
     // --------------------------------------------------------------------------
 
-    constructor(protected classType: { new (properties: WindowProperties): U }) {}
+    constructor(protected classType: WindowType<U>) {}
 
     // --------------------------------------------------------------------------
     //
@@ -20,4 +19,8 @@ export class WindowFactory<U extends IWindow> {
     public create(properties: WindowProperties): U {
         return new this.classType(properties);
     }
+}
+
+export interface WindowType<T> {
+    new (properties: WindowProperties): T;
 }

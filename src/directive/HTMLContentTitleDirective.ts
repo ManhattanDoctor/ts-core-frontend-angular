@@ -32,7 +32,12 @@ export class HTMLContentTitleDirective extends Destroyable {
     // --------------------------------------------------------------------------
 
     protected commitValueProperties(): void {
-        ViewUtil.setProperty(this.element, 'title', this.value);
+        let title = this.value;
+        if (!_.isEmpty(title)) {
+            title = title.replace(/<br\s*[\/]?>/g, '\n');
+            title = title.replace(/<[^>]*>/g, '');
+        }
+        ViewUtil.setProperty(this.element, 'title', title);
         ViewUtil.setProperty(this.element, 'innerHTML', this.value);
     }
 

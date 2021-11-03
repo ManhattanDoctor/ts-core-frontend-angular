@@ -3,6 +3,7 @@ import { Interactable } from '@interactjs/types/types';
 import * as interact from 'interactjs';
 import { Destroyable } from '@ts-core/common';
 import { ViewUtil } from '../util/ViewUtil';
+import * as _ from 'lodash';
 
 @Directive({
     selector: '[vi-resize]'
@@ -73,7 +74,7 @@ export class ResizeDirective extends Destroyable {
         }
         super.destroy();
 
-        if (this.interactable) {
+        if (!_.isNil(this.interactable)) {
             this.interactable.unset();
             this.interactable = null;
         }

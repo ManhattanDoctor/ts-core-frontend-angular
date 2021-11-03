@@ -1,9 +1,10 @@
 import { MatDialogConfig } from '@angular/material/dialog';
+import { MatBottomSheetConfig } from '@angular/material/bottom-sheet';
 import * as _ from 'lodash';
 import { IDestroyable } from '@ts-core/common';
 import { ViewUtil } from '../util/ViewUtil';
 
-export class WindowConfig<T = any> extends MatDialogConfig<T> implements IDestroyable {
+export class WindowConfig<T = any> extends MatDialogConfig<T> implements MatBottomSheetConfig<T>, IDestroyable {
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -16,6 +17,9 @@ export class WindowConfig<T = any> extends MatDialogConfig<T> implements IDestro
     public isContentDragable: boolean = true;
 
     public propertiesId: string;
+
+    // Need for match MatDialogConfig and MatBottomSheetConfig
+    public backdropClass: string;
 
     public x: number = NaN;
     public y: number = NaN;

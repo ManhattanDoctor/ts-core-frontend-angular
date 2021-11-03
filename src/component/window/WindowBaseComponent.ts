@@ -5,7 +5,6 @@ import { CloseWindowElementComponent } from './close-window-element/close-window
 import { MinimizeWindowElementComponent } from './minimize-window-element/minimize-window-element.component';
 import { ResizeWindowElementComponent } from './resize-window-element/resize-window-element.component';
 import { WindowDragable } from './WindowDragable';
-import { WindowElement } from './WindowElement';
 
 export class WindowBaseComponent extends WindowDragable {
     // --------------------------------------------------------------------------
@@ -27,16 +26,6 @@ export class WindowBaseComponent extends WindowDragable {
     protected closeWindow: ComponentRef<any>;
     protected resizedWindow: ComponentRef<any>;
     protected minimizeWindow: ComponentRef<any>;
-
-    // --------------------------------------------------------------------------
-    //
-    //  Private Methods
-    //
-    // --------------------------------------------------------------------------
-
-    private setWindowElementProperties(item: WindowElement): void {
-        this.addDestroyable(item);
-    }
 
     // --------------------------------------------------------------------------
     //

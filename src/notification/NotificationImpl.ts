@@ -10,7 +10,7 @@ import { NotificationConfig } from './NotificationConfig';
 import { NotificationProperties } from './NotificationProperties';
 import * as _ from 'lodash';
 
-export class Notification extends WindowBase implements INotification {
+export class NotificationImpl<T = any> extends WindowBase implements INotification {
     // --------------------------------------------------------------------------
     //
     //  Properties
@@ -41,8 +41,6 @@ export class Notification extends WindowBase implements INotification {
         this._container = this.properties.overlay.overlayElement;
 
         this.setProperties();
-        this.setPosition();
-
         this.getReference().afterOpened().pipe(takeUntil(this.destroyed)).subscribe(this.setOpened);
         this.getReference().afterClosed().pipe(takeUntil(this.destroyed)).subscribe(this.setClosed);
 
@@ -51,7 +49,7 @@ export class Notification extends WindowBase implements INotification {
                 filter(event => event === WindowEvent.CONTENT_READY),
                 takeUntil(this.destroyed)
             )
-            .subscribe(this.checkSizeAndUpdatePositionIfNeed);
+            .subscribe(this.updatePosition);
     }
 
     // --------------------------------------------------------------------------
@@ -184,7 +182,7 @@ export class Notification extends WindowBase implements INotification {
         return this.properties.config;
     }
 
-    public get content(): INotificationContent {
+    public get content(): INotificationContent<T> {
         return this.properties.reference ? this.properties.reference.componentInstance : null;
     }
 

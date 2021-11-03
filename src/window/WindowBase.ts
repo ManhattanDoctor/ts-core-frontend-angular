@@ -48,6 +48,7 @@ export abstract class WindowBase extends DestroyableContainer {
     }
 
     protected setPosition(): void {
+        
         let config = this.getConfig();
 
         switch (config.horizontalAlign) {
@@ -110,11 +111,7 @@ export abstract class WindowBase extends DestroyableContainer {
         this.getReference().updatePosition(position);
     }
 
-    protected checkSizeAndUpdatePositionIfNeed = (): void => {
-        if (_.isNaN(this.height) || _.isNaN(this.width)) {
-            this.setPosition();
-        }
-    };
+    protected updatePosition = (): void => this.setPosition();
 
     // --------------------------------------------------------------------------
     //

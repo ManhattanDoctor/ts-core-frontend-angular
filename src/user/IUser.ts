@@ -7,7 +7,7 @@ export abstract class IUser<T = any> implements IDestroyable {
     //
     // --------------------------------------------------------------------------
 
-    public id: string | number;
+    public id: UserUid;
 
     // --------------------------------------------------------------------------
     //
@@ -18,3 +18,5 @@ export abstract class IUser<T = any> implements IDestroyable {
     public abstract update(data: T): void;
     public abstract destroy(): void;
 }
+
+export type UserUid = string | number;

@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { LoginBaseService, LoginBaseServiceEvent } from '../login/LoginBaseService';
-import { IUser } from './IUser';
+import { IUser, UserUid } from './IUser';
 
 export abstract class UserBaseService<U extends IUser = any, V = void> {
     // --------------------------------------------------------------------------
@@ -132,7 +132,7 @@ export abstract class UserBaseService<U extends IUser = any, V = void> {
         return this._user;
     }
 
-    public get id(): string | number {
+    public get id(): UserUid {
         return this.hasUser ? this.user.id : null;
     }
 }

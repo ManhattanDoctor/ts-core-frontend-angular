@@ -99,7 +99,7 @@ export abstract class INotificationContent<T = any> extends DestroyableContainer
 
     public handleCloseClick(): void {
         this.clearTimer();
-        if (this.config && this.config.isRemoveAfterClose) {
+        if (!_.isNil(this.config) && this.config.isRemoveAfterClose) {
             this.remove();
         } else {
             this.close();
@@ -126,10 +126,10 @@ export abstract class INotificationContent<T = any> extends DestroyableContainer
     //
     // --------------------------------------------------------------------------
 
-    public get notification(): INotification {
+    public get notification(): INotification<T> {
         return this._notification;
     }
-    public set notification(value: INotification) {
+    public set notification(value: INotification<T>) {
         if (value === this._notification) {
             return;
         }

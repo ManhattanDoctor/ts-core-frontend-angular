@@ -1,6 +1,7 @@
 /* ======= */
 export * from './application/ApplicationBaseComponent';
 export * from './application/ApplicationComponent';
+export * from './application/ApplicationComponent2';
 export * from './application/MessageBaseComponent';
 export * from './application/ShellBaseComponent';
 /* ======= */
@@ -116,6 +117,7 @@ export * from './pipe/TimePipe';
 export * from './question/IQuestion';
 export * from './question/QuestionManager';
 export * from './service/PipeBaseService';
+export * from './service/BootstrapBreakpointService';
 /* ======= */
 export * from './service/RouterBaseService';
 export * from './service/route/CanDeactivateGuard';

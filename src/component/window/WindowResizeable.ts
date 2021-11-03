@@ -2,6 +2,7 @@ import { EdgeOptions, Interactable, InteractEvent, ResizableOptions } from '@int
 import * as interact from 'interactjs';
 import { ViewUtil } from '../../util/ViewUtil';
 import { WindowImpl } from '../../window/WindowImpl';
+import * as _ from 'lodash';
 
 export class WindowResizeable extends WindowImpl {
     // --------------------------------------------------------------------------
@@ -27,7 +28,9 @@ export class WindowResizeable extends WindowImpl {
         }
 
         ViewUtil.addClass(this.container, 'resizeable');
-        this.resizeMoveHandlerProxy = this.resizeMoveHandler.bind(this);
+        if (_.isNil(this.resizeMoveHandlerProxy)) {
+            this.resizeMoveHandlerProxy = this.resizeMoveHandler.bind(this);
+        }
 
         let edges = {} as EdgeOptions;
         edges.top = true;
@@ -48,10 +51,31 @@ export class WindowResizeable extends WindowImpl {
     //
     // --------------------------------------------------------------------------
 
-    public resizeMoveHandler(event: InteractEvent): void {
-        if (!this.isMinimized && (event.dx !== 0 || event.dy !== 0)) {
-            this.setSize(event.dx + this.getWidth(), event.dy + this.getHeight());
+    protected resizeMoveHandler(event: InteractEvent): void {
+        if (this.isMinimized) {
+            return;
         }
+
+        let isChanged = event.dx !== 0 || event.dy !== 0;
+        if (!isChanged) {
+            return;
+        }
+
+        if (event.dx !== 0) {
+            let width = this.getWidth();
+            if (_.isNaN(width)) {
+                width = this.calculateWidth();
+            }
+            this.setWidth(width + event.dx, false);
+        }
+        if (event.dy !== 0) {
+            let height = this.getHeight();
+            if (_.isNaN(height)) {
+                height = this.calculateHeight();
+            }
+            this.setHeight(height + event.dy, false);
+        }
+        this.resizeHandler();
     }
 
     // --------------------------------------------------------------------------
@@ -65,13 +89,12 @@ export class WindowResizeable extends WindowImpl {
             return;
         }
         super.destroy();
+        this.resizeMoveHandlerProxy = null;
 
-        if (this._interactable) {
+        if (!_.isNil(this._interactable)) {
             this._interactable.unset();
             this._interactable = null;
         }
-
-        this.resizeMoveHandlerProxy = null;
     }
 
     // --------------------------------------------------------------------------
@@ -80,8 +103,8 @@ export class WindowResizeable extends WindowImpl {
     //
     // --------------------------------------------------------------------------
 
-    protected get interactable(): any {
-        if (!this._interactable) {
+    protected get interactable(): Interactable {
+        if (_.isNil(this._interactable)) {
             this._interactable = interact.default(this.container);
             // this._interactable.styleCursor(false);
         }

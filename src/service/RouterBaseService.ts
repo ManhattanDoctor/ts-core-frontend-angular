@@ -1,4 +1,14 @@
-import { NavigationCancel, NavigationEnd, NavigationError, NavigationExtras, NavigationStart, Router, UrlTree } from '@angular/router';
+import {
+    ActivatedRoute,
+    ActivatedRouteSnapshot,
+    NavigationCancel,
+    NavigationEnd,
+    NavigationError,
+    NavigationExtras,
+    NavigationStart,
+    Router,
+    UrlTree
+} from '@angular/router';
 import { Loadable, LoadableEvent, LoadableStatus } from '@ts-core/common';
 import { ObservableData } from '@ts-core/common/observer';
 import { NativeWindowService } from '@ts-core/frontend/service/NativeWindowService';
@@ -15,7 +25,7 @@ export class RouterBaseService extends Loadable<void, void> {
 
     protected params: Map<string, string>;
 
-    protected extrasToApply: any;
+    protected extrasToApply: NavigationExtras;
     protected isNeedUpdateExtras: boolean = false;
 
     protected _lastUrl: string;
@@ -206,6 +216,23 @@ export class RouterBaseService extends Loadable<void, void> {
 
     public get hasParams(): boolean {
         return this.params.size > 0;
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    // 	Fragment Methods
+    //
+    // --------------------------------------------------------------------------
+
+    public getFragment(snapshot: ActivatedRoute | ActivatedRouteSnapshot, defaultValue?: string): string {
+        if (snapshot instanceof ActivatedRoute) {
+            snapshot = snapshot.snapshot;
+        }
+        return !_.isNil(snapshot.fragment) ? snapshot.fragment : defaultValue;
+    }
+
+    public async setFragment(value: string): Promise<boolean> {
+        return this.applyExtras({ fragment: value });
     }
 
     // --------------------------------------------------------------------------

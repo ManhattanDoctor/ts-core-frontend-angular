@@ -1,4 +1,4 @@
-import { ElementRef, Renderer2, RendererStyleFlags2 } from '@angular/core';
+import { ElementRef, Renderer2, RendererStyleFlags2, ViewContainerRef } from '@angular/core';
 import { ObjectUtil } from '@ts-core/common/util';
 import * as _ from 'lodash';
 
@@ -33,9 +33,12 @@ export class ViewUtil {
         ViewUtil.RENDERER = renderer;
     }
 
-    public static parseElement<T extends HTMLElement = HTMLElement>(element: HTMLElement | ElementRef<T>): HTMLElement {
+    public static parseElement(element: IViewElement): HTMLElement {
         if (element instanceof HTMLElement) {
             return element;
+        }
+        if (element instanceof ViewContainerRef) {
+            element = element.element;
         }
         return !_.isNil(element) ? element.nativeElement : null;
     }
@@ -84,7 +87,7 @@ export class ViewUtil {
         }
     }
 
-    public static setBackground(container: any, image: string, repeat: string = 'repeat'): void {
+    public static setBackground(container: IViewElement, image: string, repeat: string = 'repeat'): void {
         if (_.isNil(image)) {
             ViewUtil.removeStyle(container, 'backgroundImage');
             ViewUtil.removeStyle(container, 'backgroundRepeat');
@@ -158,6 +161,9 @@ export class ViewUtil {
         }
         let value = parseFloat(ViewUtil.getStyle(container, 'width'));
         if (_.isNaN(value)) {
+            value = container.getBoundingClientRect().width;
+        }
+        if (_.isNaN(value)) {
             value = container.offsetWidth;
         }
         return value;
@@ -206,6 +212,9 @@ export class ViewUtil {
         }
 
         let value = parseFloat(ViewUtil.getStyle(container, 'height'));
+        if (_.isNaN(value)) {
+            value = container.getBoundingClientRect().height;
+        }
         if (_.isNaN(value)) {
             value = container.offsetHeight;
         }
@@ -306,7 +315,7 @@ export class ViewUtil {
     //
     // --------------------------------------------------------------------------
 
-    public static addClass(container: any, name: string): void {
+    public static addClass(container: IViewElement, name: string): void {
         if (_.isNil(name)) {
             return;
         }
@@ -316,14 +325,14 @@ export class ViewUtil {
         }
     }
 
-    public static addClasses(container: any, names: string): void {
+    public static addClasses(container: IViewElement, names: string): void {
         if (_.isEmpty(names)) {
             return;
         }
         names.split(' ').forEach(name => ViewUtil.addClass(container, name));
     }
 
-    public static removeClass(container: any, name: string): void {
+    public static removeClass(container: IViewElement, name: string): void {
         if (_.isNil(name)) {
             return;
         }
@@ -333,14 +342,14 @@ export class ViewUtil {
         }
     }
 
-    public static removeClasses(container: any, names: string): void {
+    public static removeClasses(container: IViewElement, names: string): void {
         if (_.isEmpty(names)) {
             return;
         }
         names.split(' ').forEach(name => ViewUtil.removeClass(container, name));
     }
 
-    public static hasClass(container: any, name: string): boolean {
+    public static hasClass(container: IViewElement, name: string): boolean {
         if (_.isNil(name)) {
             return false;
         }
@@ -348,7 +357,7 @@ export class ViewUtil {
         return !_.isNil(container) ? container.classList.contains(name) : false;
     }
 
-    public static toggleClass(container: any, name: string, value: boolean): void {
+    public static toggleClass(container: IViewElement, name: string, value: boolean): void {
         if (value) {
             ViewUtil.addClass(container, name);
         } else {
@@ -356,7 +365,7 @@ export class ViewUtil {
         }
     }
 
-    public static getProperty(container: any, name: string): any {
+    public static getProperty(container: IViewElement, name: string): any {
         if (_.isNil(name)) {
             return null;
         }
@@ -364,7 +373,7 @@ export class ViewUtil {
         return !_.isNil(container) ? container[name] : null;
     }
 
-    public static setProperty(container: any, name: string, value: any): void {
+    public static setProperty(container: IViewElement, name: string, value: any): void {
         if (_.isNil(name)) {
             return;
         }
@@ -374,11 +383,11 @@ export class ViewUtil {
         }
     }
 
-    public static removeProperty(container: any, name: string): void {
+    public static removeProperty(container: IViewElement, name: string): void {
         ViewUtil.removeAttribute(container, name);
     }
 
-    public static removeAttribute(container: any, name: string): void {
+    public static removeAttribute(container: IViewElement, name: string): void {
         if (_.isNil(name)) {
             return;
         }
@@ -388,7 +397,7 @@ export class ViewUtil {
         }
     }
 
-    public static setAttribute(container: any, name: string, value: any): void {
+    public static setAttribute(container: IViewElement, name: string, value: any): void {
         if (_.isNil(name)) {
             return;
         }
@@ -398,7 +407,7 @@ export class ViewUtil {
         }
     }
 
-    public static getStyle(container: any, name: string): any {
+    public static getStyle(container: IViewElement, name: string): any {
         if (_.isNil(name)) {
             return null;
         }
@@ -406,7 +415,7 @@ export class ViewUtil {
         return !_.isNil(container) ? container.style[name] : null;
     }
 
-    public static setStyle(container: any, name: string, value: any, flags?: RendererStyleFlags2): void {
+    public static setStyle(container: IViewElement, name: string, value: any, flags?: RendererStyleFlags2): void {
         if (_.isNil(name)) {
             return;
         }
@@ -420,7 +429,7 @@ export class ViewUtil {
         }
     }
 
-    public static removeStyle(container: any, name: string, flags?: RendererStyleFlags2): void {
+    public static removeStyle(container: IViewElement, name: string, flags?: RendererStyleFlags2): void {
         if (_.isNil(name)) {
             return;
         }
@@ -586,3 +595,5 @@ export class ViewUtil {
         ViewUtil.removeChild(object.parentNode, object);
     }
 }
+
+export type IViewElement<T extends HTMLElement = HTMLElement> = HTMLElement | ElementRef<T> | ViewContainerRef;

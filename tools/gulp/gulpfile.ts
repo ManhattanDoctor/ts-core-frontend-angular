@@ -98,6 +98,8 @@ const packageBuild = async (): Promise<void> => {
     await filesCopy([`${projectDirectory}/src/style/**/*.scss`], `${output}/style`);
     // Copy Languages
     await filesCopy([`${projectDirectory}/src/language/**/*.json`], `${output}/asset`);
+    // Copy htdocs
+    await filesCopy([`${projectDirectory}/src/htdocs/**/*.js`], `${output}/htdocs`);
 };
 
 const packagePublish = async (type: 'patch' | 'minor' | 'major'): Promise<void> => {

@@ -69,8 +69,6 @@ export class WindowImpl extends WindowBase implements IWindow {
         this._container = this.properties.overlay.overlayElement;
 
         this.setProperties();
-        this.setPosition();
-
         this.getReference().afterOpened().pipe(takeUntil(this.destroyed)).subscribe(this.setOpened);
         this.getReference().afterClosed().pipe(takeUntil(this.destroyed)).subscribe(this.setClosed);
 
@@ -79,7 +77,7 @@ export class WindowImpl extends WindowBase implements IWindow {
                 filter(event => event === WindowEvent.CONTENT_READY),
                 takeUntil(this.destroyed)
             )
-            .subscribe(this.checkSizeAndUpdatePositionIfNeed);
+            .subscribe(this.updatePosition);
     }
 
     // --------------------------------------------------------------------------
@@ -148,7 +146,7 @@ export class WindowImpl extends WindowBase implements IWindow {
         this.blinkTimer = null;
     }
 
-    private resizeHandler = (): void => {
+    protected resizeHandler = (): void => {
         if (!this.isOpened) {
             return;
         }

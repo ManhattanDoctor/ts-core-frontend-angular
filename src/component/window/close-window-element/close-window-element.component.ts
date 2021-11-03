@@ -37,10 +37,10 @@ export class CloseWindowElementComponent extends WindowElement {
     protected createChildren(): void {
         super.createChildren();
 
-        if (CloseWindowElementComponent.ICON_VALUE) {
+        if (!_.isNil(CloseWindowElementComponent.ICON_VALUE)) {
             ViewUtil.setProperty(this.nativeElement, 'innerHTML', CloseWindowElementComponent.ICON_VALUE);
         }
-        if (CloseWindowElementComponent.ICON_CLASS) {
+        if (!_.isNil(CloseWindowElementComponent.ICON_VALUE)) {
             ViewUtil.addClasses(this.nativeElement, CloseWindowElementComponent.ICON_CLASS);
         }
 

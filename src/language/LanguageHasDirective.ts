@@ -27,7 +27,7 @@ export class LanguageHasDirective extends Destroyable {
 
     constructor(private template: TemplateRef<any>, private container: ViewContainerRef, protected language: LanguageService) {
         super();
-        language.completed.pipe(takeUntil(this.destroyed)).subscribe(() => this.check);
+        language.completed.pipe(takeUntil(this.destroyed)).subscribe(() => this.check());
     }
 
     // --------------------------------------------------------------------------
@@ -57,6 +57,7 @@ export class LanguageHasDirective extends Destroyable {
             let index = this.container.indexOf(this.view);
             if (index >= 0) {
                 this.container.remove(index);
+                this.view = null;
             }
         }
     }
@@ -90,9 +91,7 @@ export class LanguageHasDirective extends Destroyable {
             return;
         }
         this._key = value;
-        if (!_.isNil(value)) {
-            this.check();
-        }
+        this.check();
     }
     public get key(): string {
         return this._key;

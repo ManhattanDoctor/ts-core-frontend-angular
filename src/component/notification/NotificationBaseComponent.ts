@@ -1,3 +1,3 @@
-import { Notification } from '../../notification/Notification';
+import { NotificationImpl } from '../../notification/NotificationImpl';
 
-export class NotificationBaseComponent extends Notification {}
+export class NotificationBaseComponent extends NotificationImpl {}

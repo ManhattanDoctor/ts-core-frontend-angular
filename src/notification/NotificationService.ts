@@ -2,10 +2,11 @@ import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ObservableData } from '@ts-core/common/observer';
-import { ArrayUtil, ObjectUtil } from '@ts-core/common/util';
+import { ArrayUtil, DateUtil, ObjectUtil } from '@ts-core/common/util';
 import { LanguageService } from '@ts-core/frontend/language';
 import * as _ from 'lodash';
 import { Observable, Subject } from 'rxjs';
+import { NotificationBaseComponent, NotificationComponent } from '../public-api';
 import { IQuestion, IQuestionOptions, QuestionMode } from '../question/IQuestion';
 import { QuestionManager } from '../question/QuestionManager';
 import { WindowEvent } from '../window/IWindow';
@@ -45,7 +46,7 @@ export class NotificationService {
     public paddingRight: number = 25;
     public paddingBottom: number = 25;
 
-    public defaultCloseDuration: number = 3000;
+    public defaultCloseDuration: number = 10 * DateUtil.MILISECONDS_SECOND;
 
     // --------------------------------------------------------------------------
     //
@@ -61,6 +62,9 @@ export class NotificationService {
         this.dialog = dialog;
         this.language = language;
         this.observer = new Subject();
+
+        this.factory = new NotificationFactory(NotificationBaseComponent);
+        this.questionComponent = NotificationComponent;
     }
 
     // --------------------------------------------------------------------------

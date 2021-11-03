@@ -7,6 +7,7 @@ import { LanguageService } from '@ts-core/frontend/language';
 import * as _ from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { CookieService } from '../cookie/CookieService';
+import { QuestionComponent, WindowBaseComponent } from '../public-api';
 import { IQuestion, IQuestionOptions, QuestionMode } from '../question/IQuestion';
 import { QuestionManager } from '../question/QuestionManager';
 import { ViewUtil } from '../util/ViewUtil';
@@ -65,15 +66,9 @@ export class WindowService extends Destroyable {
         this.language = language;
         this.observer = new Subject();
         this.properties = new PropertiesManager(cookies);
-        /*
-        let service = dialog as any;
-        service.getOverlayStateModal = service._getOverlayState;
-        service.getOverlayStateNonModal = function(config) {
-            let state = this.getOverlayStateModal(config);
-            state.hasBackdrop = false;
-            return state;
-        };
-        */
+
+        this.factory = new WindowFactory(WindowBaseComponent);
+        this.questionComponent = QuestionComponent;
     }
 
     // --------------------------------------------------------------------------
@@ -92,19 +87,19 @@ export class WindowService extends Destroyable {
         let zIndex = 0;
         let topWindow: IWindow = null;
 
-        this.windowsArray.forEach(window => {
-            if (window.container) {
-                let wrapper = window.container.parentElement;
-
-                let index = parseInt(ViewUtil.getStyle(wrapper, 'zIndex'), 10);
-                if (zIndex < index) {
-                    zIndex = index;
-                    topWindow = window;
-                }
+        for (let window of this.windowsArray) {
+            if (_.isNil(window.container)) {
+                continue;
             }
-        });
+            let index = parseInt(ViewUtil.getStyle(window.container.parentElement, 'zIndex'), 10);
+            if (zIndex >= index) {
+                continue;
+            }
+            zIndex = index;
+            topWindow = window;
+        }
 
-        if (!topWindow || topWindow.isOnTop) {
+        if (_.isNil(topWindow) || topWindow.isOnTop) {
             return;
         }
         topWindow.isOnTop = true;
@@ -114,12 +109,14 @@ export class WindowService extends Destroyable {
     private setWindowOnTop(topWindow: IWindow): void {
         let currentIndex = this.topZIndex - 2;
         for (let window of this.windowsArray) {
-            if (window.container) {
-                window.isOnTop = window === topWindow;
-                let zIndex = window.isOnTop ? this.topZIndex : currentIndex--;
-                ViewUtil.setStyle(window.backdrop, 'zIndex', zIndex);
-                ViewUtil.setStyle(window.wrapper, 'zIndex', zIndex);
+            if (_.isNil(window.container)) {
+                continue;
             }
+            window.isOnTop = window === topWindow;
+
+            let zIndex = window.isOnTop ? this.topZIndex : currentIndex--;
+            ViewUtil.setStyle(window.backdrop, 'zIndex', zIndex);
+            ViewUtil.setStyle(window.wrapper, 'zIndex', zIndex);
         }
 
         this.windowsArray.sort(this.sortFunction);
@@ -213,12 +210,12 @@ export class WindowService extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    public open(component: ComponentType<IWindowContent>, config: WindowConfig): IWindowContent {
-        let window = null;
+    public open<T extends IWindowContent>(component: ComponentType<T>, config: WindowConfig): T {
+        let window: IWindow<T> = null;
         if (config.id) {
             window = this.getById(config.id);
             if (window) {
-                return window.content;
+                return window.content as T;
             }
         }
 
@@ -259,7 +256,7 @@ export class WindowService extends Destroyable {
                     break;
             }
         });
-        return window.content;
+        return window.content as T;
     }
 
     public get(value: WindowId): IWindowContent {
@@ -408,7 +405,6 @@ export class PropertiesManager extends Destroyable {
             return;
         }
         super.destroy();
-
         this.cookies = null;
     }
 }
