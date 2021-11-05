@@ -20,7 +20,7 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
     //
     // --------------------------------------------------------------------------
 
-    constructor(public container: ViewContainerRef) {
+    constructor(public container: WindowContentContainer) {
         super();
     }
 
@@ -123,11 +123,14 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
     // --------------------------------------------------------------------------
 
     public get element(): ElementRef {
-        return this.container ? this.container.element : null;
+        if (_.isNil(this.container)) {
+            return null;
+        }
+        return this.container instanceof ViewContainerRef ? this.container.element : this.container;
     }
 
     public get config(): WindowConfig<T> {
-        return this.window ? this.window.config : null;
+        return !_.isNil(this.window) ? this.window.config : null;
     }
 
     public get window(): IWindow<T> {
@@ -143,3 +146,5 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
         }
     }
 }
+
+export type WindowContentContainer = ElementRef | ViewContainerRef;

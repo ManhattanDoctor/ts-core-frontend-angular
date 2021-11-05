@@ -2,7 +2,7 @@ import { Directive, ElementRef, Input } from '@angular/core';
 import { Interactable } from '@interactjs/types/types';
 import * as interact from 'interactjs';
 import { Destroyable } from '@ts-core/common';
-import { IWindow } from '../../window/IWindow';
+import { IWindow } from '../IWindow';
 import { WindowDragable } from './WindowDragable';
 import * as _ from 'lodash';
 

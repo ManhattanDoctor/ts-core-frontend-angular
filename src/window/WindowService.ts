@@ -7,10 +7,11 @@ import { LanguageService } from '@ts-core/frontend/language';
 import * as _ from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { CookieService } from '../cookie/CookieService';
-import { QuestionComponent, WindowBaseComponent } from '../public-api';
 import { IQuestion, IQuestionOptions, QuestionMode } from '../question/IQuestion';
 import { QuestionManager } from '../question/QuestionManager';
 import { ViewUtil } from '../util/ViewUtil';
+import { WindowQuestionComponent } from './component/window-question/window-question.component';
+import { WindowBaseComponent } from './component/WindowBaseComponent';
 import { IWindow, WindowEvent } from './IWindow';
 import { IWindowContent } from './IWindowContent';
 import { WindowAlign, WindowConfig, WindowConfigOptions } from './WindowConfig';
@@ -68,7 +69,7 @@ export class WindowService extends Destroyable {
         this.properties = new PropertiesManager(cookies);
 
         this.factory = new WindowFactory(WindowBaseComponent);
-        this.questionComponent = QuestionComponent;
+        this.questionComponent = WindowQuestionComponent;
     }
 
     // --------------------------------------------------------------------------

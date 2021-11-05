@@ -81,6 +81,22 @@
         }
     }
 
+    mat-bottom-sheet-container {
+        padding: 0 !important;
+        display: block !important;
+        max-width: none !important;
+        overflow: visible !important;
+        min-height: inherit !important;
+        max-height: inherit;
+    
+        & > :first-child {
+            height: 100%;
+            box-sizing: border-box;
+            max-height: inherit;
+            @include vertical-scroll-only();
+        }
+    }
+
     mat-progress-bar {
         &.border {
             height: 1px;
@@ -364,14 +380,15 @@
     $primary: map-get($theme, primary);
     $foreground: map-get($theme, foreground);
     $background: map-get($theme, background);
+    $border-color: map-get($foreground, divider);
 
     mat-tab-header {
-        border-color: map-get($foreground, divider);
+        border-color: $border-color;
     }
 
     mat-form-field {
         .mat-form-field-underline {
-            background-color: map-get($foreground, divider) !important;
+            background-color: $border-color !important;
         }
     }
 
@@ -379,14 +396,14 @@
         &.border {
             border: none !important;
             .mat-progress-bar-buffer {
-                background-color: mat-color($foreground, divider);
+                background-color: $border-color;
             }
         }
     }
 
     mat-expansion-panel {
         background-color: transparent !important;
-        border-bottom: 1px solid map-get($foreground, divider);
+        border-bottom: 1px solid $border-color;
         &:last-child {
             border-bottom: none !important;
         }
@@ -397,7 +414,7 @@
 
     mat-table {
         mat-row {
-            border-color: map-get($foreground, divider);
+            border-color: $border-color;
             &:last-child {
                 border-bottom: none;
             }
@@ -422,6 +439,7 @@
             border: 2px solid mat-color($primary);
         }
     }
+
 
     $thumb-color: rgba(0, 0, 0, 0.15);
 

@@ -9,7 +9,7 @@ import { WindowConfig } from './WindowConfig';
 import { WindowProperties } from './WindowProperties';
 import * as _ from 'lodash';
 
-export class WindowImpl extends WindowBase implements IWindow {
+export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
     // --------------------------------------------------------------------------
     //
     //  Constants
@@ -112,6 +112,8 @@ export class WindowImpl extends WindowBase implements IWindow {
     protected setProperties(): void {
         super.setProperties();
         ViewUtil.addClass(this.container, 'window');
+        ViewUtil.toggleClass(this.container, 'modal', this.config.isModal);
+
         if (!this.config.isModal) {
             this.container.addEventListener('click', this.mouseClickHandlerProxy, true);
             this.container.addEventListener('mousedown', this.mouseDownHandlerProxy);
@@ -129,7 +131,7 @@ export class WindowImpl extends WindowBase implements IWindow {
     protected getContainer(): HTMLElement {
         return this.container;
     }
-    protected getReference(): MatDialogRef<IWindowContent> {
+    protected getReference(): MatDialogRef<IWindowContent<T>> {
         return this.properties.reference;
     }
 

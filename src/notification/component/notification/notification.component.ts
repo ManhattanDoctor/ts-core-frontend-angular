@@ -1,6 +1,6 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { LanguageService } from '@ts-core/frontend/language';
-import { NotificationService } from '../../../notification/NotificationService';
+import { NotificationService } from '../../NotificationService';
 import { ViewUtil } from '../../../util/ViewUtil';
 import { NotificationQuestionBaseComponent } from '../NotificationQuestionBaseComponent';
 import * as _ from 'lodash';

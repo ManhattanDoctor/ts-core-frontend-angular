@@ -19,6 +19,9 @@ export class LanguageHasDirective extends Destroyable {
     protected view: any;
     protected index: EmbeddedViewRef<any>;
 
+    @Input('is-only-if-not-empty')
+    public isOnlyIfNotEmpty: boolean = false;
+
     // --------------------------------------------------------------------------
     //
     //	Constructor
@@ -39,7 +42,7 @@ export class LanguageHasDirective extends Destroyable {
     protected check(): void {
         let isNeedAdd = false;
         let isNeedRemove = false;
-        let isHasTranslation = !_.isNil(this.key) && this.language.isHasTranslation(this.key);
+        let isHasTranslation = !_.isNil(this.key) && this.language.isHasTranslation(this.key, this.isOnlyIfNotEmpty);
 
         if (isHasTranslation) {
             if (_.isNil(this.view)) {

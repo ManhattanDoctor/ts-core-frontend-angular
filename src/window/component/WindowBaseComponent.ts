@@ -1,9 +1,9 @@
-import { ComponentFactoryResolver, ComponentRef } from '@angular/core';
+import { ComponentFactoryResolver, ComponentRef, ViewContainerRef } from '@angular/core';
 import { APPLICATION_INJECTOR } from '../../ApplicationInjector';
 import { ViewUtil } from '../../util/ViewUtil';
-import { CloseWindowElementComponent } from './close-window-element/close-window-element.component';
-import { MinimizeWindowElementComponent } from './minimize-window-element/minimize-window-element.component';
-import { ResizeWindowElementComponent } from './resize-window-element/resize-window-element.component';
+import { WindowCloseElementComponent } from './window-close-element/window-close-element.component';
+import { WindowMinimizeElementComponent } from './window-minimize-element/window-minimize-element.component';
+import { WindowResizeElementComponent } from './window-resize-element/window-resize-element.component';
 import { WindowDragable } from './WindowDragable';
 
 export class WindowBaseComponent extends WindowDragable {
@@ -13,9 +13,9 @@ export class WindowBaseComponent extends WindowDragable {
     //
     // --------------------------------------------------------------------------
 
-    public static CLOSE_WINDOW_COMPONENT = CloseWindowElementComponent;
-    public static RESIZE_WINDOW_COMPONENT = ResizeWindowElementComponent;
-    public static MINIMIZE_WINDOW_COMPONENT = MinimizeWindowElementComponent;
+    public static CLOSE_COMPONENT = WindowCloseElementComponent;
+    public static RESIZE_COMPONENT = WindowResizeElementComponent;
+    public static MINIMIZE_COMPONENT = WindowMinimizeElementComponent;
 
     // --------------------------------------------------------------------------
     //
@@ -35,21 +35,27 @@ export class WindowBaseComponent extends WindowDragable {
 
     protected setProperties(): void {
         super.setProperties();
+        this.createWindowComponents();
+    }
 
+    protected createWindowComponents(): void {
+        if (!(this.content.container instanceof ViewContainerRef)) {
+            return;
+        }
         if (!this.config.disableClose && !this.closeWindow) {
-            let factory = this.resolver.resolveComponentFactory(WindowBaseComponent.CLOSE_WINDOW_COMPONENT);
+            let factory = this.resolver.resolveComponentFactory(WindowBaseComponent.CLOSE_COMPONENT);
             this.closeWindow = this.content.container.createComponent(factory);
             this.closeWindow.instance.window = this;
         }
 
         if (this.config.isResizeable && !this.resizedWindow) {
-            let factory = this.resolver.resolveComponentFactory(WindowBaseComponent.RESIZE_WINDOW_COMPONENT);
+            let factory = this.resolver.resolveComponentFactory(WindowBaseComponent.RESIZE_COMPONENT);
             this.resizedWindow = this.content.container.createComponent(factory);
             this.resizedWindow.instance.window = this;
         }
 
         if (this.config.isMinimizable && !this.minimizeWindow) {
-            let factory = this.resolver.resolveComponentFactory(WindowBaseComponent.MINIMIZE_WINDOW_COMPONENT);
+            let factory = this.resolver.resolveComponentFactory(WindowBaseComponent.MINIMIZE_COMPONENT);
             this.minimizeWindow = this.content.container.createComponent(factory);
             this.minimizeWindow.instance.window = this;
         }

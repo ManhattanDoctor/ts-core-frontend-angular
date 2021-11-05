@@ -6,11 +6,10 @@ import { WindowElement } from '../WindowElement';
 import * as _ from 'lodash';
 
 @Component({
-    selector: 'vi-minimize-window-element',
-    styleUrls: ['minimize-window-element.component.scss'],
+    styleUrls: ['window-minimize-element.component.scss'],
     template: ''
 })
-export class MinimizeWindowElementComponent extends WindowElement {
+export class WindowMinimizeElementComponent extends WindowElement {
     // --------------------------------------------------------------------------
     //
     // 	Constants
@@ -38,7 +37,7 @@ export class MinimizeWindowElementComponent extends WindowElement {
     // --------------------------------------------------------------------------
 
     private commitIconProperties = (): void => {
-        let icon = this.window.isMinimized ? MinimizeWindowElementComponent.ICON_MAXIMIZE_VALUE : MinimizeWindowElementComponent.ICON_MINIMIZE_VALUE;
+        let icon = this.window.isMinimized ? WindowMinimizeElementComponent.ICON_MAXIMIZE_VALUE : WindowMinimizeElementComponent.ICON_MINIMIZE_VALUE;
         ViewUtil.setProperty(this.nativeElement, 'innerHTML', icon);
     };
 
@@ -60,12 +59,12 @@ export class MinimizeWindowElementComponent extends WindowElement {
     protected createChildren(): void {
         super.createChildren();
 
-        if (MinimizeWindowElementComponent.ICON_MINIMIZE_VALUE) {
-            ViewUtil.setProperty(this.nativeElement, 'innerHTML', MinimizeWindowElementComponent.ICON_MINIMIZE_VALUE);
+        if (WindowMinimizeElementComponent.ICON_MINIMIZE_VALUE) {
+            ViewUtil.setProperty(this.nativeElement, 'innerHTML', WindowMinimizeElementComponent.ICON_MINIMIZE_VALUE);
         }
 
-        if (MinimizeWindowElementComponent.ICON_CLASS) {
-            ViewUtil.addClasses(this.nativeElement, MinimizeWindowElementComponent.ICON_CLASS);
+        if (WindowMinimizeElementComponent.ICON_CLASS) {
+            ViewUtil.addClasses(this.nativeElement, WindowMinimizeElementComponent.ICON_CLASS);
         }
 
         ViewUtil.addClass(this.nativeElement, 'mouse-active');

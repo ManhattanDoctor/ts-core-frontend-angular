@@ -4,18 +4,17 @@ import { WindowElement } from '../WindowElement';
 import * as _ from 'lodash';
 
 @Component({
-    selector: 'vi-close-window-element',
-    styleUrls: ['close-window-element.component.scss'],
+    styleUrls: ['window-resize-element.component.scss'],
     template: ''
 })
-export class CloseWindowElementComponent extends WindowElement {
+export class WindowResizeElementComponent extends WindowElement {
     // --------------------------------------------------------------------------
     //
     // 	Constants
     //
     // --------------------------------------------------------------------------
 
-    public static ICON_CLASS: string = 'fas fa-times';
+    public static ICON_CLASS: string = 'fas fa-arrows-alt';
     public static ICON_VALUE: string = null;
 
     // --------------------------------------------------------------------------
@@ -37,19 +36,18 @@ export class CloseWindowElementComponent extends WindowElement {
     protected createChildren(): void {
         super.createChildren();
 
-        if (!_.isNil(CloseWindowElementComponent.ICON_VALUE)) {
-            ViewUtil.setProperty(this.nativeElement, 'innerHTML', CloseWindowElementComponent.ICON_VALUE);
+        if (WindowResizeElementComponent.ICON_VALUE) {
+            ViewUtil.setProperty(this.nativeElement, 'innerHTML', WindowResizeElementComponent.ICON_VALUE);
         }
-        if (!_.isNil(CloseWindowElementComponent.ICON_VALUE)) {
-            ViewUtil.addClasses(this.nativeElement, CloseWindowElementComponent.ICON_CLASS);
+        if (WindowResizeElementComponent.ICON_CLASS) {
+            ViewUtil.addClasses(this.nativeElement, WindowResizeElementComponent.ICON_CLASS);
         }
 
-        ViewUtil.addClass(this.nativeElement, 'mouse-active');
+        ViewUtil.setStyle(this.nativeElement, 'cursor', 'pointer');
         this.nativeElement.addEventListener('click', this.mouseClickHandler, true);
     }
 
     protected destroyChildren(): void {
-        super.destroyChildren();
         this.nativeElement.removeEventListener('click', this.mouseClickHandler, true);
     }
 
@@ -59,10 +57,11 @@ export class CloseWindowElementComponent extends WindowElement {
     //
     // --------------------------------------------------------------------------
 
-    private mouseClickHandler = (event: MouseEvent): void => {
+    private mouseClickHandler = (event: MouseEvent) => {
         event.stopPropagation();
+
         if (!_.isNil(this.window)) {
-            this.window.close();
+            this.window.isMinimized = !this.window.isMinimized;
         }
     };
 }

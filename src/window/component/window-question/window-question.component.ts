@@ -5,9 +5,9 @@ import { WindowQuestionBaseComponent } from '../WindowQuestionBaseComponent';
 import * as _ from 'lodash';
 
 @Component({
-    templateUrl: 'question.component.html'
+    templateUrl: 'window-question.component.html'
 })
-export class QuestionComponent extends WindowQuestionBaseComponent {
+export class WindowQuestionComponent extends WindowQuestionBaseComponent {
     // --------------------------------------------------------------------------
     //
     // 	Properties

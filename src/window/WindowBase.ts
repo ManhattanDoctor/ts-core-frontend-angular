@@ -4,7 +4,7 @@ import { DestroyableContainer } from '@ts-core/common';
 import { ViewUtil } from '../util/ViewUtil';
 import { WindowAlign, WindowConfig } from './WindowConfig';
 
-export abstract class WindowBase extends DestroyableContainer {
+export abstract class WindowBase<T = any> extends DestroyableContainer {
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -33,7 +33,7 @@ export abstract class WindowBase extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    protected abstract getConfig(): WindowConfig;
+    protected abstract getConfig(): WindowConfig<T>;
     protected abstract getReference(): MatDialogRef<any>;
     protected abstract getContainer(): HTMLElement;
 
@@ -48,7 +48,6 @@ export abstract class WindowBase extends DestroyableContainer {
     }
 
     protected setPosition(): void {
-        
         let config = this.getConfig();
 
         switch (config.horizontalAlign) {

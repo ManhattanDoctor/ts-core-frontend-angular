@@ -1,5 +1,5 @@
 import { QuestionManager } from '../../question/QuestionManager';
-import { IWindowContent } from '../../window/IWindowContent';
+import { IWindowContent } from '../IWindowContent';
 
 export abstract class WindowQuestionBaseComponent extends IWindowContent<QuestionManager> {
     // --------------------------------------------------------------------------
