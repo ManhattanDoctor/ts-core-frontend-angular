@@ -50,7 +50,7 @@
         max-height: inherit;
 
         &:hover:not(.minimized) {
-            vi-resize-window-element {
+            vi-window-resize-element {
                 display: block !important;
             }
         }
@@ -63,17 +63,17 @@
             @include vertical-scroll-only();
         }
 
-        vi-close-window-element {
+        vi-window-close-element {
             top: -20px;
             right: -20px;
         }
 
-        vi-minimize-window-element {
+        vi-window-minimize-element {
             top: -20px;
             right: 10px;
         }
 
-        vi-resize-window-element {
+        vi-window-resize-element {
             right: -16px;
             bottom: -16px;
             display: none !important;
@@ -84,7 +84,6 @@
     mat-bottom-sheet-container {
         padding: 0 !important;
         display: block !important;
-        max-width: none !important;
         overflow: visible !important;
         min-height: inherit !important;
         max-height: inherit;
@@ -228,15 +227,15 @@
     }
 
     .cdk-overlay-pane {
-        &.window,
-        &.notification {
+        &.vi-window,
+        &.vi-notification {
             position: absolute !important;
         }
-        &.draggable,
-        &.resizeable {
+        &.vi-draggable,
+        &.vi-resizeable {
             border-radius: 4px;
         }
-        &.window {
+        &.vi-window {
             border: 2px solid transparent;
         }
         &.minimized {

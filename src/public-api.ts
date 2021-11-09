@@ -107,6 +107,8 @@ export * from './notification/NotificationModule';
 export * from './notification/NotificationProperties';
 export * from './notification/NotificationService';
 /* ======= */
+export * from './bottomSheet/BottomSheetService';
+/* ======= */
 export * from './pipe/CamelCasePipe';
 export * from './pipe/FinancePipe';
 export * from './pipe/MomentDateAdaptivePipe';

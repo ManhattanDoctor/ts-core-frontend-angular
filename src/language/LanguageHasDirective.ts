@@ -19,7 +19,7 @@ export class LanguageHasDirective extends Destroyable {
     protected view: any;
     protected index: EmbeddedViewRef<any>;
 
-    @Input('is-only-if-not-empty')
+    @Input()
     public isOnlyIfNotEmpty: boolean = false;
 
     // --------------------------------------------------------------------------

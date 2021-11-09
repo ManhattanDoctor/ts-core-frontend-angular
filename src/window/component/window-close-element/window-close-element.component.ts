@@ -4,6 +4,7 @@ import { WindowElement } from '../WindowElement';
 import * as _ from 'lodash';
 
 @Component({
+    selector: 'vi-window-close-element',
     styleUrls: ['window-close-element.component.scss'],
     template: ''
 })
@@ -39,7 +40,7 @@ export class WindowCloseElementComponent extends WindowElement {
         if (!_.isNil(WindowCloseElementComponent.ICON_VALUE)) {
             ViewUtil.setProperty(this.nativeElement, 'innerHTML', WindowCloseElementComponent.ICON_VALUE);
         }
-        if (!_.isNil(WindowCloseElementComponent.ICON_VALUE)) {
+        if (!_.isNil(WindowCloseElementComponent.ICON_CLASS)) {
             ViewUtil.addClasses(this.nativeElement, WindowCloseElementComponent.ICON_CLASS);
         }
         ViewUtil.addClass(this.nativeElement, 'mouse-active');

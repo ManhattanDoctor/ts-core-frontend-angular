@@ -26,7 +26,7 @@ export class WindowDragable extends WindowResizeable {
         if (this.config.isModal) {
             return;
         }
-        ViewUtil.addClass(this.container, 'draggable');
+        ViewUtil.addClass(this.container, 'vi-draggable');
         if (!this.config.isContentDragable) {
             return;
         }

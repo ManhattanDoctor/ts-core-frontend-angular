@@ -27,7 +27,7 @@ export class WindowResizeable extends WindowImpl {
             return;
         }
 
-        ViewUtil.addClass(this.container, 'resizeable');
+        ViewUtil.addClass(this.container, 'vi-resizeable');
         if (_.isNil(this.resizeMoveHandlerProxy)) {
             this.resizeMoveHandlerProxy = this.resizeMoveHandler.bind(this);
         }

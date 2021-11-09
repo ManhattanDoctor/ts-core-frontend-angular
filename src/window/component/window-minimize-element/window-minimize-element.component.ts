@@ -6,6 +6,7 @@ import { WindowElement } from '../WindowElement';
 import * as _ from 'lodash';
 
 @Component({
+    selector: 'vi-window-minimize-element',
     styleUrls: ['window-minimize-element.component.scss'],
     template: ''
 })
@@ -59,11 +60,11 @@ export class WindowMinimizeElementComponent extends WindowElement {
     protected createChildren(): void {
         super.createChildren();
 
-        if (WindowMinimizeElementComponent.ICON_MINIMIZE_VALUE) {
+        if (!_.isNil(WindowMinimizeElementComponent.ICON_MINIMIZE_VALUE)) {
             ViewUtil.setProperty(this.nativeElement, 'innerHTML', WindowMinimizeElementComponent.ICON_MINIMIZE_VALUE);
         }
 
-        if (WindowMinimizeElementComponent.ICON_CLASS) {
+        if (!_.isNil(WindowMinimizeElementComponent.ICON_CLASS)) {
             ViewUtil.addClasses(this.nativeElement, WindowMinimizeElementComponent.ICON_CLASS);
         }
 

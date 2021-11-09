@@ -4,6 +4,7 @@ import { WindowElement } from '../WindowElement';
 import * as _ from 'lodash';
 
 @Component({
+    selector: 'vi-window-resize-element',
     styleUrls: ['window-resize-element.component.scss'],
     template: ''
 })
@@ -36,10 +37,10 @@ export class WindowResizeElementComponent extends WindowElement {
     protected createChildren(): void {
         super.createChildren();
 
-        if (WindowResizeElementComponent.ICON_VALUE) {
+        if (!_.isNil(WindowResizeElementComponent.ICON_VALUE)) {
             ViewUtil.setProperty(this.nativeElement, 'innerHTML', WindowResizeElementComponent.ICON_VALUE);
         }
-        if (WindowResizeElementComponent.ICON_CLASS) {
+        if (!_.isNil(WindowResizeElementComponent.ICON_CLASS)) {
             ViewUtil.addClasses(this.nativeElement, WindowResizeElementComponent.ICON_CLASS);
         }
 

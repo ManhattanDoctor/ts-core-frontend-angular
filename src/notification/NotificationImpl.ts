@@ -60,7 +60,7 @@ export class NotificationImpl<T = any> extends WindowBase implements INotificati
 
     protected setProperties(): void {
         super.setProperties();
-        ViewUtil.addClass(this.container, 'notification');
+        ViewUtil.addClass(this.container, 'vi-notification');
     }
 
     protected setClosed = (): void => {

@@ -19,6 +19,7 @@ import { InfiniteScrollDirective } from './directive/InfiniteScrollDirective';
 import { ResizeDirective } from './directive/ResizeDirective';
 import { ScrollDirective } from './directive/ScrollDirective';
 import { LanguageModule } from './language/LanguageModule';
+import { BottomSheetModule } from './bottomSheet/BottomSheetModule';
 import { NotificationModule } from './notification/NotificationModule';
 import { CamelCasePipe } from './pipe/CamelCasePipe';
 import { FinancePipe } from './pipe/FinancePipe';
@@ -86,6 +87,7 @@ export class VICommonModule {
                 { provide: Logger, deps: [VI_ANGULAR_OPTIONS], useFactory: loggerServiceFactory },
 
                 ...WindowModule.forRoot().providers,
+                ...BottomSheetModule.forRoot().providers,
                 ...NotificationModule.forRoot().providers,
                 ...CookieModule.forRoot(options).providers,
                 ...ThemeModule.forRoot(options ? options.themeOptions : null).providers,

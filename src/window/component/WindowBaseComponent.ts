@@ -106,11 +106,11 @@ export class WindowBaseComponent extends WindowDragable {
     }
 
     protected get disabledClass(): string {
-        return 'disabled';
+        return 'vi-disabled';
     }
 
     protected get minimizedClass(): string {
-        return 'minimized';
+        return 'vi-minimized';
     }
 
     protected get shakingClass(): string {

@@ -111,8 +111,8 @@ export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
 
     protected setProperties(): void {
         super.setProperties();
-        ViewUtil.addClass(this.container, 'window');
-        ViewUtil.toggleClass(this.container, 'modal', this.config.isModal);
+        ViewUtil.addClass(this.container, 'vi-window');
+        ViewUtil.toggleClass(this.container, 'vi-modal', this.config.isModal);
 
         if (!this.config.isModal) {
             this.container.addEventListener('click', this.mouseClickHandlerProxy, true);
