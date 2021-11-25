@@ -50,7 +50,7 @@
         }
     }
     .border-base {
-        border-color: $primary-color !important;
+        border-color: $text-base-color !important;
     }
     .border-base-hover {
         &:hover {
@@ -58,7 +58,7 @@
         }
     }
     .border-base-invert {
-        border-color: $primary-color !important;
+        border-color: $text-base-color !important;
         @include filter-invert(1);
     }
     .border-base-invert-hover {

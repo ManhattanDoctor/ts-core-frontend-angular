@@ -149,17 +149,18 @@ export class RouterBaseService extends Loadable<void, void> {
     //
     // --------------------------------------------------------------------------
 
-    public isUrlActive(value: string | UrlTree, isExact: boolean = false): boolean {
+    public isUrlActive(item: string | UrlTree, isExact: boolean = false): boolean {
         if (isExact) {
-            return this.router.isActive(value, isExact);
+            return this.router.isActive(item, isExact);
         }
-        if (_.isString(value)) {
-            value = this.router.parseUrl(value);
+        if (_.isString(item)) {
+            item = this.router.parseUrl(item);
         }
 
-        let item = this.urlTree;
-        value.queryParams = item.queryParams = {};
-        return value.toString() === item.toString();
+        let current = this.router.parseUrl(this.urlTree.toString());
+        item.fragment = current.fragment = null;
+        item.queryParams = current.queryParams = {};
+        return item.toString() === current.toString();
     }
 
     // --------------------------------------------------------------------------
