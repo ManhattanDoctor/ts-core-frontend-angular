@@ -8,7 +8,7 @@ import * as _ from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { WindowFactory } from '../window/WindowFactory';
 import { IWindow } from '../window/IWindow';
-import { BottomSheetImpl } from './component/BottomSheetImpl';
+import { BottomSheetBaseComponent } from './component/BottomSheetBaseComponent';
 import { WindowConfig, WindowConfigOptions } from '../window/WindowConfig';
 import { IWindowContent } from '../window/IWindowContent';
 import { WindowServiceEvent } from '../window/WindowService';
@@ -44,7 +44,7 @@ export class BottomSheetService extends Destroyable {
         this.language = language;
         this.observer = new Subject();
 
-        this.factory = new WindowFactory(BottomSheetImpl);
+        this.factory = new WindowFactory(BottomSheetBaseComponent);
         this.questionComponent = WindowQuestionComponent;
     }
 

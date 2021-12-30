@@ -1,7 +1,8 @@
 import * as _ from 'lodash';
 import { CdkTableBaseComponent } from '../CdkTableBaseComponent';
 import { CdkTablePaginableMapCollection } from '../CdkTablePaginableMapCollection';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewContainerRef } from '@angular/core';
+import { ViewUtil } from '../../../util/ViewUtil';
 
 @Component({
     selector: 'vi-cdk-table-paginable',
@@ -22,8 +23,9 @@ export class CdkTablePaginableComponent<U = any, V = any> extends CdkTableBaseCo
     //
     // --------------------------------------------------------------------------
 
-    constructor() {
+    constructor(container: ViewContainerRef) {
         super();
+        ViewUtil.addClasses(container, 'd-flex flex-column scroll-no');
         this._paginator = { pageSizes: [10, 25, 100], hidePageSize: false, showFirstLastButtons: true };
     }
 

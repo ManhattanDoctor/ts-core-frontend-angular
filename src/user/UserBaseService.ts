@@ -81,7 +81,7 @@ export abstract class UserBaseService<U extends IUser = any, V = void> {
         return this.user.id === value;
     }
 
-    public updateUser(data: any): void {
+    public userUpdate(data: any): void {
         if (!this.hasUser) {
             return;
         }

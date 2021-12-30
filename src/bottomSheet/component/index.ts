@@ -1,1 +1,1 @@
-export * from './BottomSheetImpl';
+export * from './BottomSheetBaseComponent';

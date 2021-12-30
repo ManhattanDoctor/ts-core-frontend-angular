@@ -87,12 +87,17 @@
         overflow: visible !important;
         min-height: inherit !important;
         max-height: inherit;
-    
+
         & > :first-child {
             height: 100%;
             box-sizing: border-box;
             max-height: inherit;
             @include vertical-scroll-only();
+        }
+
+        vi-bottom-sheet-close-element {
+            top: -20px;
+            right: -20px;
         }
     }
 
@@ -434,11 +439,10 @@
     }
 
     .cdk-overlay-pane {
-        &.blink {
+        &.vi-blink {
             border: 2px solid mat-color($primary);
         }
     }
-
 
     $thumb-color: rgba(0, 0, 0, 0.15);
 

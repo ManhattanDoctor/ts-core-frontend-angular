@@ -16,7 +16,7 @@ import * as _ from 'lodash';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-export class RouterBaseService extends Loadable<void, void> {
+export class RouterBaseService extends Loadable<void, RouterBaseServiceEventData> {
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -29,6 +29,7 @@ export class RouterBaseService extends Loadable<void, void> {
     protected isNeedUpdateExtras: boolean = false;
 
     protected _lastUrl: string;
+    protected _previousUrl: string;
 
     // --------------------------------------------------------------------------
     //
@@ -55,12 +56,13 @@ export class RouterBaseService extends Loadable<void, void> {
     protected initializeObservers(): void {
         this.router.events.pipe(takeUntil(this.destroyed)).subscribe(event => {
             if (event instanceof NavigationStart) {
+                this._previousUrl = this.url;
                 this.status = LoadableStatus.LOADING;
             } else if (event instanceof NavigationEnd || event instanceof NavigationCancel || event instanceof NavigationError) {
-                this.status = LoadableStatus.LOADED;
                 if (event instanceof NavigationEnd) {
                     this._lastUrl = event.url;
                 }
+                this.status = LoadableStatus.LOADED;
             }
         });
     }
@@ -99,7 +101,7 @@ export class RouterBaseService extends Loadable<void, void> {
                     this.isNeedUpdateExtras = false;
                     this.applyExtras(this.extrasToApply);
                 }
-                this.observer.next(new ObservableData(LoadableEvent.COMPLETE));
+                this.observer.next(new ObservableData(LoadableEvent.COMPLETE, { url: this.url, previousUrl: this.previousUrl }));
                 break;
         }
 
@@ -245,16 +247,30 @@ export class RouterBaseService extends Loadable<void, void> {
     public get url(): string {
         return this.router.url;
     }
+    public get urlTree(): UrlTree {
+        return this.router.parseUrl(this.url);
+    }
 
     public get lastUrl(): string {
         return this._lastUrl;
     }
+    public get lastUrlTree(): UrlTree {
+        return this.router.parseUrl(this.lastUrl);
+    }
 
-    public get urlTree(): UrlTree {
-        return this.router.parseUrl(this.url);
+    public get previousUrl(): string {
+        return this._previousUrl;
+    }
+    public get previousUrlTree(): UrlTree {
+        return this.router.parseUrl(this.previousUrl);
     }
 
     public get router(): Router {
         return this._router;
     }
+}
+
+export interface RouterBaseServiceEventData {
+    url: string;
+    previousUrl: string;
 }

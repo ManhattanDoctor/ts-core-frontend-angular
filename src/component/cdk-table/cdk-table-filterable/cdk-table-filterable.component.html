@@ -1,14 +1,31 @@
-<mat-table matSort [dataSource]="table?.table?.dataSource" [matSortActive]="sortActive" [matSortDirection]="sortDirection"
-    [class.mat-nav-list]="settings?.isInteractive" (matSortChange)="table.sortEventHandler($event)">
-  
-    <ng-container *ngFor="let column of columns;trackBy:columnTrackBy">
+<mat-table
+    class="flex-grow-1 vertical-scroll-only"
+    matSort
+    [dataSource]="table?.table?.dataSource"
+    [matSortActive]="sortActive"
+    [matSortDirection]="sortDirection"
+    [class.mat-nav-list]="settings?.isInteractive"
+    (matSortChange)="table.sortEventHandler($event)"
+>
+    <ng-container *ngFor="let column of columns; trackBy: columnTrackBy">
         <ng-container [matColumnDef]="column.name">
-            <mat-header-cell class="px-2" mat-sort-header [disableClear]="true" [disabled]="column.isDisableSort" [ngClass]="column.headerClassName" 
-                *matHeaderCellDef>
+            <mat-header-cell
+                class="px-2"
+                mat-sort-header
+                [disableClear]="true"
+                [disabled]="column.isDisableSort"
+                [ngClass]="column.headerClassName"
+                *matHeaderCellDef
+            >
                 <span [innerHTML]="column.headerId | viTranslate"></span>
             </mat-header-cell>
-            <mat-cell class="px-2" (click)="cellClickHandler(row, column)" *matCellDef="let row" 
-                [ngClass]="row | viCdkTableColumnClassName: column" [ngStyle]="row | viCdkTableColumnStyleName: column" >
+            <mat-cell
+                class="px-2"
+                (click)="cellClickHandler(row, column)"
+                *matCellDef="let row"
+                [ngClass]="row | viCdkTableColumnClassName: column"
+                [ngStyle]="row | viCdkTableColumnStyleName: column"
+            >
                 <span [ngClass]="column | viCdkTableCellClassName" [vi-html-content-title]="row | viCdkTableColumnValue: column"></span>
             </mat-cell>
         </ng-container>
@@ -16,13 +33,15 @@
 
     <mat-header-row *matHeaderRowDef="columnNames"></mat-header-row>
 
-    <mat-row class="mat-list-item" *matRowDef="let row; columns: columnNames"
-        [ngClass]="row | viCdkTableRowClassName: rows : selectedRows" [ngStyle]="row | viCdkTableRowStyleName: rows : selectedRows"
-        (click)="rowClicked.emit(row)"></mat-row>
+    <mat-row
+        class="mat-list-item"
+        *matRowDef="let row; columns: columnNames"
+        [ngClass]="row | viCdkTableRowClassName: rows:selectedRows"
+        [ngStyle]="row | viCdkTableRowStyleName: rows:selectedRows"
+        (click)="rowClicked.emit(row)"
+    ></mat-row>
 
+    <p class="p-3 flex-shrink-0 text-center mouse-inactive" [vi-translate]="settings?.noDataId" *matNoDataRow></p>
 </mat-table>
 
-<p class="p-3 text-center mouse-inactive" *ngIf="!table?.isLoading && table?.length === 0" [innerHTML]="settings?.noDataId | viTranslate"></p>
-
-<mat-progress-bar class="flex-shrink-0 border transparent" mode="indeterminate" *ngIf="table?.isLoading"
-    style="margin-bottom: -1px;"></mat-progress-bar>
+<mat-progress-bar class="flex-shrink-0 border transparent" [mode]="table?.isLoading ? 'indeterminate' : 'determinate'"></mat-progress-bar>

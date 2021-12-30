@@ -6,10 +6,10 @@ import { LanguageService } from '@ts-core/frontend/language';
 import { LanguageModule } from '../language/LanguageModule';
 import { BottomSheetService } from './BottomSheetService';
 import { MatBottomSheet, MatBottomSheetModule } from '@angular/material/bottom-sheet';
-// import { WindowQuestionComponent } from '../window/component/window-question/window-question.component';
+import { BottomSheetCloseElementComponent } from './component/bottom-sheet-close-element/bottom-sheet-close-element.component';
 
 const IMPORTS = [CommonModule, FormsModule, MatBottomSheetModule, MatButtonModule, LanguageModule];
-const ENTRY_COMPONENTS = [];
+const ENTRY_COMPONENTS = [BottomSheetCloseElementComponent];
 const DECLARATIONS = [...ENTRY_COMPONENTS];
 
 const EXPORTS = [...DECLARATIONS];

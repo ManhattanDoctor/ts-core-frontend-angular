@@ -1,7 +1,8 @@
 import * as _ from 'lodash';
 import { CdkTableBaseComponent } from '../CdkTableBaseComponent';
 import { CdkTableFilterableMapCollection } from '../CdkTableFilterableMapCollection';
-import { Component } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
+import { ViewUtil } from '../../../util/ViewUtil';
 
 @Component({
     selector: 'vi-cdk-table-filterable',
@@ -14,7 +15,8 @@ export class CdkTableFilterableComponent<U = any, V = any> extends CdkTableBaseC
     //
     // --------------------------------------------------------------------------
 
-    constructor() {
+    constructor(container: ViewContainerRef) {
         super();
+        ViewUtil.addClasses(container, 'd-flex flex-column scroll-no');
     }
 }

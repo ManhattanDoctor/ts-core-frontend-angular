@@ -42,7 +42,7 @@ export class NotificationComponent extends NotificationQuestionBaseComponent {
             this.data.checkText = this.language.translate(this.data.options.checkTextId);
         }
         if (this.language.isHasTranslation(this.data.options.closeTextId)) {
-            this.data.closeText = this.languaSHge.translate(this.data.options.closeTextId);
+            this.data.closeText = this.language.translate(this.data.options.closeTextId);
         }
     }
 

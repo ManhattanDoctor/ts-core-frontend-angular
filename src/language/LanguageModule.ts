@@ -12,6 +12,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { LanguagePipeHas } from './LanguagePipeHas';
 import { LanguagePipeHasPure } from './LanguagePipeHasPure';
 import { LanguageHasDirective } from './LanguageHasDirective';
+import * as _ from 'lodash';
 
 @NgModule({
     imports: [CookieModule],
@@ -54,7 +55,7 @@ export class LanguageModule {
 }
 
 export function languageServiceFactory(cookie: ICookieService, options?: ILanguageServiceOptions): LanguageService {
-    if (options && !options.service) {
+    if (!_.isNil(options) && _.isNil(options.service)) {
         options.service = cookie;
     }
     return new LanguageService(options);

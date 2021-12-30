@@ -43,7 +43,7 @@ export class ThemeModule {
 }
 
 export function themeServiceFactory(cookie: ICookieService, options?: IThemeServiceOptions): ThemeService {
-    if (!_.isNil(options) && !_.isNil(options.service)) {
+    if (!_.isNil(options) && _.isNil(options.service)) {
         options.service = cookie;
     }
     return new ThemeService(options);
