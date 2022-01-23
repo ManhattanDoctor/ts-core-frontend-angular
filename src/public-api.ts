@@ -142,6 +142,12 @@ export * from './theme/ThemeToggleDirective';
 export * from './user/IUser';
 export * from './user/UserBaseService';
 /* ======= */
+export * from './module/LazyModuleLoader';
+/* ======= */
+export * from './transport/TransportLazy';
+export * from './transport/TransportLazyModule';
+export * from './transport/TransportLazyModuleLoadedEvent';
+/* ======= */
 export * from './util/ViewUtil';
 export * from './VICommonModule';
 /* ======= */

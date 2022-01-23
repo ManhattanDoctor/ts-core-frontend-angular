@@ -1,6 +1,6 @@
 {
     "name": "@ts-core/angular",
-    "version": "11.0.85",
+    "version": "11.0.90",
     "description": "Modules for frontend based on angular",
     "main": "public-api.js",
     "author": {
@@ -21,8 +21,8 @@
         "@angular/platform-browser": "^11.2.14",
         "@angular/platform-browser-dynamic": "^11.2.14",
         "@angular/router": "^11.2.14",
-        "@ts-core/common": "^1.0.184",
-        "@ts-core/frontend": "^1.0.43",
+        "@ts-core/common": "^1.0.185",
+        "@ts-core/frontend": "^1.0.44",
         "@types/numeral": "0.0.25",
         "bootstrap": "^4.6.1",
         "css-element-queries": "1.2.0",

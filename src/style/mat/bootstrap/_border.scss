@@ -92,10 +92,13 @@
         border-top-left-radius: $border-radius !important;
         border-bottom-left-radius: $border-radius !important;
     }
+
+    .rounded-circle {
+        border-radius: 50% !important;
+    }
 }
 
 @mixin vi-mat-theme-bootstrap-border-mixin($infix, $width, $color) {
-
     // Transparent
     .border-transparent {
         border-width: $width;

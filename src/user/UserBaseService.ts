@@ -48,6 +48,7 @@ export abstract class UserBaseService<U extends IUser = any, V = void> {
     protected initializeUser(): void {
         this._user = this.createUser(this.login.loginData);
     }
+
     protected deinitializeUser(): void {
         this._user = null;
     }
@@ -70,15 +71,14 @@ export abstract class UserBaseService<U extends IUser = any, V = void> {
     //
     // --------------------------------------------------------------------------
 
-    public isUser(value: any): boolean {
-        if (!value || !this.user) {
+    public isUser(value: Partial<U> | UserUid): boolean {
+        if (_.isNil(value) || _.isNil(this.user)) {
             return false;
         }
-        if (value.hasOwnProperty('id')) {
-            return this.user.id === value.id;
+        if (_.isString(value) || _.isNumber(value)) {
+            return value === this.user.id;
         }
-
-        return this.user.id === value;
+        return value.id === this.user.id;
     }
 
     public userUpdate(data: any): void {

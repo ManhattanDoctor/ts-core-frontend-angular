@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { LoginBaseService } from './LoginBaseService';
+import { LoginRequireResolver } from './LoginRequireResolver';
 
 @Injectable({ providedIn: 'root' })
-export class LoginGuard implements CanActivate {
+export class LoginGuard extends LoginRequireResolver implements CanActivate {
     // --------------------------------------------------------------------------
     //
     // 	Constructor
     //
     // --------------------------------------------------------------------------
 
-    constructor(private login: LoginBaseService) {}
+    constructor(login: LoginBaseService) {
+        super(login);
+    }
 
     // --------------------------------------------------------------------------
     //
@@ -18,7 +21,7 @@ export class LoginGuard implements CanActivate {
     //
     // --------------------------------------------------------------------------
 
-    public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    public canActivate(): boolean {
         return this.login.isLoggedIn;
     }
 }

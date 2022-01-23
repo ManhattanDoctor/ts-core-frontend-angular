@@ -1,7 +1,6 @@
 import { ElementRef, HostListener, Input } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
-import { Assets } from '@ts-core/frontend/asset';
-import { Theme, ThemeService } from '@ts-core/frontend/theme';
+import { Theme, ThemeAssetService, ThemeService } from '@ts-core/frontend/theme';
 import * as _ from 'lodash';
 import { takeUntil } from 'rxjs/operators';
 import { ViewUtil } from '../util/ViewUtil';
@@ -21,6 +20,7 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
     protected _isVideo: boolean = false;
     protected _isSound: boolean = false;
     protected _isBackground: boolean = false;
+    protected _isIgnoreTheme: boolean = true;
 
     protected source: string;
     protected element: T;
@@ -33,7 +33,7 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
     //
     // --------------------------------------------------------------------------
 
-    constructor(element: ElementRef, protected theme: ThemeService) {
+    constructor(element: ElementRef, protected theme: ThemeService, protected themeAsset: ThemeAssetService) {
         super();
         this.element = ViewUtil.parseElement(element.nativeElement) as T;
 
@@ -54,21 +54,21 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
             return null;
         }
         if (this.isImage) {
-            return Assets.getImage(id, this.extension);
+            return this.themeAsset.getImage(id, this.extension, this.isIgnoreTheme);
         }
         if (this.isBackground) {
-            return Assets.getBackground(id, this.extension);
+            return this.themeAsset.getBackground(id, this.extension, this.isIgnoreTheme);
         }
         if (this.isSound) {
-            return Assets.getSound(id, this.extension);
+            return this.themeAsset.getSound(id, this.extension, this.isIgnoreTheme);
         }
         if (this.isVideo) {
-            return Assets.getVideo(id, this.extension);
+            return this.themeAsset.getVideo(id, this.extension, this.isIgnoreTheme);
         }
         if (this.isFile) {
-            return Assets.getFile(id, this.extension);
+            return this.themeAsset.getFile(id, this.extension, this.isIgnoreTheme);
         }
-        return Assets.getIcon(id, this.extension);
+        return this.themeAsset.getIcon(id, this.extension, this.isIgnoreTheme);
     }
 
     // --------------------------------------------------------------------------
@@ -87,7 +87,7 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
             return;
         }
         this.isTriedThemeDefault = true;
-        this.source = this.getSource(this.getDefaultSourceId(this.theme.theme));
+        this.source = this.getSource(this.getDefaultSourceId());
         this.commitSourceProperties();
     }
 
@@ -106,10 +106,8 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
         return !_.isNil(theme) ? this.name + _.capitalize(theme.name) : null;
     }
 
-    protected getDefaultSourceId(theme: Theme): string {
-        let value = this.name;
-        value += theme.isDark ? 'Dark' : 'Light';
-        return value;
+    protected getDefaultSourceId(): string {
+        return this.themeAsset.getName(this.name, this.isIgnoreTheme);
     }
 
     protected abstract commitSourceProperties(): void;
@@ -197,6 +195,18 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
     }
     public get isBackground(): boolean {
         return this._isBackground;
+    }
+
+    @Input()
+    public set isIgnoreTheme(value: boolean) {
+        if (value === this._isIgnoreTheme) {
+            return;
+        }
+        this._isIgnoreTheme = value;
+        this.setSourceProperties();
+    }
+    public get isIgnoreTheme(): boolean {
+        return this._isIgnoreTheme;
     }
 
     public get name(): string {

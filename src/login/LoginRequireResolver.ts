@@ -17,7 +17,7 @@ export class LoginRequireResolver implements Resolve<void> {
     //
     // --------------------------------------------------------------------------
 
-    public resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<void> {
+    public resolve(): Promise<void> {
         if (this.login.isLoggedIn) {
             return Promise.resolve();
         }

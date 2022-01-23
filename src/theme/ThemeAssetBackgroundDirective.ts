@@ -1,5 +1,5 @@
 import { Directive, ElementRef } from '@angular/core';
-import { ThemeService } from '@ts-core/frontend/theme';
+import { ThemeAssetService, ThemeService } from '@ts-core/frontend/theme';
 import { ViewUtil } from '../util/ViewUtil';
 import { ThemeAssetDirective } from './ThemeAssetDirective';
 
@@ -13,8 +13,8 @@ export class ThemeAssetBackgroundDirective extends ThemeAssetDirective {
     //
     // --------------------------------------------------------------------------
 
-    constructor(element: ElementRef, theme: ThemeService) {
-        super(element, theme);
+    constructor(element: ElementRef, theme: ThemeService, themeAsset: ThemeAssetService) {
+        super(element, theme, themeAsset);
     }
 
     // --------------------------------------------------------------------------

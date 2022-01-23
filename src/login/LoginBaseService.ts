@@ -35,38 +35,7 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
     //
     // --------------------------------------------------------------------------
 
-    /*
-    protected async loginByParam(param?: any): Promise<void> {
-        if (this.isLoggedIn || this.isLoading) {
-            return;
-        }
-
-        this.status = LoadableStatus.LOADING;
-        this.observer.next(new ObservableData(LoadableEvent.STARTED));
-        this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_STARTED));
-
-        try {
-            this.parseLoginResponse(await this.loginRequest(param));
-            this.status = !this.isCanLoginWithSid() ? LoadableStatus.LOADED : LoadableStatus.LOADING;
-            if (this.isLoading) {
-                this.loginBySid();
-            }
-        } catch (error) {
-            error = ExtendedError.create(error);
-
-            this.status = LoadableStatus.ERROR;
-            this.parseLoginErrorResponse(error);
-            this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_ERROR, null, error));
-        }
-
-        if (!this.isLoading) {
-            this.observer.next(new ObservableData(LoadableEvent.FINISHED));
-            this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_FINISHED));
-        }
-    }
-    */
-
-    protected async loginByParam(param?: any): Promise<U> {
+    protected async loginByParam<T = any>(param?: T): Promise<U> {
         return this.loginByFunction(() => this.loginRequest(param));
     }
 
@@ -152,6 +121,8 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
 
     protected parseLoginErrorResponse(error: ExtendedError): void {}
 
+    protected parseLogoutErrorResponse(error: ExtendedError): void {}
+
     protected parseLoginSidResponse(response: V): void {
         this._loginData = response;
     }
@@ -170,8 +141,6 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
     // --------------------------------------------------------------------------
 
     public abstract login(param: any): void;
-
-    public abstract registration(param: any): void;
 
     public async loginByResponse(param: U): Promise<void> {
         if (this.isLoggedIn || this.isLoading) {
@@ -195,6 +164,7 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
         }
 
         if (!this.isLoggedIn && !this.isLoading) {
+            this.status = LoadableStatus.LOADING;
             this.observer.next(new ObservableData(LoadableEvent.STARTED));
             this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_STARTED));
             this.loginBySid();
@@ -202,7 +172,7 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
         return true;
     }
 
-    public logout(): void {
+    public async logout(): Promise<void> {
         if (!this.isLoggedIn) {
             return;
         }
@@ -210,13 +180,17 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
         this.observer.next(new ObservableData(LoadableEvent.STARTED));
         this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGOUT_STARTED));
 
-        this.logoutRequest();
-        this.reset();
-
-        this._isLoggedIn = false;
-        this.status = LoadableStatus.NOT_LOADED;
-        this.observer.next(new ObservableData(LoadableEvent.FINISHED));
-        this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGOUT_FINISHED));
+        try {
+            await this.logoutRequest();
+        } catch (error) {
+            this.parseLogoutErrorResponse(error);
+        } finally {
+            this.reset();
+            this._isLoggedIn = false;
+            this.status = LoadableStatus.NOT_LOADED;
+            this.observer.next(new ObservableData(LoadableEvent.FINISHED));
+            this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGOUT_FINISHED));
+        }
     }
 
     public isCanLoginWithSid(): boolean {
