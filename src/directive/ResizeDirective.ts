@@ -1,5 +1,5 @@
 import { Directive, ElementRef, EventEmitter, Input, Output } from '@angular/core';
-import { Interactable } from '@interactjs/types/types';
+import { Interactable } from '@interactjs/types';
 import * as interact from 'interactjs';
 import { Destroyable } from '@ts-core/common';
 import { ViewUtil } from '../util/ViewUtil';

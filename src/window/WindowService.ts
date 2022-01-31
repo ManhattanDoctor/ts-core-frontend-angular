@@ -67,9 +67,6 @@ export class WindowService extends Destroyable {
         this.language = language;
         this.observer = new Subject();
         this.properties = new PropertiesManager(cookies);
-
-        this.factory = new WindowFactory(WindowBaseComponent);
-        this.questionComponent = WindowQuestionComponent;
     }
 
     // --------------------------------------------------------------------------

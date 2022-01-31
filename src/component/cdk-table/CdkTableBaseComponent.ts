@@ -1,4 +1,4 @@
-import { EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Injectable, Input, Output } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import * as _ from 'lodash';
 import { ICdkTableRow } from './row/ICdkTableRow';
@@ -8,6 +8,7 @@ import { CdkTableFilterableMapCollection } from './CdkTableFilterableMapCollecti
 import { SortDirection } from '@angular/material/sort';
 import { FilterableDataSourceMapCollection } from '@ts-core/common/map/dataSource';
 
+@Component({ template: '' })
 export abstract class CdkTableBaseComponent<
     T extends CdkTablePaginableMapCollection<U, V> | CdkTableFilterableMapCollection<U, V>,
     U,
@@ -33,7 +34,7 @@ export abstract class CdkTableBaseComponent<
     @Output()
     public cellClicked: EventEmitter<ICdkTableCellEvent<U>>;
 
-    public sortActive: keyof U;
+    public sortActive: string;
     public sortDirection: SortDirection;
 
     // --------------------------------------------------------------------------
@@ -61,7 +62,7 @@ export abstract class CdkTableBaseComponent<
     protected commitTableProperties(): void {
         let sort = CdkTableFilterableMapCollection.getSort(this.table as FilterableDataSourceMapCollection<U, V>);
         if (!_.isNil(sort)) {
-            this.sortActive = sort.active;
+            this.sortActive = sort.active.toString();
             this.sortDirection = sort.direction;
         }
 
@@ -106,7 +107,7 @@ export abstract class CdkTableBaseComponent<
     //
     //--------------------------------------------------------------------------
 
-    public columnTrackBy(index: number, item: ICdkTableColumn<U>): keyof U {
+    public columnTrackBy(index: number, item: ICdkTableColumn<U>): string {
         return item.name;
     }
 
@@ -231,7 +232,7 @@ export abstract class CdkTableBaseComponent<
 
 export interface ICdkTableCellEvent<U> {
     data: U;
-    column: keyof U;
+    column: string;
 }
 
 export interface ICdkTableSettings<U> {

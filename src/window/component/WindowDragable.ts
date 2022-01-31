@@ -1,4 +1,4 @@
-import { DraggableOptions, InteractEvent } from '@interactjs/types/types';
+import { DraggableOptions, InteractEvent } from '@interactjs/types';
 import { ViewUtil } from '../../util/ViewUtil';
 import { WindowResizeable } from './WindowResizeable';
 

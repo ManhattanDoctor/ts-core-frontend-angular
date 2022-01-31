@@ -1,5 +1,4 @@
-import { Observable, Subject, Subscription } from 'rxjs';
-import { takeUntil } from 'rxjs/internal/operators';
+import { Observable, Subject, takeUntil, Subscription } from 'rxjs';
 import * as _ from 'lodash';
 import { DestroyableContainer } from '@ts-core/common';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';

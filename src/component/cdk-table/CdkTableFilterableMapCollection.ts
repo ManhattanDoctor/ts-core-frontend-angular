@@ -1,9 +1,8 @@
 import { CdkTableDataSource } from './CdkTableDataSource';
 import { FilterableDataSourceMapCollection } from '@ts-core/common/map/dataSource';
 import * as _ from 'lodash';
-import { SortData } from './CdkTablePaginableMapCollection';
 import { ObjectUtil } from '@ts-core/common/util';
-import { SortDirection } from '@angular/material/sort';
+import { Sort, SortDirection } from '@angular/material/sort';
 
 export abstract class CdkTableFilterableMapCollection<U, V> extends FilterableDataSourceMapCollection<U, V> {
     // --------------------------------------------------------------------------
@@ -12,16 +11,16 @@ export abstract class CdkTableFilterableMapCollection<U, V> extends FilterableDa
     //
     // --------------------------------------------------------------------------
 
-    public static getSort<U, V = any>(collection: FilterableDataSourceMapCollection<U, V>): SortData<U> {
+    public static getSort<U, V = any>(collection: FilterableDataSourceMapCollection<U, V>): Sort {
         if (_.isNil(collection) || _.isEmpty(collection.sort)) {
             return null;
         }
-        let active: keyof U = ObjectUtil.keys(collection.sort)[0];
+        let active = ObjectUtil.keys(collection.sort)[0].toString();
         let direction: SortDirection = collection.sort[active] ? 'asc' : 'desc';
         return { active, direction };
     }
 
-    public static applySortEvent<U, V = any>(item: FilterableDataSourceMapCollection<U, V>, event: SortData<U>): boolean {
+    public static applySortEvent<U, V = any>(item: FilterableDataSourceMapCollection<U, V>, event: Sort): boolean {
         let value = undefined;
         if (event.direction === 'asc') {
             value = true;
@@ -67,13 +66,13 @@ export abstract class CdkTableFilterableMapCollection<U, V> extends FilterableDa
     //
     // --------------------------------------------------------------------------
 
-    public sortEventHandler(event: SortData<U>): void {
+    public sortEventHandler(event: Sort): void {
         if (CdkTableFilterableMapCollection.applySortEvent(this, event)) {
             this.reload();
         }
     }
 
-    protected sortFunction(first: U, second: U, event: SortData<U>): number {
+    protected sortFunction(first: U, second: U, event: Sort): number {
         if (_.isEmpty(event.direction)) {
             return 0;
         }

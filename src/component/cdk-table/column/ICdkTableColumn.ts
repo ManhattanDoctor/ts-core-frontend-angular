@@ -1,5 +1,5 @@
 export interface ICdkTableColumn<U = any> {
-    name: keyof U;
+    name: string;
     format?: ICdkTableColumnValueFunction<U>;
     className?: ICdkTableColumnClassNameFunction<U> | string;
     styleName?: ICdkTableColumnStyleNameFunction<U>;

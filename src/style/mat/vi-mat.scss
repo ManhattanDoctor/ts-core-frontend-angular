@@ -447,7 +447,7 @@
     $thumb-color: rgba(0, 0, 0, 0.15);
 
     @if map-get($theme, is-dark) {
-        $thumb-color: rgba(255, 255, 255, 0.15);
+        $thumb-color: rgba(255, 255, 255, 0.10);
         .mat-drawer-backdrop.mat-drawer-shown {
             background-color: rgba(0, 0, 0, 0.8);
         }
@@ -466,3 +466,50 @@
         margin-top: 3px !important;
     }
 }
+
+/*--------------------------------------------------------------------------
+//
+//  Functions
+//
+//-------------------------------------------------------------------------*/
+
+@function vi-mat-theme-background-change($theme, $name, $value) {
+    $modified-theme: $theme;
+    $theme-color: map-get($theme, color);
+    $color-background-palette: map-get($theme-color, background);
+    @if $color-background-palette {
+        $color-background-palette: map-merge($color-background-palette, ($name: $value));
+    }
+    @if $color-background-palette {
+        $modified-theme: map-merge($modified-theme, (color: (background: $color-background-palette)));
+    }
+    $background-palette: map-get($theme, background);
+    @if $background-palette {
+        $background-palette: map-merge($background-palette,($name: $value));
+    }
+    @if $background-palette {
+        $modified-theme: map-merge($modified-theme,(background: $background-palette));
+    }
+    @return $modified-theme;
+}
+
+@function vi-mat-theme-foreground-change($theme, $name, $value) {
+    $modified-theme: $theme;
+    $theme-color: map-get($theme, color);
+    $color-foreground-palette: map-get($theme-color, foreground);
+    @if $color-foreground-palette {
+        $color-foreground-palette: map-merge($color-foreground-palette, ($name: $value));
+    }
+    @if $color-foreground-palette {
+        $modified-theme: map-merge($modified-theme, (color: (foreground: $color-foreground-palette)));
+    }
+    $foreground-palette: map-get($theme, foreground);
+    @if $foreground-palette {
+        $foreground-palette: map-merge($foreground-palette,($name: $value));
+    }
+    @if $foreground-palette {
+        $modified-theme: map-merge($modified-theme,(foreground: $foreground-palette));
+    }
+    @return $modified-theme;
+}
+

@@ -1,4 +1,4 @@
-import { EdgeOptions, Interactable, InteractEvent, ResizableOptions } from '@interactjs/types/types';
+import { EdgeOptions, Interactable, InteractEvent, ResizableOptions } from '@interactjs/types';
 import * as interact from 'interactjs';
 import { ViewUtil } from '../../util/ViewUtil';
 import { WindowImpl } from '../WindowImpl';

@@ -1,6 +1,5 @@
 import { MatDialogRef } from '@angular/material/dialog';
-import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/internal/operators';
+import { Observable, Subject, filter, takeUntil } from 'rxjs';
 import { ViewUtil } from '../util/ViewUtil';
 import { WindowEvent } from '../window/IWindow';
 import { WindowBase } from '../window/WindowBase';

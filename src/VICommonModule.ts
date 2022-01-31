@@ -17,6 +17,7 @@ import { SelectOnFocusDirective } from './directive/SelectOnFocusDirective';
 import { HTMLContentTitleDirective } from './directive/HTMLContentTitleDirective';
 import { InfiniteScrollDirective } from './directive/InfiniteScrollDirective';
 import { ResizeDirective } from './directive/ResizeDirective';
+import { ScrollCheckDirective } from './directive/ScrollCheckDirective';
 import { ScrollDirective } from './directive/ScrollDirective';
 import { LanguageModule } from './language/LanguageModule';
 import { BottomSheetModule } from './bottomSheet/BottomSheetModule';
@@ -39,22 +40,24 @@ import { WindowModule } from './window/WindowModule';
 const IMPORTS = [CookieModule, ThemeModule, LanguageModule, AssetModule, WindowModule, NotificationModule];
 
 const DECLARATIONS = [
-    NgModelErrorPipe,
     TimePipe,
     FinancePipe,
-    MomentDateAdaptivePipe,
-    MomentDatePipe,
-    MomentTimePipe,
-    MomentDateFromNowPipe,
     SanitizePipe,
     TruncatePipe,
     PrettifyPipe,
     CamelCasePipe,
     StartCasePipe,
+    NgModelErrorPipe,
+
+    MomentDatePipe,
+    MomentTimePipe,
+    MomentDateFromNowPipe,
+    MomentDateAdaptivePipe,
 
     FocusDirective,
     ResizeDirective,
     ScrollDirective,
+    ScrollCheckDirective,
     ClickToCopyDirective,
     SelectOnFocusDirective,
     ClickToSelectDirective,
@@ -103,8 +106,8 @@ export class IVICommonOptions extends ICookieOptions {
     languageOptions?: ILanguageServiceOptions;
 }
 
-export function loggerServiceFactory(options?: IVICommonOptions): ILogger {
-    return new DefaultLogger(options && !_.isNil(options.loggerLevel) ? options.loggerLevel : LoggerLevel.LOG);
+export function loggerServiceFactory(options: IVICommonOptions): ILogger {
+    return new DefaultLogger(!_.isNil(options.loggerLevel) ? options.loggerLevel : LoggerLevel.LOG);
 }
 
-export const VI_ANGULAR_OPTIONS = new InjectionToken<IThemeServiceOptions>(`VI_ANGULAR_OPTIONS`);
+export const VI_ANGULAR_OPTIONS = new InjectionToken<IVICommonOptions>(`VI_ANGULAR_OPTIONS`);

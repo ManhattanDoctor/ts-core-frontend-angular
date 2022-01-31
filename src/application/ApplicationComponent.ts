@@ -1,5 +1,4 @@
 import { Renderer2 } from '@angular/core';
-import { DateAdapter } from '@angular/material/core';
 import { LoadableEvent } from '@ts-core/common';
 import { Assets } from '@ts-core/frontend/asset';
 import { Language } from '@ts-core/language';
@@ -29,9 +28,10 @@ export abstract class ApplicationComponent<T extends SettingsBaseService> extend
     // --------------------------------------------------------------------------
 
     protected initialize(): void {
-        ViewUtil.initialize(this.renderer);
-        this.settings.initialize(this.config, this.routerParams);
         Assets.initialize(this.settings.assetsUrl);
+        ViewUtil.initialize(this.renderer);
+
+        // Theme
         this.theme.initialize(this.settings.themes);
 
         // Language
@@ -64,6 +64,8 @@ export abstract class ApplicationComponent<T extends SettingsBaseService> extend
         this.checkReady();
     }
 
+    protected abstract languageLoadingError(item: Language, error: Error): void;
+
     protected viewReadyHandler(): void {
         this.initialize();
     }
@@ -71,21 +73,7 @@ export abstract class ApplicationComponent<T extends SettingsBaseService> extend
     protected setLocale(item: Language): void {
         moment.locale(item.locale);
         numeral.locale(item.locale);
-        if (!_.isNil(this.dateAdapter)) {
-            this.dateAdapter.setLocale(item.locale);
-        }
     }
-
-    protected abstract languageLoadingError(item: Language, error: Error): void;
-
-    // --------------------------------------------------------------------------
-    //
-    // 	Protected Properties
-    //
-    // --------------------------------------------------------------------------
-
-    protected abstract get config(): any;
-    protected abstract get routerParams(): any;
 
     // --------------------------------------------------------------------------
     //
@@ -98,5 +86,4 @@ export abstract class ApplicationComponent<T extends SettingsBaseService> extend
     protected abstract get theme(): ThemeService;
     protected abstract get language(): LanguageService;
     protected abstract get renderer(): Renderer2;
-    protected abstract get dateAdapter(): DateAdapter<any>;
 }

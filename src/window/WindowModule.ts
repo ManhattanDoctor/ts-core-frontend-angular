@@ -13,6 +13,8 @@ import { WindowCloseElementComponent } from './component/window-close-element/wi
 import { WindowResizeElementComponent } from './component/window-resize-element/window-resize-element.component';
 import { WindowMinimizeElementComponent } from './component/window-minimize-element/window-minimize-element.component';
 import { MatButtonModule } from '@angular/material/button';
+import { WindowFactory } from './WindowFactory';
+import { WindowBaseComponent } from './component/WindowBaseComponent';
 
 const IMPORTS = [CommonModule, FormsModule, MatButtonModule, MatDialogModule, CookieModule, LanguageModule];
 const ENTRY_COMPONENTS = [WindowQuestionComponent, WindowCloseElementComponent, WindowResizeElementComponent, WindowMinimizeElementComponent];
@@ -38,9 +40,16 @@ export class WindowModule {
                 {
                     provide: WindowService,
                     deps: [MatDialog, LanguageService, CookieService],
-                    useClass: WindowService
+                    useFactory: windowServiceFactory
                 }
             ]
         };
     }
+}
+
+export function windowServiceFactory(dialog: MatDialog, language: LanguageService, cookies: CookieService): WindowService {
+    let item = new WindowService(dialog, language, cookies);
+    item.factory = new WindowFactory(WindowBaseComponent);
+    item.questionComponent = WindowQuestionComponent;
+    return item;
 }

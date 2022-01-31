@@ -30,7 +30,9 @@ export class AutoScrollBottomDirective extends InfiniteScrollDirective {
     // --------------------------------------------------------------------------
 
     protected initialize(): void {
-        if (!this._scrollValue) this._scrollValue = this.scrollHeight;
+        if (!this._scrollValue) {
+            this._scrollValue = this.scrollHeight;
+        }
         super.initialize();
     }
 
@@ -63,7 +65,9 @@ export class AutoScrollBottomDirective extends InfiniteScrollDirective {
 
     protected scrollChangedHandler() {
         super.scrollChangedHandler();
-        if (!this.isInitialized || this.isScrollLocked) return;
+        if (!this.isInitialized || this.isScrollLocked) {
+            return;
+        }
 
         let value = this.scrollTop;
         let bottomValue = value + this.clientHeight + this.elementHeight;
@@ -71,7 +75,9 @@ export class AutoScrollBottomDirective extends InfiniteScrollDirective {
         this.isNeedScroll = bottomValue >= this.scrollHeight;
         this.isNeedRemainScroll = value <= this.elementHeight;
 
-        if (this.isNeedRemainScroll) this.lastScrollHeight = this.scrollHeight;
+        if (this.isNeedRemainScroll) {
+            this.lastScrollHeight = this.scrollHeight;
+        }
     }
 
     // --------------------------------------------------------------------------

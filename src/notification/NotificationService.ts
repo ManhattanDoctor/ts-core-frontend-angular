@@ -10,8 +10,6 @@ import { IQuestion, IQuestionOptions, QuestionMode } from '../question/IQuestion
 import { QuestionManager } from '../question/QuestionManager';
 import { WindowEvent } from '../window/IWindow';
 import { WindowAlign } from '../window/WindowConfig';
-import { NotificationComponent } from './component/notification/notification.component';
-import { NotificationBaseComponent } from './component/NotificationBaseComponent';
 import { INotification, NotificationEvent } from './INotification';
 import { INotificationContent } from './INotificationContent';
 import { NotificationConfig, NotificationConfigOptions } from './NotificationConfig';
@@ -63,9 +61,6 @@ export class NotificationService {
         this.dialog = dialog;
         this.language = language;
         this.observer = new Subject();
-
-        this.factory = new NotificationFactory(NotificationBaseComponent);
-        this.questionComponent = NotificationComponent;
     }
 
     // --------------------------------------------------------------------------

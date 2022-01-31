@@ -1,8 +1,9 @@
-import { AfterViewInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, Injectable, Optional } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import { PromiseHandler } from '@ts-core/common/promise';
 import * as _ from 'lodash';
 
+@Component({ template: '' })
 export abstract class ApplicationBaseComponent extends DestroyableContainer implements AfterViewInit {
     // --------------------------------------------------------------------------
     //
@@ -10,10 +11,11 @@ export abstract class ApplicationBaseComponent extends DestroyableContainer impl
     //
     // --------------------------------------------------------------------------
 
-    private timeout: any;
-    private isReadyAlreadyCalled: boolean;
+    protected timeout: any;
+    protected isReadyAlreadyCalled: boolean;
 
-    private viewReadyPromise: PromiseHandler<void, void>;
+    protected viewReadyDelay: number = NaN;
+    protected viewReadyPromise: PromiseHandler<void, void>;
 
     // --------------------------------------------------------------------------
     //
@@ -21,7 +23,7 @@ export abstract class ApplicationBaseComponent extends DestroyableContainer impl
     //
     // --------------------------------------------------------------------------
 
-    constructor(private viewReadyDelay: number = NaN) {
+    constructor() {
         super();
         this.viewReadyPromise = PromiseHandler.create();
     }

@@ -58,11 +58,11 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
                 this.loginBySid();
             }
         } catch (error) {
-            error = ExtendedError.create(error);
+            let extendedError = ExtendedError.create(error as any);
 
             this.status = LoadableStatus.ERROR;
-            this.parseLoginErrorResponse(error);
-            this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_ERROR, null, error));
+            this.parseLoginErrorResponse(extendedError);
+            this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_ERROR, null, extendedError));
         }
 
         if (!this.isLoading) {
@@ -86,13 +86,13 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
             this.observer.next(new ObservableData(LoadableEvent.COMPLETE, response));
             this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_COMPLETE, response));
         } catch (error) {
-            error = ExtendedError.create(error);
-            this.parseLoginSidErrorResponse(error);
+            let extendedError = ExtendedError.create(error as any);
+            this.parseLoginSidErrorResponse(extendedError);
 
             this._isLoggedIn = false;
             this.status = LoadableStatus.ERROR;
-            this.observer.next(new ObservableData(LoadableEvent.ERROR, null, error));
-            this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_ERROR, null, error));
+            this.observer.next(new ObservableData(LoadableEvent.ERROR, null, extendedError));
+            this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_ERROR, null, extendedError));
         }
 
         this.observer.next(new ObservableData(LoadableEvent.FINISHED));
@@ -183,7 +183,8 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
         try {
             await this.logoutRequest();
         } catch (error) {
-            this.parseLogoutErrorResponse(error);
+            let extendedError = ExtendedError.create(error as any);
+            this.parseLogoutErrorResponse(extendedError);
         } finally {
             this.reset();
             this._isLoggedIn = false;

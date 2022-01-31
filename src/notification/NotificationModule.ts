@@ -5,7 +5,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { LanguageService } from '@ts-core/frontend/language';
 import { LanguageModule } from '../language/LanguageModule';
+import { NotificationBaseComponent } from './component/NotificationBaseComponent';
 import { NotificationComponent } from './component/notification/notification.component';
+import { NotificationFactory } from './NotificationFactory';
 import { NotificationService } from './NotificationService';
 
 const IMPORTS = [CommonModule, FormsModule, MatDialogModule, MatButtonModule, LanguageModule];
@@ -32,9 +34,16 @@ export class NotificationModule {
                 {
                     provide: NotificationService,
                     deps: [MatDialog, LanguageService],
-                    useClass: NotificationService
+                    useFactory: notificationServiceFactory
                 }
             ]
         };
     }
+}
+
+export function notificationServiceFactory(dialog: MatDialog, language: LanguageService): NotificationService {
+    let item = new NotificationService(dialog, language);
+    item.factory = new NotificationFactory(NotificationBaseComponent);
+    item.questionComponent = NotificationComponent;
+    return item;
 }

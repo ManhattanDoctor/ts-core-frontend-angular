@@ -1,6 +1,6 @@
 import { CdkTableDataSource } from './CdkTableDataSource';
 import { PaginableDataSourceMapCollection } from '@ts-core/common/map/dataSource';
-import { SortDirection } from '@angular/material/sort';
+import { Sort, SortDirection } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator';
 import * as _ from 'lodash';
 import { CdkTableFilterableMapCollection } from './CdkTableFilterableMapCollection';
@@ -35,7 +35,7 @@ export abstract class CdkTablePaginableMapCollection<U, V> extends PaginableData
     //
     // --------------------------------------------------------------------------
 
-    public sortEventHandler(event: SortData<U>): void {
+    public sortEventHandler(event: Sort): void {
         if (CdkTableFilterableMapCollection.applySortEvent(this, event)) {
             this.load();
         }
@@ -74,9 +74,4 @@ export abstract class CdkTablePaginableMapCollection<U, V> extends PaginableData
     public get table(): CdkTableDataSource<U> {
         return this._table;
     }
-}
-
-export interface SortData<U> {
-    active: keyof U;
-    direction: SortDirection;
 }

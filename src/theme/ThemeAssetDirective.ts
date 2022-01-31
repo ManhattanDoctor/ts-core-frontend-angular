@@ -1,10 +1,11 @@
-import { ElementRef, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Injectable, Input } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
 import { Theme, ThemeAssetService, ThemeService } from '@ts-core/frontend/theme';
 import * as _ from 'lodash';
 import { takeUntil } from 'rxjs/operators';
 import { ViewUtil } from '../util/ViewUtil';
 
+@Directive()
 export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> extends Destroyable {
     // --------------------------------------------------------------------------
     //

@@ -18,16 +18,17 @@
         "strict": true,
         "strictFunctionTypes": false,
         "noImplicitAny": false,
-        "strictNullChecks":false,
+        "strictNullChecks": false,
         "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
+        "noFallthroughCasesInSwitch": true
     },
     "angularCompilerOptions": {
         "enableI18nLegacyMessageIdFormat": false,
         "strictInputAccessModifiers": true,
         "strictTemplates": true,
 
-        "enableIvy": false,
+        "enableIvy": true,
+        "compilationMode": "partial",
         "skipTemplateCodegen": true,
         "strictMetadataEmit": true,
         "enableResourceInlining": true,

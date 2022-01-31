@@ -23,8 +23,6 @@ export class ScrollDirective extends Destroyable {
 
     @Output()
     public scrolled: EventEmitter<number> = new EventEmitter();
-    @Input()
-    public delay: number = 100;
 
     private timer: any;
     protected element: HTMLElement;
@@ -69,26 +67,18 @@ export class ScrollDirective extends Destroyable {
     // --------------------------------------------------------------------------
 
     @HostListener('scroll')
-    private scrollHandler() {
-        if (!this.isInitialized) {
-            return;
+    public scrollHandler() {
+        if (this.isInitialized) {
+            this.scrollChangedHandler();
         }
-        clearTimeout(this.timer);
-        this.timer = setTimeout(this.scrollChanged, this.delay);
     }
-
-    private scrollChanged = (): void => {
-        this.scrollChangedHandler();
-    };
 
     protected scrollChangedHandler(): void {
         this._scrollValue = this.scrollTop;
         this.scrolled.next(this._scrollValue);
     }
 
-    protected initializeHandler = (): void => {
-        this.initialize();
-    };
+    protected initializeHandler = (): void => this.initialize();
 
     // --------------------------------------------------------------------------
     //

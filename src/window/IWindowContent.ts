@@ -1,10 +1,11 @@
-import { AfterViewInit, ElementRef, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, ElementRef, Injectable, ViewContainerRef, Inject, Optional, Component, InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DestroyableContainer } from '@ts-core/common';
 import { IWindow, WindowEvent } from './IWindow';
 import { WindowConfig } from './WindowConfig';
 import * as _ from 'lodash';
 
+@Component({ template: '' })
 export abstract class IWindowContent<T = any> extends DestroyableContainer implements AfterViewInit {
     // --------------------------------------------------------------------------
     //
@@ -20,7 +21,7 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
     //
     // --------------------------------------------------------------------------
 
-    constructor(public container: WindowContentContainer) {
+    constructor(@Optional() @Inject(WINDOW_CONTENT_CONTAINER) public container: WindowContentContainer) {
         super();
     }
 
@@ -148,3 +149,4 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
 }
 
 export type WindowContentContainer = ElementRef | ViewContainerRef;
+export const WINDOW_CONTENT_CONTAINER = new InjectionToken<WindowContentContainer>('WINDOW_CONTENT_CONTAINER');
