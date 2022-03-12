@@ -36,6 +36,7 @@ import { TruncatePipe } from './pipe/TruncatePipe';
 import { PrettifyPipe } from './pipe/PrettifyPipe';
 import { ThemeModule } from './theme/ThemeModule';
 import { WindowModule } from './window/WindowModule';
+import { MenuTriggerForDirective } from './directive/MenuTriggerForDirective';
 
 const IMPORTS = [CookieModule, ThemeModule, LanguageModule, AssetModule, WindowModule, NotificationModule];
 
@@ -61,6 +62,7 @@ const DECLARATIONS = [
     ClickToCopyDirective,
     SelectOnFocusDirective,
     ClickToSelectDirective,
+    MenuTriggerForDirective,
     InfiniteScrollDirective,
     HTMLContentTitleDirective,
     AutoScrollBottomDirective,

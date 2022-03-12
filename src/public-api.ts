@@ -41,6 +41,7 @@ export * from './component/cdk-table/column/CdkTableColumnStyleNamePipe';
 export * from './component/cdk-table/CdkTableBaseComponent';
 export * from './component/cdk-table/cdk-table-paginable/cdk-table-paginable.component';
 export * from './component/cdk-table/cdk-table-filterable/cdk-table-filterable.component';
+export * from './component/cdk-table/cdk-table-paginable-bookmark/cdk-table-paginable-bookmark.component';
 
 /* ======= */
 export * from './cookie/CookieModule';
@@ -57,6 +58,7 @@ export * from './directive/InfiniteScrollDirective';
 export * from './directive/ResizeDirective';
 export * from './directive/ScrollDirective';
 export * from './directive/ScrollCheckDirective';
+export * from './directive/MenuTriggerForDirective';
 export * from './directive/HTMLContentTitleDirective';
 /* ======= */
 export * from './form/FormElementAsync';
@@ -74,11 +76,12 @@ export * from './language/LanguageRequireResolver';
 export * from './language/LanguageDirective';
 export * from './language/LanguageHasDirective';
 /* ======= */
-export * from './login/LoginBaseService';
 export * from './login/LoginGuard';
-export * from './login/LoginRedirectResolver';
-export * from './login/LoginRequireResolver';
+export * from './login/LoginIfCanGuard';
+export * from './login/LoginNotGuard';
 export * from './login/LoginResolver';
+export * from './login/LoginBaseService';
+export * from './login/LoginRequireResolver';
 /* ======= */
 export * from './manager/FocusManager';
 export * from './manager/ResizeManager';

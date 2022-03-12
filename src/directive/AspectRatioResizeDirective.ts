@@ -1,6 +1,7 @@
 import { AfterViewInit, Directive, ElementRef, Input } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import * as _ from 'lodash';
+import { debounceTime, takeUntil } from 'rxjs';
 import { ResizeManager } from '../manager/ResizeManager';
 import { ViewUtil } from '../util/ViewUtil';
 
@@ -63,8 +64,10 @@ export class AspectRatioResizeDirective extends DestroyableContainer implements 
     // --------------------------------------------------------------------------
 
     public ngAfterViewInit(): void {
-        this.sensor = new ResizeManager(this.element, this.commitResizeProperties, AspectRatioResizeDirective.UPDATE_DELAY);
-
+        this.sensor = new ResizeManager(this.element);
+        this.sensor.changed
+            .pipe(debounceTime(AspectRatioResizeDirective.UPDATE_DELAY), takeUntil(this.destroyed))
+            .subscribe(() => this.commitResizeProperties());
         if (_.isNaN(this.ratio)) {
             this.ratio = 4 / 3;
         }

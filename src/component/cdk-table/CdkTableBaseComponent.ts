@@ -7,10 +7,11 @@ import { CdkTablePaginableMapCollection } from './CdkTablePaginableMapCollection
 import { CdkTableFilterableMapCollection } from './CdkTableFilterableMapCollection';
 import { SortDirection } from '@angular/material/sort';
 import { FilterableDataSourceMapCollection } from '@ts-core/common/map/dataSource';
+import { CdkTablePaginableBookmarkMapCollection } from './CdkTablePaginableBookmarkMapCollection';
 
 @Component({ template: '' })
 export abstract class CdkTableBaseComponent<
-    T extends CdkTablePaginableMapCollection<U, V> | CdkTableFilterableMapCollection<U, V>,
+    T extends CdkTablePaginableMapCollection<U, V> | CdkTableFilterableMapCollection<U, V> | CdkTablePaginableBookmarkMapCollection<U, V>,
     U,
     V
 > extends DestroyableContainer {
@@ -30,7 +31,7 @@ export abstract class CdkTableBaseComponent<
     protected _selectedRows: Array<U>;
 
     @Output()
-    public rowClicked: EventEmitter<U>;
+    public rowClicked: EventEmitter<ICdkTableRowEvent<U>>;
     @Output()
     public cellClicked: EventEmitter<ICdkTableCellEvent<U>>;
 
@@ -136,8 +137,12 @@ export abstract class CdkTableBaseComponent<
     //
     //--------------------------------------------------------------------------
 
-    public cellClickHandler(item: U, column: ICdkTableColumn<U>): void {
-        this.cellClicked.emit({ data: item, column: column.name });
+    public rowClickHandler(item: U, event: MouseEvent): void {
+        this.rowClicked.emit({ data: item, event });
+    }
+
+    public cellClickHandler(item: U, column: ICdkTableColumn<U>, event: MouseEvent): void {
+        this.cellClicked.emit({ data: item, column: column.name, event });
     }
 
     // --------------------------------------------------------------------------
@@ -230,8 +235,12 @@ export abstract class CdkTableBaseComponent<
     }
 }
 
-export interface ICdkTableCellEvent<U> {
+export interface ICdkTableRowEvent<U> {
     data: U;
+    event: MouseEvent;
+}
+
+export interface ICdkTableCellEvent<U> extends ICdkTableRowEvent<U> {
     column: string;
 }
 

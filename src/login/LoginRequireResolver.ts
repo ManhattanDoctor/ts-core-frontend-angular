@@ -1,15 +1,15 @@
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { Resolve } from '@angular/router';
 import { LoginBaseService, LoginBaseServiceEvent } from './LoginBaseService';
 import { PromiseHandler } from '@ts-core/common/promise';
 
-export class LoginRequireResolver implements Resolve<void> {
+export class LoginRequireResolver<T extends LoginBaseService = LoginBaseService> implements Resolve<void> {
     // --------------------------------------------------------------------------
     //
     // 	Constructor
     //
     // --------------------------------------------------------------------------
 
-    constructor(protected login: LoginBaseService) {}
+    constructor(protected login: T) {}
 
     // --------------------------------------------------------------------------
     //
@@ -18,7 +18,7 @@ export class LoginRequireResolver implements Resolve<void> {
     // --------------------------------------------------------------------------
 
     public resolve(): Promise<void> {
-        if (this.login.isLoggedIn) {
+        if (this.isLoggedIn()) {
             return Promise.resolve();
         }
 
@@ -33,5 +33,9 @@ export class LoginRequireResolver implements Resolve<void> {
             }
         });
         return promise.promise;
+    }
+
+    public isLoggedIn(): boolean {
+        return this.login.isLoggedIn;
     }
 }

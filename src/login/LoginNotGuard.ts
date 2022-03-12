@@ -6,14 +6,14 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class LoginGuard<T extends LoginBaseService = LoginBaseService> extends LoginRequireResolver<T> implements CanActivate {
+export class LoginNotGuard<T extends LoginBaseService = LoginBaseService> extends LoginRequireResolver<T> implements CanActivate {
     // --------------------------------------------------------------------------
     //
     // 	Properties
     //
     // --------------------------------------------------------------------------
 
-    public static redirectUrl: string = '/login';
+    public static redirectUrl: string = '/';
 
     // --------------------------------------------------------------------------
     //
@@ -35,6 +35,6 @@ export class LoginGuard<T extends LoginBaseService = LoginBaseService> extends L
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        return this.isLoggedIn() ? true : this.router.parseUrl(LoginGuard.redirectUrl);
+        return !this.isLoggedIn() ? true : this.router.parseUrl(LoginNotGuard.redirectUrl);
     }
 }

@@ -2,14 +2,14 @@
     <mat-select [(ngModel)]="language.language">
         <mat-select-trigger>
             <div class="d-flex text-one-line align-items-center">
-                <img class="mr-2 flex-shrink-0" style="height: 22px; width: 24px" [src]="language.language?.locale + 'Language' | viAssetIcon:'svg'" *ngIf="isNeedIcon">
+                <img class="mr-2 me-2 flex-shrink-0" style="height: 22px; width: 24px" [src]="language.language?.locale + 'Language' | viAssetIcon:'svg'" *ngIf="isNeedIcon">
                 <p class="text-one-line mouse-inactive flex-grow-1" [innerHTML]="language.language?.name" *ngIf="isNeedLabel"></p>
             </div>
         </mat-select-trigger>
     
         <mat-option *ngFor="let item of language.languages?.collection" [value]="item">
             <div class="d-flex text-one-line align-items-center">
-                <img class="mr-2 flex-shrink-0" style="width: 24px" [src]="item.locale + 'Language' | viAssetIcon:'svg'">
+                <img class="mr-2 me-2 flex-shrink-0" style="width: 24px" [src]="item.locale + 'Language' | viAssetIcon:'svg'">
                 <p class="text-one-line mouse-inactive flex-grow-1" [innerHTML]="item.name"></p>
             </div>
         </mat-option>

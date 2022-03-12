@@ -1,5 +1,5 @@
 import { ElementRef, Renderer2, RendererStyleFlags2, ViewContainerRef } from '@angular/core';
-import { ObjectUtil } from '@ts-core/common/util';
+import { ExtendedError } from '@ts-core/common/error';
 import * as _ from 'lodash';
 
 export class ViewUtil {
@@ -9,7 +9,13 @@ export class ViewUtil {
     //
     // --------------------------------------------------------------------------
 
-    private static RENDERER: Renderer2 = null;
+    private static _renderer: Renderer2 = null;
+    private static get renderer(): Renderer2 {
+        if (_.isNil(ViewUtil._renderer)) {
+            throw new ExtendedError(`ViewUtil is not initialized: renderer in nil`);
+        }
+        return ViewUtil._renderer;
+    }
 
     // --------------------------------------------------------------------------
     //
@@ -30,7 +36,7 @@ export class ViewUtil {
     // --------------------------------------------------------------------------
 
     public static initialize(renderer: Renderer2): void {
-        ViewUtil.RENDERER = renderer;
+        ViewUtil._renderer = renderer;
     }
 
     public static parseElement(element: IViewElement): HTMLElement {
@@ -58,7 +64,8 @@ export class ViewUtil {
         return value;
     }
 
-    public static selectContent(container: HTMLElement, isNeedCopyToClipboard: boolean = false): void {
+    public static selectContent(container: IViewElement, isNeedCopyToClipboard: boolean = false): void {
+        container = ViewUtil.parseElement(container);
         if (container instanceof HTMLInputElement || container instanceof HTMLTextAreaElement) {
             let isWasDisabled = container.disabled;
             if (isWasDisabled) {
@@ -109,7 +116,7 @@ export class ViewUtil {
     // --------------------------------------------------------------------------
 
     public static createElement(name: string, className?: string, innerHTML?: string): any {
-        let element = ViewUtil.RENDERER.createElement(name);
+        let element = ViewUtil.renderer.createElement(name);
         if (!_.isNil(name)) {
             ViewUtil.setProperty(element, 'className', className);
         }
@@ -120,14 +127,14 @@ export class ViewUtil {
     }
 
     public static appendChild(parent: any, child: any): void {
-        if (!_.isNil(parent) && !_.isNil(child) && !_.isNil(ViewUtil.RENDERER)) {
-            ViewUtil.RENDERER.appendChild(parent, child);
+        if (!_.isNil(parent) && !_.isNil(child)) {
+            ViewUtil.renderer.appendChild(parent, child);
         }
     }
 
     public static removeChild(parent: any, child: any): void {
-        if (!_.isNil(parent) && !_.isNil(child) && !_.isNil(ViewUtil.RENDERER)) {
-            ViewUtil.RENDERER.removeChild(parent, child);
+        if (!_.isNil(parent) && !_.isNil(child)) {
+            ViewUtil.renderer.removeChild(parent, child);
         }
     }
 
@@ -155,7 +162,8 @@ export class ViewUtil {
         return window.innerHeight || document.body.clientHeight;
     }
 
-    public static getWidth(container: HTMLElement): number {
+    public static getWidth(container: IViewElement): number {
+        container = ViewUtil.parseElement(container);
         if (_.isNil(container)) {
             return NaN;
         }
@@ -169,24 +177,26 @@ export class ViewUtil {
         return value;
     }
 
-    public static setWidth(container: HTMLElement, value: number, isNeedCheckLimits: boolean): boolean {
+    public static setWidth(container: IViewElement, value: number, isNeedCheckLimits: boolean = false): boolean {
         if (_.isNil(container) || _.isNaN(value)) {
             return false;
         }
 
-        if (isNeedCheckLimits && (value < ViewUtil.getMinWidth(container) || value > ViewUtil.getMaxWidth(container) || value === ViewUtil.getWidth(container)))
+        if (
+            isNeedCheckLimits &&
+            (value < ViewUtil.getMinWidth(container) || value > ViewUtil.getMaxWidth(container) || value === ViewUtil.getWidth(container))
+        ) {
             return false;
+        }
 
-        container.style.width = '540px';
         ViewUtil.setStyle(container, 'width', value + 'px');
         return true;
     }
 
-    public static getMaxWidth(container: HTMLElement): number {
+    public static getMaxWidth(container: IViewElement): number {
         if (_.isNil(container)) {
             return NaN;
         }
-
         let value = parseFloat(ViewUtil.getStyle(container, 'maxWidth'));
         if (_.isNaN(value)) {
             value = Number.POSITIVE_INFINITY;
@@ -194,11 +204,10 @@ export class ViewUtil {
         return value;
     }
 
-    public static getMinWidth(container: HTMLElement): number {
+    public static getMinWidth(container: IViewElement): number {
         if (_.isNil(container)) {
             return NaN;
         }
-
         let value = parseFloat(ViewUtil.getStyle(container, 'minWidth'));
         if (_.isNaN(value)) {
             value = 0;
@@ -206,7 +215,8 @@ export class ViewUtil {
         return value;
     }
 
-    public static getHeight(container: HTMLElement): number {
+    public static getHeight(container: IViewElement): number {
+        container = ViewUtil.parseElement(container);
         if (_.isNil(container)) {
             return NaN;
         }
@@ -220,36 +230,33 @@ export class ViewUtil {
         }
         return value;
     }
-    public static setHeight(container: HTMLElement, value: number, isNeedCheckLimits: boolean): boolean {
+    public static setHeight(container: IViewElement, value: number, isNeedCheckLimits: boolean = false): boolean {
         if (_.isNil(container) || _.isNaN(value)) {
             return false;
         }
-
         if (
             isNeedCheckLimits &&
             (value < ViewUtil.getMinHeight(container) || value > ViewUtil.getMaxHeight(container) || value === ViewUtil.getHeight(container))
-        )
+        ) {
             return false;
-
+        }
         ViewUtil.setStyle(container, 'height', value + 'px');
         return true;
     }
-    public static getMaxHeight(container: HTMLElement): number {
+    public static getMaxHeight(container: IViewElement): number {
         if (_.isNil(container)) {
             return NaN;
         }
-
         let value = parseFloat(ViewUtil.getStyle(container, 'maxHeight'));
         if (_.isNaN(value)) {
             value = Number.POSITIVE_INFINITY;
         }
         return value;
     }
-    public static getMinHeight(container: HTMLElement): number {
+    public static getMinHeight(container: IViewElement): number {
         if (_.isNil(container)) {
             return NaN;
         }
-
         let value = parseFloat(ViewUtil.getStyle(container, 'minHeight'));
         if (isNaN(value)) {
             value = 0;
@@ -257,12 +264,12 @@ export class ViewUtil {
         return value;
     }
 
-    public static size(container: HTMLElement, width: number, height: number, isNeedCheckLimits: boolean): void {
+    public static size(container: IViewElement, width: number, height: number, isNeedCheckLimits: boolean): void {
         ViewUtil.setWidth(container, width, isNeedCheckLimits);
         ViewUtil.setHeight(container, height, isNeedCheckLimits);
     }
 
-    public static getX(container: HTMLElement): number {
+    public static getX(container: IViewElement): number {
         if (_.isNil(container)) {
             return NaN;
         }
@@ -270,26 +277,25 @@ export class ViewUtil {
         return _.isNaN(value) ? 0 : value;
     }
 
-    public static setX(container: HTMLElement, value: number): void {
+    public static setX(container: IViewElement, value: number): void {
         if (!_.isNil(container) && !_.isNaN(value)) {
             ViewUtil.setStyle(container, 'left', value + 'px');
         }
     }
 
-    public static getY(container: HTMLElement): number {
+    public static getY(container: IViewElement): number {
         if (_.isNil(container)) {
             return NaN;
         }
-
         let value = parseFloat(ViewUtil.getStyle(container, 'top'));
         return _.isNaN(value) ? 0 : value;
     }
-    public static setY(container: HTMLElement, value: number): void {
+    public static setY(container: IViewElement, value: number): void {
         if (!_.isNil(container) && !_.isNaN(value)) {
             ViewUtil.setStyle(container, 'top', value + 'px');
         }
     }
-    public static move(container: HTMLElement, x: number, y: number): void {
+    public static move(container: IViewElement, x: number, y: number): void {
         ViewUtil.setX(container, x);
         ViewUtil.setY(container, y);
     }
@@ -320,8 +326,8 @@ export class ViewUtil {
             return;
         }
         container = ViewUtil.parseElement(container);
-        if (!_.isNil(container) && !_.isNil(ViewUtil.RENDERER)) {
-            ViewUtil.RENDERER.addClass(container, name);
+        if (!_.isNil(container)) {
+            ViewUtil.renderer.addClass(container, name);
         }
     }
 
@@ -337,8 +343,8 @@ export class ViewUtil {
             return;
         }
         container = ViewUtil.parseElement(container);
-        if (!_.isNil(container) && !_.isNil(ViewUtil.RENDERER)) {
-            ViewUtil.RENDERER.removeClass(container, name);
+        if (!_.isNil(container)) {
+            ViewUtil.renderer.removeClass(container, name);
         }
     }
 
@@ -374,12 +380,14 @@ export class ViewUtil {
     }
 
     public static setProperty(container: IViewElement, name: string, value: any): void {
-        if (_.isNil(name)) {
+        container = ViewUtil.parseElement(container);
+        if (_.isNil(name) || _.isNil(container)) {
             return;
         }
-        container = ViewUtil.parseElement(container);
-        if (!_.isNil(container) && !_.isNil(ViewUtil.RENDERER)) {
-            ViewUtil.RENDERER.setProperty(container, name, value);
+        if (!_.isNil(value)) {
+            ViewUtil.renderer.setProperty(container, name, value);
+        } else {
+            ViewUtil.removeProperty(container, name);
         }
     }
 
@@ -388,55 +396,49 @@ export class ViewUtil {
     }
 
     public static removeAttribute(container: IViewElement, name: string): void {
-        if (_.isNil(name)) {
+        container = ViewUtil.parseElement(container);
+        if (_.isNil(name) || _.isNil(container)) {
             return;
         }
-        container = ViewUtil.parseElement(container);
-        if (!_.isNil(container) && !_.isNil(ViewUtil.RENDERER)) {
-            ViewUtil.RENDERER.removeAttribute(container, name);
-        }
+        ViewUtil.renderer.removeAttribute(container, name);
     }
 
     public static setAttribute(container: IViewElement, name: string, value: any): void {
-        if (_.isNil(name)) {
+        container = ViewUtil.parseElement(container);
+        if (_.isNil(name) || _.isNil(container)) {
             return;
         }
-        container = ViewUtil.parseElement(container);
-        if (!_.isNil(container) && !_.isNil(ViewUtil.RENDERER)) {
-            ViewUtil.RENDERER.setAttribute(container, name, value);
+        if (!_.isNil(value)) {
+            ViewUtil.renderer.setAttribute(container, name, value);
+        } else {
+            ViewUtil.removeAttribute(container, name);
         }
     }
 
     public static getStyle(container: IViewElement, name: string): any {
-        if (_.isNil(name)) {
+        container = ViewUtil.parseElement(container);
+        if (_.isNil(name) || _.isNil(container)) {
             return null;
         }
-        container = ViewUtil.parseElement(container);
-        return !_.isNil(container) ? container.style[name] : null;
+        return container.style[name];
     }
 
     public static setStyle(container: IViewElement, name: string, value: any, flags?: RendererStyleFlags2): void {
-        if (_.isNil(name)) {
-            return;
-        }
         container = ViewUtil.parseElement(container);
-        if (_.isNil(container) || _.isNil(ViewUtil.RENDERER)) {
+        if (_.isNil(name) || _.isNil(container)) {
             return;
         }
-
         if (value !== ViewUtil.getStyle(container, name)) {
-            ViewUtil.RENDERER.setStyle(container, name, value, flags);
+            ViewUtil.renderer.setStyle(container, name, value, flags);
         }
     }
 
     public static removeStyle(container: IViewElement, name: string, flags?: RendererStyleFlags2): void {
-        if (_.isNil(name)) {
+        container = ViewUtil.parseElement(container);
+        if (_.isNil(name) || _.isNil(container)) {
             return;
         }
-        container = ViewUtil.parseElement(container);
-        if (!_.isNil(container) && !_.isNil(ViewUtil.RENDERER)) {
-            ViewUtil.RENDERER.removeStyle(container, name, flags);
-        }
+        ViewUtil.renderer.removeStyle(container, name, flags);
     }
 
     // --------------------------------------------------------------------------
@@ -560,7 +562,8 @@ export class ViewUtil {
         video.remove();
     }
 
-    public static disposeVideos(container: HTMLElement): void {
+    public static disposeVideos(container: IViewElement): void {
+        container = ViewUtil.parseElement(container);
         for (let i = container.children.length - 1; i >= 0; i--) {
             let item = container.children.item(i);
             if (item instanceof HTMLVideoElement) {
@@ -575,7 +578,8 @@ export class ViewUtil {
     //
     // --------------------------------------------------------------------------
 
-    public static disposeObjects(container: HTMLElement, isIEBrowser?: boolean): void {
+    public static disposeObjects(container: IViewElement, isIEBrowser?: boolean): void {
+        container = ViewUtil.parseElement(container);
         for (let i = container.children.length - 1; i >= 0; i--) {
             let item = container.children.item(i);
             if (item instanceof HTMLObjectElement) {

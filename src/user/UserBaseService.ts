@@ -1,11 +1,11 @@
+import { DestroyableContainer } from '@ts-core/common';
 import { ObservableData } from '@ts-core/common/observer';
 import * as _ from 'lodash';
-import { Observable, Subject } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { Observable, takeUntil, Subject, filter, map } from 'rxjs';
 import { LoginBaseService, LoginBaseServiceEvent } from '../login/LoginBaseService';
 import { IUser, UserUid } from './IUser';
 
-export abstract class UserBaseService<U extends IUser = any, V = void> {
+export abstract class UserBaseService<U extends IUser = any, V = void> extends DestroyableContainer {
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -13,7 +13,7 @@ export abstract class UserBaseService<U extends IUser = any, V = void> {
     // --------------------------------------------------------------------------
 
     protected _user: U;
-    protected observer: Subject<ObservableData<V | UserBaseServiceEvent, U>>;
+    protected observer: Subject<ObservableData<V | UserBaseServiceEvent, U | Partial<U>>>;
 
     // --------------------------------------------------------------------------
     //
@@ -22,6 +22,7 @@ export abstract class UserBaseService<U extends IUser = any, V = void> {
     // --------------------------------------------------------------------------
 
     constructor(protected login: LoginBaseService) {
+        super();
         this.observer = new Subject();
     }
 
@@ -36,7 +37,7 @@ export abstract class UserBaseService<U extends IUser = any, V = void> {
             this.loginedHandler();
         }
 
-        this.login.events.subscribe(data => {
+        this.login.events.pipe(takeUntil(this.destroyed)).subscribe(data => {
             if (data.type === LoginBaseServiceEvent.LOGIN_COMPLETE) {
                 this.loginedHandler();
             } else if (data.type === LoginBaseServiceEvent.LOGOUT_FINISHED) {
@@ -89,24 +90,36 @@ export abstract class UserBaseService<U extends IUser = any, V = void> {
         this.observer.next(new ObservableData(UserBaseServiceEvent.CHANGED, data));
     }
 
+    public destroy(): void {
+        if (this.isDestroyed) {
+            return;
+        }
+        super.destroy();
+
+        if (!_.isNil(this.observer)) {
+            this.observer.complete();
+            this.observer = null;
+        }
+    }
+
     // --------------------------------------------------------------------------
     //
     // 	Public Properties
     //
     // --------------------------------------------------------------------------
 
-    public get events(): Observable<ObservableData<V | UserBaseServiceEvent, U>> {
+    public get events(): Observable<ObservableData<V | UserBaseServiceEvent, U | Partial<U>>> {
         return this.observer.asObservable();
     }
 
     public get logined(): Observable<U> {
         return this.events.pipe(
             filter(item => item.type === UserBaseServiceEvent.LOGINED),
-            map(item => item.data)
+            map(item => item.data as U)
         );
     }
 
-    public get changed(): Observable<any> {
+    public get changed(): Observable<Partial<U>> {
         return this.events.pipe(
             filter(item => item.type === UserBaseServiceEvent.CHANGED),
             map(item => item.data)

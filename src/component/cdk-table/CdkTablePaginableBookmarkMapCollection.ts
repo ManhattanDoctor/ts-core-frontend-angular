@@ -36,7 +36,7 @@ export abstract class CdkTablePaginableBookmarkMapCollection<U, V> extends Pagin
 
     public sortEventHandler(event: Sort): void {
         if (CdkTableFilterableMapCollection.applySortEvent(this, event)) {
-            this.load();
+            this.reload();
         }
     }
 

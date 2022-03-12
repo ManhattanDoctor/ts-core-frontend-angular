@@ -22,8 +22,8 @@
             </mat-header-cell>
 
             <mat-cell
-                class="px-2"
-                (click)="cellClickHandler(row, column)"
+                class="p-2"
+                (click)="cellClickHandler(row, column, $event)"
                 *matCellDef="let row"
                 [ngClass]="row | viCdkTableColumnClassName: column"
                 [ngStyle]="row | viCdkTableColumnStyleName: column"
@@ -40,16 +40,12 @@
         *matRowDef="let row; columns: columnNames"
         [ngClass]="row | viCdkTableRowClassName: rows:selectedRows"
         [ngStyle]="row | viCdkTableRowStyleName: rows:selectedRows"
-        (click)="rowClicked.emit(row)"
+        (click)="rowClickHandler(row, $event)"
     ></mat-row>
 
     <p class="p-3 flex-shrink-0 text-center mouse-inactive" [vi-translate]="settings?.noDataId" *matNoDataRow></p>
-    
 </mat-table>
 
-<!--
-<p class="p-3 flex-shrink-0 text-center mouse-inactive" *ngIf="table?.length === 0" [innerHTML]="settings?.noDataId | viTranslate"></p>
--->
 
 <mat-progress-bar class="flex-shrink-0 border" [mode]="table?.isLoading ? 'indeterminate' : 'determinate'"></mat-progress-bar>
 
@@ -64,6 +60,8 @@
         [pageSizeOptions]="paginator?.pageSizes"
         [showFirstLastButtons]="paginator?.showFirstLastButtons"
         [hidePageSize]="paginator?.hidePageSize"
-        *ngIf="paginator && table?.length > 0"
+        *ngIf="paginator"
     ></mat-paginator>
 </div>
+
+<!-- *ngIf="paginator && table?.length > 0" -->

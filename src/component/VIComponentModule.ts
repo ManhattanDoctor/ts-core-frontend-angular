@@ -9,6 +9,7 @@ import { TabGroupComponent } from './tab-group/tab-group.component';
 
 import { CdkTablePaginableComponent } from './cdk-table/cdk-table-paginable/cdk-table-paginable.component';
 import { CdkTableFilterableComponent } from './cdk-table/cdk-table-filterable/cdk-table-filterable.component';
+import { CdkTablePaginableBookmarkComponent } from './cdk-table/cdk-table-paginable-bookmark/cdk-table-paginable-bookmark.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
@@ -55,6 +56,7 @@ const DECLARATIONS = [
     SelectListComponent,
     CdkTablePaginableComponent,
     CdkTableFilterableComponent,
+    CdkTablePaginableBookmarkComponent,
     ...ENTRY_COMPONENTS
 ];
 const EXPORTS = [...DECLARATIONS];

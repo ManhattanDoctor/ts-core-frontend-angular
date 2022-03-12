@@ -158,17 +158,19 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
         }
     }
 
-    public tryLoginBySid(): boolean {
+    public loginBySidIfCan(): boolean {
         if (!this.isCanLoginWithSid()) {
             return false;
         }
 
-        if (!this.isLoggedIn && !this.isLoading) {
-            this.status = LoadableStatus.LOADING;
-            this.observer.next(new ObservableData(LoadableEvent.STARTED));
-            this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_STARTED));
-            this.loginBySid();
+        if (this.isLoggedIn || this.isLoading) {
+            return true;
         }
+
+        this.status = LoadableStatus.LOADING;
+        this.observer.next(new ObservableData(LoadableEvent.STARTED));
+        this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_STARTED));
+        this.loginBySid();
         return true;
     }
 
