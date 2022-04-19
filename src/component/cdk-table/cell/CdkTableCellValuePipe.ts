@@ -1,11 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from 'lodash';
-import { ICdkTableColumn } from './ICdkTableColumn';
+import { ICdkTableColumn } from '../column/ICdkTableColumn';
 
 @Pipe({
-    name: 'viCdkTableColumnValue'
+    name: 'viCdkTableCellValue'
 })
-export class CdkTableColumnValuePipe implements PipeTransform {
+export class CdkTableCellValuePipe implements PipeTransform {
     // --------------------------------------------------------------------------
     //
     //	Public Methods

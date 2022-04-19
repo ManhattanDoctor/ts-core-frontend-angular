@@ -22,7 +22,7 @@
             "required": "Необходимо заполнить",
             "email": "Неверный формат электронной почты",
             "pattern": "Не выполнено условие {requiredPattern}",
-            "minlength": "Минимальная длина {minlength,plural,one {# символ} few {# символа} many{# символов} other{}}",
+            "minlength": "Минимальная длина {requiredLength,plural,one {# символ} few {# символа} many{# символов} other{}}",
             "maxlength": "Максимальная длина {maxlength,plural,one {# символ} few {# символа} many{# символов} other{}}"
         }
     }

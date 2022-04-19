@@ -20,12 +20,13 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-import { CdkTableColumnValuePipe } from './cdk-table/column/CdkTableColumnValuePipe';
+import { CdkTableCellValuePipe } from './cdk-table/cell/CdkTableCellValuePipe';
+import { CdkTableCellClassNamePipe } from './cdk-table/cell/CdkTableCellClassNamePipe';
+import { CdkTableCellStyleNamePipe } from './cdk-table/cell/CdkTableCellStyleNamePipe';
 import { CdkTableColumnStyleNamePipe } from './cdk-table/column/CdkTableColumnStyleNamePipe';
 import { CdkTableColumnClassNamePipe } from './cdk-table/column/CdkTableColumnClassNamePipe';
 import { CdkTableRowClassNamePipe } from './cdk-table/row/CdkTableRowClassNamePipe';
 import { CdkTableRowStyleNamePipe } from './cdk-table/row/CdkTableRowStyleNamePipe';
-import { CdkTableCellClassNamePipe } from './cdk-table/column/CdkTableCellClassNamePipe';
 
 const IMPORTS = [
     CommonModule,
@@ -43,12 +44,13 @@ const IMPORTS = [
 ];
 const ENTRY_COMPONENTS = [];
 const DECLARATIONS = [
-    CdkTableColumnValuePipe,
+    CdkTableCellValuePipe,
+    CdkTableCellClassNamePipe,
+    CdkTableCellStyleNamePipe,
     CdkTableColumnClassNamePipe,
     CdkTableColumnStyleNamePipe,
     CdkTableRowStyleNamePipe,
     CdkTableRowClassNamePipe,
-    CdkTableCellClassNamePipe,
 
     LanguageSelectorComponent,
     TabGroupComponent,

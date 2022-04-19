@@ -1,6 +1,7 @@
 import { Renderer2 } from '@angular/core';
 import { LoadableEvent } from '@ts-core/common';
 import { Assets } from '@ts-core/frontend/asset';
+import { AssetUrlProvider } from '@ts-core/frontend/asset/provider';
 import { Language } from '@ts-core/language';
 import { LanguageService } from '@ts-core/frontend/language';
 import { SettingsBaseService } from '@ts-core/frontend/service';
@@ -28,14 +29,23 @@ export abstract class ApplicationComponent<T extends SettingsBaseService> extend
     // --------------------------------------------------------------------------
 
     protected initialize(): void {
-        Assets.initialize(this.settings.assetsUrl);
-        ViewUtil.initialize(this.renderer);
+        ViewUtil.renderer = this.renderer;
 
-        // Theme
+        this.initializeAssets();
+        this.initializeTheme();
+        this.initializeLanguage();
+    }
+
+    protected initializeAssets(): void {
+        Assets.provider = new AssetUrlProvider(this.settings.assetsUrl);
+    }
+
+    protected initializeTheme(): void {
         this.theme.initialize(this.settings.themes);
+    }
 
-        // Language
-        this.language.initialize(Assets.languagesUrl, this.settings.languages);
+    protected initializeLanguage(): void {
+        this.language.initialize(`${this.settings.assetsUrl}language/`, this.settings.languages);
         this.language.events.pipe(takeUntil(this.destroyed)).subscribe(data => {
             switch (data.type) {
                 case LoadableEvent.COMPLETE:

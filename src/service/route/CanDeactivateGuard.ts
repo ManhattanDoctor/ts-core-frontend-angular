@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { Observable } from 'rxjs';
 import { IRouterDeactivatable } from './IRouterDeactivatable';
 
-export class CanDeactivateGuard<T extends IRouterDeactivatable> implements CanDeactivate<T> {
+export class CanDeactivateGuard<T extends IRouterDeactivatable = IRouterDeactivatable> implements CanDeactivate<T> {
     // --------------------------------------------------------------------------
     //
     // 	Public Methods
@@ -11,7 +11,7 @@ export class CanDeactivateGuard<T extends IRouterDeactivatable> implements CanDe
     // --------------------------------------------------------------------------
 
     public canDeactivate(
-        component: IRouterDeactivatable,
+        component: T,
         currentRoute: ActivatedRouteSnapshot,
         currentState: RouterStateSnapshot,
         nextState?: RouterStateSnapshot

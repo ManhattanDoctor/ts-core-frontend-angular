@@ -10,11 +10,18 @@ export class ViewUtil {
     // --------------------------------------------------------------------------
 
     private static _renderer: Renderer2 = null;
-    private static get renderer(): Renderer2 {
+
+    public static get renderer(): Renderer2 {
         if (_.isNil(ViewUtil._renderer)) {
             throw new ExtendedError(`ViewUtil is not initialized: renderer in nil`);
         }
         return ViewUtil._renderer;
+    }
+    public static set renderer(value: Renderer2) {
+        if (value === ViewUtil._renderer) {
+            return;
+        }
+        ViewUtil._renderer = value;
     }
 
     // --------------------------------------------------------------------------

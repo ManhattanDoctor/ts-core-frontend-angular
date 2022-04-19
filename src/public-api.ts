@@ -32,9 +32,11 @@ export * from './component/cdk-table/row/ICdkTableRow';
 export * from './component/cdk-table/row/CdkTableRowClassNamePipe';
 export * from './component/cdk-table/row/CdkTableRowStyleNamePipe';
 
+export * from './component/cdk-table/cell/CdkTableCellValuePipe';
+export * from './component/cdk-table/cell/CdkTableCellClassNamePipe';
+export * from './component/cdk-table/cell/CdkTableCellStyleNamePipe';
+
 export * from './component/cdk-table/column/ICdkTableColumn';
-export * from './component/cdk-table/column/CdkTableColumnValuePipe';
-export * from './component/cdk-table/column/CdkTableCellClassNamePipe';
 export * from './component/cdk-table/column/CdkTableColumnClassNamePipe';
 export * from './component/cdk-table/column/CdkTableColumnStyleNamePipe';
 

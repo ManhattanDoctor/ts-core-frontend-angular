@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from 'lodash';
-import { ICdkTableSettings } from '../CdkTableBaseComponent';
 import { ICdkTableRow } from './ICdkTableRow';
 
 @Pipe({

@@ -26,7 +26,20 @@
                 [ngClass]="row | viCdkTableColumnClassName: column"
                 [ngStyle]="row | viCdkTableColumnStyleName: column"
             >
-                <span [ngClass]="column | viCdkTableCellClassName" [vi-html-content-title]="row | viCdkTableColumnValue: column"></span>
+                <ng-container [ngSwitch]="column.isImage">
+                    <img
+                        *ngSwitchCase="true"
+                        [ngClass]="row | viCdkTableCellClassName: column"
+                        [ngStyle]="row | viCdkTableCellStyleName: column"
+                        [src]="row | viCdkTableCellValue: column"
+                    />
+                    <span
+                        *ngSwitchDefault
+                        [ngClass]="row | viCdkTableCellClassName: column"
+                        [ngStyle]="row | viCdkTableCellStyleName: column"
+                        [vi-html-content-title]="row | viCdkTableCellValue: column"
+                    ></span>
+                </ng-container>
             </mat-cell>
         </ng-container>
     </ng-container>

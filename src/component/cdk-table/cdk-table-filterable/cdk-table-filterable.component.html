@@ -26,7 +26,20 @@
                 [ngClass]="row | viCdkTableColumnClassName: column"
                 [ngStyle]="row | viCdkTableColumnStyleName: column"
             >
-                <span [ngClass]="column | viCdkTableCellClassName" [vi-html-content-title]="row | viCdkTableColumnValue: column"></span>
+                <ng-container [ngSwitch]="column.isImage">
+                    <img
+                        *ngSwitchCase="true"
+                        [ngClass]="row | viCdkTableCellClassName: column"
+                        [ngStyle]="row | viCdkTableCellStyleName: column"
+                        [src]="row | viCdkTableCellValue: column"
+                    />
+                    <span
+                        *ngSwitchDefault
+                        [ngClass]="row | viCdkTableCellClassName: column"
+                        [ngStyle]="row | viCdkTableCellStyleName: column"
+                        [vi-html-content-title]="row | viCdkTableCellValue: column"
+                    ></span>
+                </ng-container>
             </mat-cell>
         </ng-container>
     </ng-container>
@@ -45,3 +58,7 @@
 </mat-table>
 
 <mat-progress-bar class="flex-shrink-0 border transparent" [mode]="table?.isLoading ? 'indeterminate' : 'determinate'"></mat-progress-bar>
+
+<div class="paginator-container d-flex align-items-center justify-content-end flex-shrink-0">
+    <ng-content></ng-content>
+</div>
