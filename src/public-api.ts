@@ -61,6 +61,7 @@ export * from './directive/ResizeDirective';
 export * from './directive/ScrollDirective';
 export * from './directive/ScrollCheckDirective';
 export * from './directive/MenuTriggerForDirective';
+export * from './directive/HTMLTitleDirective';
 export * from './directive/HTMLContentTitleDirective';
 /* ======= */
 export * from './form/FormElementAsync';

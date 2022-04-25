@@ -11,6 +11,21 @@ import * as _ from 'lodash';
 export class LanguagePipe extends DestroyableContainer implements PipeTransform {
     // --------------------------------------------------------------------------
     //
+    //	Static Methods
+    //
+    // --------------------------------------------------------------------------
+
+    public static removeTags(item: string): string {
+        if (_.isEmpty(item)) {
+            return item;
+        }
+        item = item.replace(/<br\s*[\/]?>/g, '\n');
+        item = item.replace(/<[^>]*>/g, '');
+        return item;
+    }
+
+    // --------------------------------------------------------------------------
+    //
     //	Properties
     //
     // --------------------------------------------------------------------------

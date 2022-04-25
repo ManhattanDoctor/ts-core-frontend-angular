@@ -14,6 +14,7 @@ import { ClickToCopyDirective } from './directive/ClickToCopyDirective';
 import { ClickToSelectDirective } from './directive/ClickToSelectDirective';
 import { FocusDirective } from './directive/FocusDirective';
 import { SelectOnFocusDirective } from './directive/SelectOnFocusDirective';
+import { HTMLTitleDirective } from './directive/HTMLTitleDirective';
 import { HTMLContentTitleDirective } from './directive/HTMLContentTitleDirective';
 import { InfiniteScrollDirective } from './directive/InfiniteScrollDirective';
 import { ResizeDirective } from './directive/ResizeDirective';
@@ -64,6 +65,7 @@ const DECLARATIONS = [
     ClickToSelectDirective,
     MenuTriggerForDirective,
     InfiniteScrollDirective,
+    HTMLTitleDirective,
     HTMLContentTitleDirective,
     AutoScrollBottomDirective,
     AspectRatioResizeDirective

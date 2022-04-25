@@ -1,13 +1,13 @@
 import { Directive, ElementRef, Input } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
 import * as _ from 'lodash';
-import { LanguagePipe } from '../language/LanguagePipe';
+import { LanguagePipe } from '../public-api';
 import { ViewUtil } from '../util/ViewUtil';
 
 @Directive({
-    selector: '[vi-html-content-title]'
+    selector: '[vi-html-title]'
 })
-export class HTMLContentTitleDirective extends Destroyable {
+export class HTMLTitleDirective extends Destroyable {
     // --------------------------------------------------------------------------
     //
     //	Properties
@@ -34,7 +34,6 @@ export class HTMLContentTitleDirective extends Destroyable {
 
     protected commitValueProperties(): void {
         ViewUtil.setProperty(this.element, 'title', LanguagePipe.removeTags(this.value));
-        ViewUtil.setProperty(this.element, 'innerHTML', this.value);
     }
 
     // --------------------------------------------------------------------------
@@ -57,7 +56,7 @@ export class HTMLContentTitleDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    @Input('vi-html-content-title')
+    @Input('vi-html-title')
     public set value(value: string) {
         if (value === this._value) {
             return;
