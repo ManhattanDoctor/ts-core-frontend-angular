@@ -11,8 +11,8 @@ import { createProject } from 'gulp-typescript';
 //
 // --------------------------------------------------------------------------
 
-const input = `src`;
-const output = `dist`;
+const input = `./src`;
+const output = `./dist`;
 
 const project = createProject(`tsconfig.json`);
 const projectDirectory = project.projectDirectory;
@@ -108,7 +108,7 @@ const packagePublish = async (type: 'patch' | 'minor' | 'major'): Promise<void> 
     // Update version of package.js
     await run(`npm --prefix ${input} version ${type}`)();
     // Publish to npm
-    await run(`npm --prefix ${output} --access public publish ${output}`)();
+    await run(`npm --prefix ${output} publish ${output} --access public`)();
 };
 
 (() => {

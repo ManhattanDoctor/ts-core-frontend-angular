@@ -8,6 +8,7 @@ import { IThemeServiceOptions } from '@ts-core/frontend/theme';
 import * as _ from 'lodash';
 import { AssetModule } from './asset/AssetModule';
 import { CookieModule } from './cookie/CookieModule';
+import { CanDeactivateGuard } from './service/route/CanDeactivateGuard';
 import { AspectRatioResizeDirective } from './directive/AspectRatioResizeDirective';
 import { AutoScrollBottomDirective } from './directive/AutoScrollBottomDirective';
 import { ClickToCopyDirective } from './directive/ClickToCopyDirective';
@@ -88,6 +89,7 @@ export class VICommonModule {
             ngModule: VICommonModule,
             providers: [
                 LoadingService,
+                CanDeactivateGuard,
                 NativeWindowService,
 
                 { provide: VI_ANGULAR_OPTIONS, useValue: options || {} },

@@ -14,8 +14,6 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
     // --------------------------------------------------------------------------
 
     protected _sid: string;
-    protected _resource: string;
-
     protected _loginData: V;
     protected _isLoggedIn: boolean = false;
 
@@ -101,7 +99,6 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
 
     protected reset(): void {
         this._sid = null;
-        this._resource = null;
         this._loginData = null;
     }
 
@@ -197,7 +194,7 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
     }
 
     public isCanLoginWithSid(): boolean {
-        return this.sid != null || this.getSavedSid() != null;
+        return !_.isNil(this.sid) || !_.isNil(this.getSavedSid());
     }
 
     public destroy(): void {
@@ -205,7 +202,6 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
             return;
         }
         super.destroy();
-
         this.reset();
     }
 
@@ -231,10 +227,6 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
 
     public get sid(): string {
         return this._sid;
-    }
-
-    public get resource(): string {
-        return this._resource;
     }
 
     public get loginData(): V {

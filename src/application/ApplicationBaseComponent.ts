@@ -60,7 +60,7 @@ export abstract class ApplicationBaseComponent extends DestroyableContainer impl
 
     protected viewReadyHandler(): void {}
 
-    protected abstract readyHandler(): void;
+    protected abstract readyHandler(): void | Promise<void>;
 
     // --------------------------------------------------------------------------
     //
