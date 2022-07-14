@@ -1,10 +1,11 @@
-import { AfterViewInit, Component, ElementRef, Injectable } from '@angular/core';
+import { AfterViewInit, Component, ElementRef } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import { ViewUtil } from '../../util/ViewUtil';
 import { IWindow } from '../IWindow';
+import * as _ from 'lodash';
 
 @Component({ template: '' })
-export class WindowElement extends DestroyableContainer implements AfterViewInit {
+export abstract class WindowElement extends DestroyableContainer implements AfterViewInit {
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -31,14 +32,14 @@ export class WindowElement extends DestroyableContainer implements AfterViewInit
 
     protected checkWindowParent(): void {
         let container = this.getContainer();
-        if (container) {
+        if (!_.isNil(container)) {
             ViewUtil.appendChild(container, this.element.nativeElement);
         }
     }
 
     protected getContainer(): HTMLElement {
         let item = ViewUtil.parseElement(this.element.nativeElement);
-        while (item && item.nodeName.toLowerCase() !== 'mat-dialog-container') {
+        while (!_.isNil(item) && item.nodeName.toLowerCase() !== 'mat-dialog-container') {
             item = item.parentElement;
         }
         return item;
@@ -66,11 +67,20 @@ export class WindowElement extends DestroyableContainer implements AfterViewInit
             return;
         }
         super.destroy();
-
         this.destroyChildren();
 
         this.element = null;
         this.window = null;
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    // 	Event Handlers
+    //
+    // --------------------------------------------------------------------------
+
+    public clickHandler(event: MouseEvent): void {
+        event.stopPropagation();
     }
 
     // --------------------------------------------------------------------------

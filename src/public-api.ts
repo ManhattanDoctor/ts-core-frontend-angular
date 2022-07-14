@@ -6,6 +6,8 @@ export * from './application/ShellBaseComponent';
 /* ======= */
 export * from './ApplicationInjector';
 /* ======= */
+export * from './error/WindowClosedError';
+/* ======= */
 export * from './asset/AssetBackgroundDirective';
 export * from './asset/AssetBackgroundPipe';
 export * from './asset/AssetIconPipe';
@@ -15,7 +17,6 @@ export * from './asset/AssetSoundPipe';
 export * from './asset/AssetImagePipe';
 export * from './asset/AssetModule';
 /* ======= */
-
 export * from './component/VIComponentModule';
 
 export * from './component/tab-group/tab-group.component';
@@ -112,6 +113,7 @@ export * from './notification/component/NotificationBaseComponent';
 export * from './notification/component/notification/notification.component';
 /* ======= */
 export * from './bottomSheet/BottomSheetService';
+export * from './bottomSheet/component/BottomSheetBaseComponent';
 /* ======= */
 export * from './pipe/CamelCasePipe';
 export * from './pipe/FinancePipe';
@@ -164,10 +166,12 @@ export * from './window/WindowModule';
 export * from './window/IWindowContent';
 export * from './window/WindowService';
 export * from './window/WindowProperties';
+export * from './window/component/WindowElement';
 export * from './window/component/WindowBaseComponent';
 export * from './window/component/WindowDragAreaDirective';
 export * from './window/component/WindowQuestionBaseComponent';
 export * from './window/component/window-question/window-question.component';
 export * from './window/component/window-close-element/window-close-element.component';
 export * from './window/component/window-resize-element/window-resize-element.component';
+export * from './window/component/window-expand-element/window-expand-element.component';
 export * from './window/component/window-minimize-element/window-minimize-element.component';

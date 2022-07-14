@@ -69,12 +69,6 @@ export class WindowMinimizeElementComponent extends WindowElement {
         }
 
         ViewUtil.addClass(this.nativeElement, 'mouse-active');
-        this.nativeElement.addEventListener('click', this.mouseClickHandler, true);
-    }
-
-    protected destroyChildren(): void {
-        super.destroyChildren();
-        this.nativeElement.removeEventListener('click', this.mouseClickHandler, true);
     }
 
     // --------------------------------------------------------------------------
@@ -83,10 +77,10 @@ export class WindowMinimizeElementComponent extends WindowElement {
     //
     // --------------------------------------------------------------------------
 
-    private mouseClickHandler = (event: MouseEvent): void => {
-        event.stopPropagation();
+    public clickHandler(event: MouseEvent): void {
+        super.clickHandler(event);
         if (!_.isNil(this.window)) {
             this.window.isMinimized = !this.window.isMinimized;
         }
-    };
+    }
 }

@@ -1,8 +1,6 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { LanguageService } from '@ts-core/frontend/language';
+import { MatDialogModule } from '@angular/material/dialog';
 import { CookieModule } from '../cookie/CookieModule';
-import { CookieService } from '../cookie/CookieService';
 import { LanguageModule } from '../language/LanguageModule';
 import { WindowService } from './WindowService';
 import { CommonModule } from '@angular/common';
@@ -10,14 +8,19 @@ import { FormsModule } from '@angular/forms';
 import { WindowDragAreaDirective } from './component/WindowDragAreaDirective';
 import { WindowQuestionComponent } from './component/window-question/window-question.component';
 import { WindowCloseElementComponent } from './component/window-close-element/window-close-element.component';
+import { WindowExpandElementComponent } from './component/window-expand-element/window-expand-element.component';
 import { WindowResizeElementComponent } from './component/window-resize-element/window-resize-element.component';
 import { WindowMinimizeElementComponent } from './component/window-minimize-element/window-minimize-element.component';
 import { MatButtonModule } from '@angular/material/button';
-import { WindowFactory } from './WindowFactory';
-import { WindowBaseComponent } from './component/WindowBaseComponent';
 
 const IMPORTS = [CommonModule, FormsModule, MatButtonModule, MatDialogModule, CookieModule, LanguageModule];
-const ENTRY_COMPONENTS = [WindowQuestionComponent, WindowCloseElementComponent, WindowResizeElementComponent, WindowMinimizeElementComponent];
+const ENTRY_COMPONENTS = [
+    WindowQuestionComponent,
+    WindowCloseElementComponent,
+    WindowExpandElementComponent,
+    WindowResizeElementComponent,
+    WindowMinimizeElementComponent
+];
 const DECLARATIONS = [WindowDragAreaDirective, ...ENTRY_COMPONENTS];
 const EXPORTS = [...DECLARATIONS];
 
@@ -36,20 +39,7 @@ export class WindowModule {
     public static forRoot(): ModuleWithProviders<WindowModule> {
         return {
             ngModule: WindowModule,
-            providers: [
-                {
-                    provide: WindowService,
-                    deps: [MatDialog, LanguageService, CookieService],
-                    useFactory: windowServiceFactory
-                }
-            ]
+            providers: [WindowService]
         };
     }
-}
-
-export function windowServiceFactory(dialog: MatDialog, language: LanguageService, cookies: CookieService): WindowService {
-    let item = new WindowService(dialog, language, cookies);
-    item.factory = new WindowFactory(WindowBaseComponent);
-    item.questionComponent = WindowQuestionComponent;
-    return item;
 }

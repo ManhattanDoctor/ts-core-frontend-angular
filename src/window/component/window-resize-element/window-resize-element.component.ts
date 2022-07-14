@@ -2,6 +2,7 @@ import { Component, ElementRef } from '@angular/core';
 import { ViewUtil } from '../../../util/ViewUtil';
 import { WindowElement } from '../WindowElement';
 import * as _ from 'lodash';
+import { WindowEvent } from '../../IWindow';
 
 @Component({
     selector: 'vi-window-resize-element',
@@ -45,11 +46,6 @@ export class WindowResizeElementComponent extends WindowElement {
         }
 
         ViewUtil.setStyle(this.nativeElement, 'cursor', 'pointer');
-        this.nativeElement.addEventListener('click', this.mouseClickHandler, true);
-    }
-
-    protected destroyChildren(): void {
-        this.nativeElement.removeEventListener('click', this.mouseClickHandler, true);
     }
 
     // --------------------------------------------------------------------------
@@ -58,11 +54,10 @@ export class WindowResizeElementComponent extends WindowElement {
     //
     // --------------------------------------------------------------------------
 
-    private mouseClickHandler = (event: MouseEvent) => {
-        event.stopPropagation();
-
+    public clickHandler(event: MouseEvent): void {
+        super.clickHandler(event);
         if (!_.isNil(this.window)) {
-            this.window.isMinimized = !this.window.isMinimized;
+            this.window.emit(WindowEvent.EXPAND);
         }
-    };
+    }
 }

@@ -1,9 +1,9 @@
-import { ComponentFactoryResolver, ComponentRef, ViewContainerRef } from '@angular/core';
-import { APPLICATION_INJECTOR } from '../../ApplicationInjector';
+import { ViewContainerRef } from '@angular/core';
 import { ViewUtil } from '../../util/ViewUtil';
 import { WindowCloseElementComponent } from './window-close-element/window-close-element.component';
-import { WindowMinimizeElementComponent } from './window-minimize-element/window-minimize-element.component';
+import { WindowExpandElementComponent } from './window-expand-element/window-expand-element.component';
 import { WindowResizeElementComponent } from './window-resize-element/window-resize-element.component';
+import { WindowMinimizeElementComponent } from './window-minimize-element/window-minimize-element.component';
 import { WindowDragable } from './WindowDragable';
 
 export class WindowBaseComponent extends WindowDragable {
@@ -14,18 +14,9 @@ export class WindowBaseComponent extends WindowDragable {
     // --------------------------------------------------------------------------
 
     public static CLOSE_COMPONENT = WindowCloseElementComponent;
+    public static EXPAND_COMPONENT = WindowExpandElementComponent;
     public static RESIZE_COMPONENT = WindowResizeElementComponent;
     public static MINIMIZE_COMPONENT = WindowMinimizeElementComponent;
-
-    // --------------------------------------------------------------------------
-    //
-    //  Properties Methods
-    //
-    // --------------------------------------------------------------------------
-
-    protected closeWindow: ComponentRef<any>;
-    protected resizedWindow: ComponentRef<any>;
-    protected minimizeWindow: ComponentRef<any>;
 
     // --------------------------------------------------------------------------
     //
@@ -33,31 +24,27 @@ export class WindowBaseComponent extends WindowDragable {
     //
     // --------------------------------------------------------------------------
 
-    protected setProperties(): void {
-        super.setProperties();
-        this.createWindowComponents();
-    }
+    protected elementsCreate(): void {
+        super.elementsCreate();
 
-    protected createWindowComponents(): void {
         if (!(this.content.container instanceof ViewContainerRef)) {
             return;
         }
-        if (!this.config.disableClose && !this.closeWindow) {
-            let factory = this.resolver.resolveComponentFactory(WindowBaseComponent.CLOSE_COMPONENT);
-            this.closeWindow = this.content.container.createComponent(factory);
-            this.closeWindow.instance.window = this;
+
+        if (!this.config.disableClose) {
+            this.elementAdd(this.content.container.createComponent(WindowBaseComponent.CLOSE_COMPONENT));
         }
 
-        if (this.config.isResizeable && !this.resizedWindow) {
-            let factory = this.resolver.resolveComponentFactory(WindowBaseComponent.RESIZE_COMPONENT);
-            this.resizedWindow = this.content.container.createComponent(factory);
-            this.resizedWindow.instance.window = this;
+        if (this.config.isResizeable) {
+            this.elementAdd(this.content.container.createComponent(WindowBaseComponent.RESIZE_COMPONENT));
         }
 
-        if (this.config.isMinimizable && !this.minimizeWindow) {
-            let factory = this.resolver.resolveComponentFactory(WindowBaseComponent.MINIMIZE_COMPONENT);
-            this.minimizeWindow = this.content.container.createComponent(factory);
-            this.minimizeWindow.instance.window = this;
+        if (this.config.isMinimizable) {
+            this.elementAdd(this.content.container.createComponent(WindowBaseComponent.MINIMIZE_COMPONENT));
+        }
+
+        if (this.config.isExpandable) {
+            this.elementAdd(this.content.container.createComponent(WindowBaseComponent.EXPAND_COMPONENT));
         }
     }
 
@@ -72,7 +59,7 @@ export class WindowBaseComponent extends WindowDragable {
     }
 
     protected commitIsShakingProperties(): void {
-        ViewUtil.toggleClass(this.container, this.shakingClass, this.isShaking);
+        ViewUtil.toggleClasses(this.container, this.shakingClass, this.isShaking);
     }
 
     protected commitIsMinimizedProperties(): void {
@@ -81,25 +68,11 @@ export class WindowBaseComponent extends WindowDragable {
         ViewUtil.toggleClass(this.content.element.nativeElement.parentElement, this.minimizedClass, this.isMinimized);
     }
 
-    protected isNeedClickStopPropagation(event: MouseEvent): boolean {
-        if (!super.isNeedClickStopPropagation(event)) {
-            return false;
-        }
-        if (this.closeWindow && this.closeWindow.location.nativeElement === event.target) {
-            return false;
-        }
-        return true;
-    }
-
     // --------------------------------------------------------------------------
     //
     //  Protected Properties
     //
     // --------------------------------------------------------------------------
-
-    protected get resolver(): ComponentFactoryResolver {
-        return APPLICATION_INJECTOR().get(ComponentFactoryResolver);
-    }
 
     protected get blinkClass(): string {
         return 'vi-blink';
@@ -115,22 +88,5 @@ export class WindowBaseComponent extends WindowDragable {
 
     protected get shakingClass(): string {
         return 'shake-constant shake-horizontal';
-    }
-
-    // --------------------------------------------------------------------------
-    //
-    //  Public Methods
-    //
-    // --------------------------------------------------------------------------
-
-    public destroy(): void {
-        if (this.isDestroyed) {
-            return;
-        }
-        super.destroy();
-        // Components will destroy automatically
-        this.closeWindow = null;
-        this.resizedWindow = null;
-        this.minimizeWindow = null;
     }
 }

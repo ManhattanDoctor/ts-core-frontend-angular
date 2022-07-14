@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Inject, Injectable, Optional } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import { PromiseHandler } from '@ts-core/common/promise';
 import * as _ from 'lodash';
@@ -58,7 +58,7 @@ export abstract class ApplicationBaseComponent extends DestroyableContainer impl
         return this.isViewReady;
     }
 
-    protected viewReadyHandler(): void {}
+    protected viewReadyHandler(): void { }
 
     protected abstract readyHandler(): void | Promise<void>;
 

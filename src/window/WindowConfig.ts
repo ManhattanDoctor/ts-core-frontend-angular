@@ -12,6 +12,7 @@ export class WindowConfig<T = any> extends MatDialogConfig<T> implements MatBott
     // --------------------------------------------------------------------------
 
     public id: string;
+    public isExpandable: boolean = false;
     public isResizeable: boolean = false;
     public isMinimizable: boolean = false;
     public isContentDragable: boolean = true;

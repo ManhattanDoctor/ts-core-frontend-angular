@@ -68,6 +68,7 @@
             right: -20px;
         }
 
+        vi-window-expand-element,
         vi-window-minimize-element {
             top: -20px;
             right: 10px;
@@ -95,7 +96,7 @@
             @include vertical-scroll-only();
         }
 
-        vi-bottom-sheet-close-element {
+        vi-window-close-element {
             top: -20px;
             right: -20px;
         }

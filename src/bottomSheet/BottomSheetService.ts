@@ -5,16 +5,16 @@ import { Destroyable } from '@ts-core/common';
 import { ObservableData } from '@ts-core/common/observer';
 import { LanguageService } from '@ts-core/frontend/language';
 import * as _ from 'lodash';
-import { Observable, Subject } from 'rxjs';
+import { filter, Observable, Subject, takeUntil } from 'rxjs';
 import { WindowFactory } from '../window/WindowFactory';
 import { IWindow } from '../window/IWindow';
-import { BottomSheetBaseComponent } from './component/BottomSheetBaseComponent';
 import { WindowConfig, WindowConfigOptions } from '../window/WindowConfig';
 import { IWindowContent } from '../window/IWindowContent';
-import { WindowServiceEvent } from '../window/WindowService';
+import { WindowServiceEvent, WindowService } from '../window/WindowService';
 import { QuestionManager } from '../question/QuestionManager';
 import { IQuestion, IQuestionOptions, QuestionMode } from '../question/IQuestion';
 import { WindowQuestionComponent } from '../window/component/window-question/window-question.component';
+import { BottomSheetBaseComponent } from './component/BottomSheetBaseComponent';
 
 @Injectable({ providedIn: 'root' })
 export class BottomSheetService extends Destroyable {
@@ -26,6 +26,8 @@ export class BottomSheetService extends Destroyable {
 
     public factory: WindowFactory<IWindow>;
     public questionComponent: ComponentType<IWindowContent>;
+
+    protected _window: IWindow;
 
     protected dialog: MatBottomSheet;
     protected language: LanguageService;
@@ -58,14 +60,19 @@ export class BottomSheetService extends Destroyable {
         let reference: MatBottomSheetRef<T> = this.dialog.open(component, config as MatBottomSheetConfig<T>);
 
         let window = this.factory.create({ config, reference: reference as any, overlay: (reference as any)._overlayRef });
+        this.observer.next(new ObservableData(WindowServiceEvent.OPEN_STARTED, window));
+
         let subscription = window.events.subscribe(event => {
             switch (event) {
                 case WindowServiceEvent.OPENED:
+                    this._window = window;
                     this.observer.next(new ObservableData(WindowServiceEvent.OPENED, window));
+                    this.observer.next(new ObservableData(WindowServiceEvent.OPEN_FINISHED, window));
                     break;
 
                 case WindowServiceEvent.CLOSED:
                     subscription.unsubscribe();
+                    this._window = null;
                     this.observer.next(new ObservableData(WindowServiceEvent.CLOSED, window));
                     break;
             }
@@ -86,6 +93,8 @@ export class BottomSheetService extends Destroyable {
             this.observer.complete();
             this.observer = null;
         }
+
+        this._window = null;
 
         this.factory = null;
         this.questionComponent = null;
@@ -119,6 +128,10 @@ export class BottomSheetService extends Destroyable {
     // 	Public Properties
     //
     // --------------------------------------------------------------------------
+
+    public get window(): IWindow {
+        return this._window;
+    }
 
     public get events(): Observable<ObservableData<WindowServiceEvent, IWindow>> {
         return this.observer.asObservable();

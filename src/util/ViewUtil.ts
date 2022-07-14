@@ -378,6 +378,14 @@ export class ViewUtil {
         }
     }
 
+    public static toggleClasses(container: IViewElement, name: string, value: boolean): void {
+        if (value) {
+            ViewUtil.addClasses(container, name);
+        } else {
+            ViewUtil.removeClasses(container, name);
+        }
+    }
+
     public static getProperty(container: IViewElement, name: string): any {
         if (_.isNil(name)) {
             return null;

@@ -14,13 +14,11 @@ export class LanguageHasDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    protected _key: string;
+    protected _viTranslateHas: string;
+    protected _isOnlyIfNotEmpty: boolean = true;
 
     protected view: any;
     protected index: EmbeddedViewRef<any>;
-
-    @Input()
-    public isOnlyIfNotEmpty: boolean = false;
 
     // --------------------------------------------------------------------------
     //
@@ -42,7 +40,7 @@ export class LanguageHasDirective extends Destroyable {
     protected check(): void {
         let isNeedAdd = false;
         let isNeedRemove = false;
-        let isHasTranslation = !_.isNil(this.key) && this.language.isHasTranslation(this.key, this.isOnlyIfNotEmpty);
+        let isHasTranslation = !_.isNil(this.viTranslateHas) && this.language.isHasTranslation(this.viTranslateHas, this.viTranslateHasIsOnlyIfNotEmpty);
 
         if (isHasTranslation) {
             if (_.isNil(this.view)) {
@@ -77,9 +75,9 @@ export class LanguageHasDirective extends Destroyable {
         }
 
         super.destroy();
+        this.view = null;
         this.language = null;
-
-        this._key = null;
+        this._viTranslateHas = null;
     }
 
     // --------------------------------------------------------------------------
@@ -89,14 +87,26 @@ export class LanguageHasDirective extends Destroyable {
     // --------------------------------------------------------------------------
 
     @Input('viTranslateHas')
-    public set key(value: string) {
-        if (value === this._key) {
+    public set viTranslateHas(value: string) {
+        if (value === this._viTranslateHas) {
             return;
         }
-        this._key = value;
+        this._viTranslateHas = value;
         this.check();
     }
-    public get key(): string {
-        return this._key;
+    public get viTranslateHas(): string {
+        return this._viTranslateHas;
+    }
+
+    @Input('viTranslateHasIsOnlyIfNotEmpty')
+    public set viTranslateHasIsOnlyIfNotEmpty(value: boolean) {
+        if (value === this._isOnlyIfNotEmpty) {
+            return;
+        }
+        this._isOnlyIfNotEmpty = value;
+        this.check();
+    }
+    public get viTranslateHasIsOnlyIfNotEmpty(): boolean {
+        return this._isOnlyIfNotEmpty;
     }
 }

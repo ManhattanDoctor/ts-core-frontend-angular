@@ -7,6 +7,7 @@ import { LanguageService } from '@ts-core/frontend/language';
 import * as _ from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { CookieService } from '../cookie/CookieService';
+import { BottomSheetService } from '../bottomSheet/BottomSheetService';
 import { IQuestion, IQuestionOptions, QuestionMode } from '../question/IQuestion';
 import { QuestionManager } from '../question/QuestionManager';
 import { ViewUtil } from '../util/ViewUtil';
@@ -19,6 +20,36 @@ import { WindowFactory } from './WindowFactory';
 
 @Injectable({ providedIn: 'root' })
 export class WindowService extends Destroyable {
+    // --------------------------------------------------------------------------
+    //
+    // 	Constants
+    //
+    // --------------------------------------------------------------------------
+
+    public static Z_INDEX_MAX = 1000;
+
+    // --------------------------------------------------------------------------
+    //
+    // 	Static Methods
+    //
+    // --------------------------------------------------------------------------
+
+    public static getZIndex(window: IWindow): number {
+        return !_.isNil(window) && !_.isNil(window.container) ? parseInt(ViewUtil.getStyle(window.container.parentElement, 'zIndex'), 10) : -1;
+    }
+
+    public static setZIndex(window: IWindow, index: number): void {
+        if (_.isNil(window)) {
+            return;
+        }
+        if (!_.isNil(window.backdrop)) {
+            ViewUtil.setStyle(window.backdrop, 'zIndex', index);
+        }
+        if (!_.isNil(window.wrapper)) {
+            ViewUtil.setStyle(window.wrapper, 'zIndex', index);
+        }
+    }
+
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -51,7 +82,8 @@ export class WindowService extends Destroyable {
     public defaultVerticalAlign: WindowAlign = WindowAlign.CENTER;
     public defaultHorizontalAlign: WindowAlign = WindowAlign.CENTER;
 
-    public topZIndex: number = 999;
+    public topZIndex: number = WindowService.Z_INDEX_MAX;
+    // public topZIndex: number = 1001;
 
     // --------------------------------------------------------------------------
     //
@@ -59,7 +91,7 @@ export class WindowService extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    constructor(dialog: MatDialog, language: LanguageService, cookies: CookieService) {
+    constructor(dialog: MatDialog, language: LanguageService, cookies: CookieService, private sheet: BottomSheetService) {
         super();
         this._windows = new Map();
 
@@ -67,6 +99,9 @@ export class WindowService extends Destroyable {
         this.language = language;
         this.observer = new Subject();
         this.properties = new PropertiesManager(cookies);
+
+        this.factory = new WindowFactory(WindowBaseComponent);
+        this.questionComponent = WindowQuestionComponent;
     }
 
     // --------------------------------------------------------------------------
@@ -76,20 +111,19 @@ export class WindowService extends Destroyable {
     // --------------------------------------------------------------------------
 
     private sortFunction(first: IWindow, second: IWindow): number {
-        let firstIndex = first.container ? parseInt(ViewUtil.getStyle(first.container.parentElement, 'zIndex'), 10) : -1;
-        let secondIndex = second.container ? parseInt(ViewUtil.getStyle(second.container.parentElement, 'zIndex'), 10) : -1;
-        return firstIndex > secondIndex ? -1 : 1;
+        return WindowService.getZIndex(first) > WindowService.getZIndex(second) ? -1 : 1;
     }
 
     private updateTop(): void {
         let zIndex = 0;
         let topWindow: IWindow = null;
 
-        for (let window of this.windowsArray) {
-            if (_.isNil(window.container)) {
+        let windows = [...this.windowsArray, this.sheet.window];
+        for (let window of windows) {
+            if (_.isNil(window) || _.isNil(window.container)) {
                 continue;
             }
-            let index = parseInt(ViewUtil.getStyle(window.container.parentElement, 'zIndex'), 10);
+            let index = WindowService.getZIndex(window);
             if (zIndex >= index) {
                 continue;
             }
@@ -106,15 +140,15 @@ export class WindowService extends Destroyable {
 
     private setWindowOnTop(topWindow: IWindow): void {
         let currentIndex = this.topZIndex - 2;
-        for (let window of this.windowsArray) {
-            if (_.isNil(window.container)) {
+        let windows = [...this.windowsArray, this.sheet.window];
+        for (let window of windows) {
+            if (_.isNil(window) || _.isNil(window.container)) {
                 continue;
             }
             window.isOnTop = window === topWindow;
 
             let zIndex = window.isOnTop ? this.topZIndex : currentIndex--;
-            ViewUtil.setStyle(window.backdrop, 'zIndex', zIndex);
-            ViewUtil.setStyle(window.wrapper, 'zIndex', zIndex);
+            WindowService.setZIndex(window, zIndex);
         }
 
         this.windowsArray.sort(this.sortFunction);
@@ -225,6 +259,8 @@ export class WindowService extends Destroyable {
         let reference: MatDialogRef<IWindowContent> = this.dialog.open(component, config);
         window = this.factory.create({ config, reference, overlay: (reference as any)._overlayRef });
 
+        this.observer.next(new ObservableData(WindowServiceEvent.OPEN_STARTED, window));
+
         let subscription = window.events.subscribe(event => {
             switch (event) {
                 case WindowEvent.OPENED:
@@ -233,6 +269,7 @@ export class WindowService extends Destroyable {
                     if (this.isNeedCheckPositionAfterOpen) {
                         this.checkPosition(window);
                     }
+                    this.observer.next(new ObservableData(WindowServiceEvent.OPEN_FINISHED, window));
                     break;
 
                 case WindowEvent.CLOSED:
@@ -307,7 +344,6 @@ export class WindowService extends Destroyable {
         }
 
         this.factory = null;
-        this.properties = null;
         this.questionComponent = null;
 
         this.dialog = null;
@@ -410,7 +446,10 @@ export class PropertiesManager extends Destroyable {
 export type WindowId = string | WindowConfig;
 
 export enum WindowServiceEvent {
+    OPEN_STARTED = 'OPEN_STARTED',
     OPENED = 'OPENED',
+    OPEN_FINISHED = 'OPEN_FINISHED',
+
     CLOSED = 'CLOSED',
     SETTED_ON_TOP = 'SETTED_ON_TOP'
 }

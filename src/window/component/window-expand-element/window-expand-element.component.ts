@@ -1,21 +1,22 @@
 import { Component, ElementRef } from '@angular/core';
-import { ViewUtil } from '../../../util/ViewUtil';
-import { WindowElement } from '../../../window/component/WindowElement';
 import * as _ from 'lodash';
+import { ViewUtil } from '../../../util/ViewUtil';
+import { WindowEvent } from '../../IWindow';
+import { WindowElement } from '../WindowElement';
 
 @Component({
-    selector: 'vi-bottom-sheet-close-element',
-    styleUrls: ['bottom-sheet-close-element.component.scss'],
+    selector: 'vi-window-expand-element',
+    styleUrls: ['window-expand-element.component.scss'],
     template: ''
 })
-export class BottomSheetCloseElementComponent extends WindowElement {
+export class WindowExpandElementComponent extends WindowElement {
     // --------------------------------------------------------------------------
     //
     // 	Constants
     //
     // --------------------------------------------------------------------------
 
-    public static ICON_CLASS: string = 'fas fa-times';
+    public static ICON_CLASS: string = 'fas fa-angle-double-up';
     public static ICON_VALUE: string = null;
 
     // --------------------------------------------------------------------------
@@ -37,19 +38,13 @@ export class BottomSheetCloseElementComponent extends WindowElement {
     protected createChildren(): void {
         super.createChildren();
 
-        if (!_.isNil(BottomSheetCloseElementComponent.ICON_VALUE)) {
-            ViewUtil.setProperty(this.nativeElement, 'innerHTML', BottomSheetCloseElementComponent.ICON_VALUE);
+        if (!_.isNil(WindowExpandElementComponent.ICON_VALUE)) {
+            ViewUtil.setProperty(this.nativeElement, 'innerHTML', WindowExpandElementComponent.ICON_VALUE);
         }
-        if (!_.isNil(BottomSheetCloseElementComponent.ICON_CLASS)) {
-            ViewUtil.addClasses(this.nativeElement, BottomSheetCloseElementComponent.ICON_CLASS);
+        if (!_.isNil(WindowExpandElementComponent.ICON_CLASS)) {
+            ViewUtil.addClasses(this.nativeElement, WindowExpandElementComponent.ICON_CLASS);
         }
         ViewUtil.addClass(this.nativeElement, 'mouse-active');
-        this.nativeElement.addEventListener('click', this.mouseClickHandler, true);
-    }
-
-    protected destroyChildren(): void {
-        super.destroyChildren();
-        this.nativeElement.removeEventListener('click', this.mouseClickHandler, true);
     }
 
     // --------------------------------------------------------------------------
@@ -58,10 +53,10 @@ export class BottomSheetCloseElementComponent extends WindowElement {
     //
     // --------------------------------------------------------------------------
 
-    private mouseClickHandler = (event: MouseEvent): void => {
-        event.stopPropagation();
+    public clickHandler(event: MouseEvent): void {
+        super.clickHandler(event);
         if (!_.isNil(this.window)) {
-            this.window.close();
+            this.window.emit(WindowEvent.EXPAND);
         }
-    };
+    }
 }

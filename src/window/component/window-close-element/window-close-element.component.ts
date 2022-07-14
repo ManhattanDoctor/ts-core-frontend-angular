@@ -44,12 +44,6 @@ export class WindowCloseElementComponent extends WindowElement {
             ViewUtil.addClasses(this.nativeElement, WindowCloseElementComponent.ICON_CLASS);
         }
         ViewUtil.addClass(this.nativeElement, 'mouse-active');
-        this.nativeElement.addEventListener('click', this.mouseClickHandler, true);
-    }
-
-    protected destroyChildren(): void {
-        super.destroyChildren();
-        this.nativeElement.removeEventListener('click', this.mouseClickHandler, true);
     }
 
     // --------------------------------------------------------------------------
@@ -58,10 +52,10 @@ export class WindowCloseElementComponent extends WindowElement {
     //
     // --------------------------------------------------------------------------
 
-    private mouseClickHandler = (event: MouseEvent): void => {
-        event.stopPropagation();
+    public clickHandler(event: MouseEvent): void {
+        super.clickHandler(event);
         if (!_.isNil(this.window)) {
             this.window.close();
         }
-    };
+    }
 }

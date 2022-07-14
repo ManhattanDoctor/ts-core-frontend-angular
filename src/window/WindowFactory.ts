@@ -1,14 +1,23 @@
 import { IWindow } from './IWindow';
 import { WindowProperties } from './WindowProperties';
+import * as _ from 'lodash';
 
 export class WindowFactory<U extends IWindow> {
+    // --------------------------------------------------------------------------
+    //
+    // 	Properties
+    //
+    // --------------------------------------------------------------------------
+
+    public createFunction: CreateFunction;
+
     // --------------------------------------------------------------------------
     //
     // 	Constructor
     //
     // --------------------------------------------------------------------------
 
-    constructor(protected classType: WindowType<U>) {}
+    constructor(protected defaultType: WindowType<U>) {}
 
     // --------------------------------------------------------------------------
     //
@@ -17,9 +26,18 @@ export class WindowFactory<U extends IWindow> {
     // --------------------------------------------------------------------------
 
     public create(properties: WindowProperties): U {
-        return new this.classType(properties);
+        let item: U = null;
+        if (!_.isNil(this.createFunction)) {
+            item = this.createFunction(properties);
+        }
+        if (_.isNil(item)) {
+            item = new this.defaultType(properties);
+        }
+        return item;
     }
 }
+
+export type CreateFunction = <U extends IWindow>(properties: WindowProperties) => U;
 
 export interface WindowType<T> {
     new (properties: WindowProperties): T;

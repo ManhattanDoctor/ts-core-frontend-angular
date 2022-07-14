@@ -7,10 +7,24 @@ import { IViewElement, ViewUtil } from '../util/ViewUtil';
 export class ResizeManager implements IDestroyable {
     // --------------------------------------------------------------------------
     //
+    //  Static Methods
+    //
+    // --------------------------------------------------------------------------
+
+    public static isSizeValid(item: ISize): boolean {
+        if (_.isNil(item) || item.width <= 0 || item.height <= 0) {
+            return false;
+        }
+        return true;
+    }
+
+    // --------------------------------------------------------------------------
+    //
     //  Properties
     //
     // --------------------------------------------------------------------------
 
+    protected size: ISize;
     protected sensor: ResizeSensor;
     protected subject: BehaviorSubject<ISize>;
     protected element: HTMLElement;
@@ -33,7 +47,16 @@ export class ResizeManager implements IDestroyable {
     //
     // --------------------------------------------------------------------------
 
-    protected handler = (item: ISize) => this.subject.next(item);
+    protected handler = (item: ISize) => {
+        if (!ResizeManager.isSizeValid(item)) {
+            return;
+        }
+        if (!_.isNil(this.size) && item.width === this.size.width && item.height === this.size.height) {
+            return;
+        }
+        this.size = item;
+        this.subject.next(item);
+    };
 
     // --------------------------------------------------------------------------
     //
@@ -58,7 +81,9 @@ export class ResizeManager implements IDestroyable {
     public destroy(): void {
         if (!_.isNil(this.sensor)) {
             this.sensor.detach(this.handler);
-            this.sensor.reset();
+            try {
+                this.sensor.reset();
+            } catch (error) {}
             this.sensor = null;
         }
         if (!_.isNil(this.subject)) {

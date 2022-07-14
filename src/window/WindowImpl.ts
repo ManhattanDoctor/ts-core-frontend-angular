@@ -7,6 +7,9 @@ import { WindowBase } from './WindowBase';
 import { WindowConfig } from './WindowConfig';
 import { WindowProperties } from './WindowProperties';
 import * as _ from 'lodash';
+import { WindowElement } from './component/WindowElement';
+import { ArrayUtil } from '@ts-core/common/util';
+import { ComponentRef } from '@angular/core';
 
 export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
     // --------------------------------------------------------------------------
@@ -44,6 +47,7 @@ export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
     private _backdrop: HTMLElement;
     private _container: HTMLElement;
 
+    protected elements: Array<ComponentRef<WindowElement>>;
     protected properties: WindowProperties;
 
     protected subscription: Subscription;
@@ -58,6 +62,7 @@ export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
     constructor(properties: WindowProperties) {
         super();
         this.observer = new Subject();
+        this.elements = new Array();
 
         this.properties = properties;
         this.content.window = this;
@@ -77,6 +82,39 @@ export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
                 takeUntil(this.destroyed)
             )
             .subscribe(this.updatePosition);
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    //  Elements Methods
+    //
+    // --------------------------------------------------------------------------
+
+    protected elementsCreate(): void {
+        this.elements = new Array();
+    }
+
+    protected elementsDestroy(): void {
+        this.elements.forEach(item => this.elementDestroy(item));
+        this.elements = null;
+    }
+
+    protected elementAdd(item: ComponentRef<WindowElement>): ComponentRef<WindowElement> {
+        this.elements.push(item);
+        item.instance.window = this;
+        return item;
+    }
+
+    protected elementRemove(item: ComponentRef<WindowElement>): ComponentRef<WindowElement> {
+        ArrayUtil.remove(this.elements, item);
+        this.elementDestroy(item);
+        return item;
+    }
+
+    protected elementDestroy(item: ComponentRef<WindowElement>): ComponentRef<WindowElement> {
+        item.instance.window = null;
+        item.destroy();
+        return item;
     }
 
     // --------------------------------------------------------------------------
@@ -113,10 +151,15 @@ export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
         ViewUtil.addClass(this.container, 'vi-window');
         ViewUtil.toggleClass(this.container, 'vi-modal', this.config.isModal);
 
+        this.container.addEventListener('click', this.mouseClickHandlerProxy, true);
+        this.container.addEventListener('mousedown', this.mouseDownHandlerProxy);
+        /*
         if (!this.config.isModal) {
-            this.container.addEventListener('click', this.mouseClickHandlerProxy, true);
             this.container.addEventListener('mousedown', this.mouseDownHandlerProxy);
         }
+        */
+
+        this.elementsCreate();
     }
 
     protected commitIsBlinkProperties(): void {}
@@ -135,7 +178,15 @@ export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
     }
 
     protected isNeedClickStopPropagation(event: MouseEvent): boolean {
-        return !this.isWasOnTop;
+        if (!this.isWasOnTop) {
+            return true;
+        }
+        let element = _.find(this.elements, item => item.location.nativeElement === event.target);
+        if (_.isNil(element)) {
+            return false;
+        }
+        element.instance.clickHandler(event);
+        return true;
     }
 
     private stopBlinkIfNeed(): void {
@@ -195,6 +246,7 @@ export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
             return;
         }
         super.destroy();
+        this.elementsDestroy();
 
         this._container.removeEventListener('click', this.mouseClickHandlerProxy, true);
         this._container.removeEventListener('mousedown', this.mouseDownHandlerProxy);

@@ -1,4 +1,4 @@
-import { DraggableOptions, InteractEvent } from '@interactjs/types';
+import { InteractEvent, DraggableOptions } from '@interactjs/types';
 import { ViewUtil } from '../../util/ViewUtil';
 import { WindowResizeable } from './WindowResizeable';
 
@@ -34,6 +34,7 @@ export class WindowDragable extends WindowResizeable {
         this.dragStartHandlerProxy = this.dragStartHandler.bind(this);
 
         let param = {} as DraggableOptions;
+        // let param = {} as any;
         this.interactable.draggable(param);
         this.interactable.on('dragmove', this.dragMoveHandlerProxy);
         this.interactable.on('dragstart', this.dragStartHandlerProxy);

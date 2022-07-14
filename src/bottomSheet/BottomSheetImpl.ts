@@ -8,6 +8,9 @@ import { IWindowContent } from '../window/IWindowContent';
 import { WindowProperties } from '../window/WindowProperties';
 import { ViewUtil } from '../util/ViewUtil';
 import { WindowImpl } from '../window/WindowImpl';
+import { WindowElement } from '../window/component/WindowElement';
+import { ArrayUtil } from '@ts-core/common/util';
+import { ComponentRef } from '@angular/core';
 
 export class BottomSheetImpl<T = any> extends DestroyableContainer implements IWindow {
     // --------------------------------------------------------------------------
@@ -28,15 +31,16 @@ export class BottomSheetImpl<T = any> extends DestroyableContainer implements IW
     private _isBlink: boolean = false;
     private blinkTimer: any;
 
-    private _isDisabled: boolean = false;
     private _wrapper: HTMLElement;
     private _backdrop: HTMLElement;
     private _container: HTMLElement;
+    private _isDisabled: boolean = false;
 
+    protected elements: Array<ComponentRef<WindowElement>>;
     protected properties: WindowProperties;
 
-    protected subscription: Subscription;
     protected observer: Subject<string>;
+    protected subscription: Subscription;
 
     // --------------------------------------------------------------------------
     //
@@ -57,8 +61,43 @@ export class BottomSheetImpl<T = any> extends DestroyableContainer implements IW
         this._container = this.properties.overlay.overlayElement;
 
         this.setProperties();
+        this.elementsCreate();
+
         this.getReference().afterOpened().pipe(takeUntil(this.destroyed)).subscribe(this.setOpened);
         this.getReference().afterDismissed().pipe(takeUntil(this.destroyed)).subscribe(this.setClosed);
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    //  Elements Methods
+    //
+    // --------------------------------------------------------------------------
+
+    protected elementsCreate(): void {
+        this.elements = new Array();
+    }
+
+    protected elementsDestroy(): void {
+        this.elements.forEach(item => this.elementDestroy(item));
+        this.elements = null;
+    }
+
+    protected elementAdd(item: ComponentRef<WindowElement>): ComponentRef<WindowElement> {
+        this.elements.push(item);
+        item.instance.window = this;
+        return item;
+    }
+
+    protected elementRemove(item: ComponentRef<WindowElement>): ComponentRef<WindowElement> {
+        ArrayUtil.remove(this.elements, item);
+        this.elementDestroy(item);
+        return item;
+    }
+
+    protected elementDestroy(item: ComponentRef<WindowElement>): ComponentRef<WindowElement> {
+        item.instance.window = null;
+        item.destroy();
+        return item;
     }
 
     // --------------------------------------------------------------------------
@@ -84,13 +123,17 @@ export class BottomSheetImpl<T = any> extends DestroyableContainer implements IW
         ViewUtil.addClass(this.container, 'vi-bottom-sheet');
         ViewUtil.toggleClass(this.container, 'vi-modal', this.config.isModal);
 
+        this.container.addEventListener('click', this.mouseClickHandlerProxy, true);
+        this.container.addEventListener('mousedown', this.mouseDownHandlerProxy);
+        /*
         if (!this.config.isModal) {
-            this.container.addEventListener('click', this.mouseClickHandlerProxy, true);
             this.container.addEventListener('mousedown', this.mouseDownHandlerProxy);
         }
+        */
     }
 
     protected commitIsBlinkProperties(): void {}
+
     protected commitIsDisabledProperties(): void {}
 
     protected getConfig(): WindowConfig {
@@ -104,7 +147,12 @@ export class BottomSheetImpl<T = any> extends DestroyableContainer implements IW
     }
 
     protected isNeedClickStopPropagation(event: MouseEvent): boolean {
-        return false;
+        let element = _.find(this.elements, item => item.location.nativeElement === event.target);
+        if (_.isNil(element)) {
+            return false;
+        }
+        element.instance.clickHandler(event);
+        return true;
     }
 
     private stopBlinkIfNeed(): void {
@@ -115,6 +163,12 @@ export class BottomSheetImpl<T = any> extends DestroyableContainer implements IW
         clearInterval(this.blinkTimer);
         this.blinkTimer = null;
     }
+
+    // --------------------------------------------------------------------------
+    //
+    //  Event Handlers
+    //
+    // --------------------------------------------------------------------------
 
     protected mouseDownHandler(event: MouseEvent): void {
         this.setOnTop();
@@ -153,6 +207,7 @@ export class BottomSheetImpl<T = any> extends DestroyableContainer implements IW
             return;
         }
         super.destroy();
+        this.elementsDestroy();
 
         this._container.removeEventListener('click', this.mouseClickHandlerProxy, true);
         this._container.removeEventListener('mousedown', this.mouseDownHandlerProxy);
