@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DateUtil } from '@ts-core/common/util';
+import { DateUtil } from '@ts-core/common';
 import * as _ from 'lodash';
 import { FinancePipe } from './FinancePipe';
 

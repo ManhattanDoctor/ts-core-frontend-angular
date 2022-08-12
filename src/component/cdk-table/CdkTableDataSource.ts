@@ -1,7 +1,7 @@
-import { DataSourceMapCollection, DataSourceMapCollectionEvent } from '@ts-core/common/map/dataSource';
+import { DataSourceMapCollection, DataSourceMapCollectionEvent } from '@ts-core/common';
 import * as _ from 'lodash';
 import { Subscription, BehaviorSubject, Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 import { DestroyableContainer, LoadableEvent } from '@ts-core/common';
 
 export class CdkTableDataSource<U> extends DestroyableContainer {

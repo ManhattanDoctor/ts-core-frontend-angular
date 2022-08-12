@@ -1,8 +1,8 @@
 import { Directive, ElementRef, Input, RendererStyleFlags2 } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
-import { ThemeService } from '@ts-core/frontend/theme';
+import { ThemeService } from '@ts-core/frontend';
 import * as _ from 'lodash';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 import { ViewUtil } from '../util/ViewUtil';
 
 @Directive({

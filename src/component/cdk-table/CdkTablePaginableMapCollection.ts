@@ -1,5 +1,5 @@
 import { CdkTableDataSource } from './CdkTableDataSource';
-import { PaginableDataSourceMapCollection } from '@ts-core/common/map/dataSource';
+import { PaginableDataSourceMapCollection } from '@ts-core/common';
 import { Sort, SortDirection } from '@angular/material/sort';
 import { PageEvent } from '@angular/material/paginator';
 import * as _ from 'lodash';

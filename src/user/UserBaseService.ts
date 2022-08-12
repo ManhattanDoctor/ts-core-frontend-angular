@@ -1,5 +1,5 @@
 import { DestroyableContainer } from '@ts-core/common';
-import { ObservableData } from '@ts-core/common/observer';
+import { ObservableData } from '@ts-core/common';
 import * as _ from 'lodash';
 import { Observable, takeUntil, Subject, filter, map } from 'rxjs';
 import { LoginBaseService, LoginBaseServiceEvent } from '../login/LoginBaseService';

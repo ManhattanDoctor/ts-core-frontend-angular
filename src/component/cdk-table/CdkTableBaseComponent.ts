@@ -6,7 +6,7 @@ import { ICdkTableColumn } from './column/ICdkTableColumn';
 import { CdkTablePaginableMapCollection } from './CdkTablePaginableMapCollection';
 import { CdkTableFilterableMapCollection } from './CdkTableFilterableMapCollection';
 import { SortDirection } from '@angular/material/sort';
-import { FilterableDataSourceMapCollection } from '@ts-core/common/map/dataSource';
+import { FilterableDataSourceMapCollection } from '@ts-core/common';
 import { CdkTablePaginableBookmarkMapCollection } from './CdkTablePaginableBookmarkMapCollection';
 
 @Component({ template: '' })

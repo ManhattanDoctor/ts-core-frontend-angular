@@ -1,5 +1,5 @@
 import { NgModuleRef } from '@angular/core';
-import { Transport } from '@ts-core/common/transport';
+import { Transport } from '@ts-core/common';
 import { ILazyModuleData } from '../module/LazyModuleLoader';
 import { TransportLazyModuleLoadedEvent } from './TransportLazyModuleLoadedEvent';
 

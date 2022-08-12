@@ -1,8 +1,8 @@
 import { DatePipe } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DestroyableContainer, LoadableEvent } from '@ts-core/common';
-import { LanguageService } from '@ts-core/frontend/language';
-import { takeUntil } from 'rxjs/operators';
+import { LanguageService } from '@ts-core/frontend';
+import { takeUntil } from 'rxjs';
 import { CamelCasePipe } from '../pipe/CamelCasePipe';
 import { FinancePipe } from '../pipe/FinancePipe';
 import { MomentDateAdaptivePipe } from '../pipe/MomentDateAdaptivePipe';

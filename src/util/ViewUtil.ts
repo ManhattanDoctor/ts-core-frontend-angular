@@ -1,5 +1,5 @@
-import { ElementRef, Renderer2, RendererStyleFlags2, ViewContainerRef } from '@angular/core';
-import { ExtendedError } from '@ts-core/common/error';
+import { ElementRef, InjectionToken, Renderer2, RendererStyleFlags2, ViewContainerRef } from '@angular/core';
+import { ExtendedError } from '@ts-core/common';
 import * as _ from 'lodash';
 
 export class ViewUtil {
@@ -10,6 +10,7 @@ export class ViewUtil {
     // --------------------------------------------------------------------------
 
     private static _renderer: Renderer2 = null;
+    private static _document: Document = null;
 
     public static get renderer(): Renderer2 {
         if (_.isNil(ViewUtil._renderer)) {
@@ -24,6 +25,17 @@ export class ViewUtil {
         ViewUtil._renderer = value;
     }
 
+    public static get document(): Document {
+        return !_.isNil(ViewUtil._document) ? ViewUtil._document : document;
+    }
+    public static set document(value: Document) {
+        ViewUtil._document = value;
+    }
+
+    public static get window(): Window {
+        return this.document.defaultView;
+    }
+
     // --------------------------------------------------------------------------
     //
     //	Private Methods
@@ -32,7 +44,7 @@ export class ViewUtil {
 
     private static copyToClipboard(): void {
         try {
-            document.execCommand('copy');
+            ViewUtil.document.execCommand('copy');
         } catch (error) {}
     }
 
@@ -41,10 +53,6 @@ export class ViewUtil {
     //	Common Properties
     //
     // --------------------------------------------------------------------------
-
-    public static initialize(renderer: Renderer2): void {
-        ViewUtil._renderer = renderer;
-    }
 
     public static parseElement(element: IViewElement): HTMLElement {
         if (element instanceof HTMLElement) {
@@ -86,10 +94,10 @@ export class ViewUtil {
                 container.disabled = true;
             }
         } else {
-            let selection = window.getSelection();
+            let selection = ViewUtil.window.getSelection();
             selection.removeAllRanges();
 
-            let range = document.createRange();
+            let range = ViewUtil.document.createRange();
             if (!_.isNil(container)) {
                 range.selectNodeContents(container);
             }
@@ -162,11 +170,11 @@ export class ViewUtil {
     // --------------------------------------------------------------------------
 
     public static getStageWidth(): number {
-        return window.innerWidth || document.body.clientWidth;
+        return ViewUtil.window.innerWidth || ViewUtil.document.body.clientWidth;
     }
 
     public static getStageHeight(): number {
-        return window.innerHeight || document.body.clientHeight;
+        return ViewUtil.window.innerHeight || ViewUtil.document.body.clientHeight;
     }
 
     public static getWidth(container: IViewElement): number {

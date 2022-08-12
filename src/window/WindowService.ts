@@ -2,8 +2,8 @@ import { ComponentType } from '@angular/cdk/portal';
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Destroyable } from '@ts-core/common';
-import { ObservableData } from '@ts-core/common/observer';
-import { LanguageService } from '@ts-core/frontend/language';
+import { ObservableData } from '@ts-core/common';
+import { LanguageService } from '@ts-core/frontend';
 import * as _ from 'lodash';
 import { Observable, Subject } from 'rxjs';
 import { CookieService } from '../cookie/CookieService';
@@ -17,6 +17,7 @@ import { IWindow, WindowEvent } from './IWindow';
 import { IWindowContent } from './IWindowContent';
 import { WindowAlign, WindowConfig, WindowConfigOptions } from './WindowConfig';
 import { WindowFactory } from './WindowFactory';
+import { WindowServiceEvent } from './WindowServiceEvent';
 
 @Injectable({ providedIn: 'root' })
 export class WindowService extends Destroyable {
@@ -444,12 +445,3 @@ export class PropertiesManager extends Destroyable {
 }
 
 export type WindowId = string | WindowConfig;
-
-export enum WindowServiceEvent {
-    OPEN_STARTED = 'OPEN_STARTED',
-    OPENED = 'OPENED',
-    OPEN_FINISHED = 'OPEN_FINISHED',
-
-    CLOSED = 'CLOSED',
-    SETTED_ON_TOP = 'SETTED_ON_TOP'
-}

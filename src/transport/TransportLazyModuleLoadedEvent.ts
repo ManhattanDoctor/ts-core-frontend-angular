@@ -1,4 +1,4 @@
-import { TransportEvent } from '@ts-core/common/transport';
+import { TransportEvent } from '@ts-core/common';
 import { ITransportLazyModuleData } from './TransportLazyModule';
 
 export class TransportLazyModuleLoadedEvent<T extends ITransportLazyModuleData = ITransportLazyModuleData> extends TransportEvent<T> {

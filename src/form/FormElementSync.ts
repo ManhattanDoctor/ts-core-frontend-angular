@@ -1,4 +1,4 @@
-import { AfterContentInit, Directive, Injectable, OnDestroy } from '@angular/core';
+import { AfterContentInit, Directive, OnDestroy } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, NgModel, Validator, ValidatorFn } from '@angular/forms';
 import { message, ValidationResult } from './validate';
 import { ValueAccessor } from './ValueAccessor';

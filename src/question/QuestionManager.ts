@@ -1,5 +1,5 @@
 import * as _ from 'lodash';
-import { PromiseHandler } from '@ts-core/common/promise';
+import { PromiseHandler } from '@ts-core/common';
 import { Destroyable } from '@ts-core/common';
 import { IQuestion, IQuestionOptions, QuestionMode } from './IQuestion';
 

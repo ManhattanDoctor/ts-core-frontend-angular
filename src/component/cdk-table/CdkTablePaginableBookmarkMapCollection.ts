@@ -1,4 +1,4 @@
-import { PaginableBookmarkDataSourceMapCollection } from '@ts-core/common/map/dataSource';
+import { PaginableBookmarkDataSourceMapCollection } from '@ts-core/common';
 import { CdkTableDataSource } from './CdkTableDataSource';
 import * as _ from 'lodash';
 import { CdkTableFilterableMapCollection } from './CdkTableFilterableMapCollection';

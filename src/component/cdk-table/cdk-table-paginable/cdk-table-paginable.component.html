@@ -33,13 +33,13 @@
                         *ngSwitchCase="true"
                         [ngClass]="row | viCdkTableCellClassName: column"
                         [ngStyle]="row | viCdkTableCellStyleName: column"
-                        [src]="row | viCdkTableCellValue: column"
+                        [src]="column.isAsync ? (row | viCdkTableCellValue: column) : (row | viCdkTableCellValuePure: column)"
                     />
                     <span
                         *ngSwitchDefault
                         [ngClass]="row | viCdkTableCellClassName: column"
                         [ngStyle]="row | viCdkTableCellStyleName: column"
-                        [vi-html-content-title]="row | viCdkTableCellValue: column"
+                        [vi-html-content-title]="column.isAsync ? (row | viCdkTableCellValue: column) : (row | viCdkTableCellValuePure: column)"
                     ></span>
                 </ng-container>
             </mat-cell>
@@ -57,7 +57,6 @@
     ></mat-row>
 
     <p class="p-3 flex-shrink-0 text-center mouse-inactive" [vi-translate]="settings?.noDataId" *matNoDataRow></p>
-    
 </mat-table>
 
 <mat-progress-bar class="flex-shrink-0 border" [mode]="table?.isLoading ? 'indeterminate' : 'determinate'"></mat-progress-bar>

@@ -1,5 +1,5 @@
 import { Directive, ElementRef } from '@angular/core';
-import { ThemeAssetService, ThemeService } from '@ts-core/frontend/theme';
+import { ThemeAssetService, ThemeService } from '@ts-core/frontend';
 import { ViewUtil } from '../util/ViewUtil';
 import { ThemeAssetDirective } from './ThemeAssetDirective';
 

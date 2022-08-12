@@ -1,13 +1,11 @@
-import { Renderer2 } from '@angular/core';
 import { LoadableEvent } from '@ts-core/common';
-import { Assets } from '@ts-core/frontend/asset';
-import { AssetUrlProvider } from '@ts-core/frontend/asset/provider';
+import { Assets } from '@ts-core/frontend';
+import { AssetUrlProvider } from '@ts-core/frontend';
 import { Language } from '@ts-core/language';
-import { LanguageService } from '@ts-core/frontend/language';
-import { SettingsBaseService } from '@ts-core/frontend/service';
-import { ThemeService } from '@ts-core/frontend/theme';
-import { takeUntil } from 'rxjs/operators';
-import { ViewUtil } from '../util/ViewUtil';
+import { LanguageService } from '@ts-core/frontend';
+import { SettingsBaseService } from '@ts-core/frontend';
+import { ThemeService } from '@ts-core/frontend';
+import { takeUntil } from 'rxjs';
 import { ApplicationBaseComponent } from './ApplicationBaseComponent';
 import * as _ from 'lodash';
 import moment from 'moment';
@@ -29,8 +27,6 @@ export abstract class ApplicationComponent<T extends SettingsBaseService> extend
     // --------------------------------------------------------------------------
 
     protected initialize(): void {
-        ViewUtil.renderer = this.renderer;
-
         this.initializeAssets();
         this.initializeTheme();
         this.initializeLanguage();
@@ -95,5 +91,4 @@ export abstract class ApplicationComponent<T extends SettingsBaseService> extend
 
     protected abstract get theme(): ThemeService;
     protected abstract get language(): LanguageService;
-    protected abstract get renderer(): Renderer2;
 }

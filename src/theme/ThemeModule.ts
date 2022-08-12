@@ -1,6 +1,6 @@
 import { InjectionToken, ModuleWithProviders, NgModule } from '@angular/core';
-import { ICookieService } from '@ts-core/frontend/cookie';
-import { IThemeServiceOptions, ThemeService, ThemeAssetService } from '@ts-core/frontend/theme';
+import { ICookieService, NativeWindowService } from '@ts-core/frontend';
+import { IThemeServiceOptions, ThemeService, ThemeAssetService } from '@ts-core/frontend';
 import { CookieModule } from '../cookie/CookieModule';
 import { CookieService } from '../cookie/CookieService';
 import { ThemeAssetBackgroundDirective } from './ThemeAssetBackgroundDirective';
@@ -34,12 +34,12 @@ export class ThemeModule {
                 },
                 {
                     provide: ThemeService,
-                    deps: [CookieService, THEME_OPTIONS],
+                    deps: [NativeWindowService, CookieService, THEME_OPTIONS],
                     useFactory: themeServiceFactory
                 },
                 {
                     provide: ThemeAssetService,
-                    deps: [ThemeService],
+                    deps: [ThemeService, NativeWindowService],
                     useFactory: themeAssetServiceFactory
                 }
             ]
@@ -47,11 +47,11 @@ export class ThemeModule {
     }
 }
 
-export function themeServiceFactory(cookie: ICookieService, options?: IThemeServiceOptions): ThemeService {
+export function themeServiceFactory(nativeWindow: NativeWindowService, cookie: ICookieService, options?: IThemeServiceOptions): ThemeService {
     if (!_.isNil(options) && _.isNil(options.service)) {
         options.service = cookie;
     }
-    return new ThemeService(options);
+    return new ThemeService(options, nativeWindow.document);
 }
 
 export function themeAssetServiceFactory(theme: ThemeService): ThemeAssetService {

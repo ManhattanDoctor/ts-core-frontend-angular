@@ -1,7 +1,7 @@
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { LoadableEvent } from '@ts-core/common';
-import { LanguageService } from '@ts-core/frontend/language';
-import { PromiseHandler } from '@ts-core/common/promise';
+import { LanguageService } from '@ts-core/frontend';
+import { PromiseHandler } from '@ts-core/common';
 
 export class LanguageRequireResolver implements Resolve<void> {
     // --------------------------------------------------------------------------

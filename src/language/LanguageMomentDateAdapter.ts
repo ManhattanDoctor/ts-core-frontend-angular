@@ -1,5 +1,5 @@
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
-import { LanguageService } from '@ts-core/frontend/language';
+import { LanguageService } from '@ts-core/frontend';
 
 export class LanguageMomentDateAdapter extends MomentDateAdapter {
     // --------------------------------------------------------------------------

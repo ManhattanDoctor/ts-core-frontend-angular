@@ -1,5 +1,5 @@
 import { Component, ElementRef } from '@angular/core';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs';
 import { ViewUtil } from '../../../util/ViewUtil';
 import { WindowEvent } from '../../../window/IWindow';
 import { WindowElement } from '../WindowElement';

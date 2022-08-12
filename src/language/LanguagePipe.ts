@@ -1,7 +1,7 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
-import { LanguageService } from '@ts-core/frontend/language';
-import { takeUntil } from 'rxjs/operators';
+import { LanguageService } from '@ts-core/frontend';
+import { takeUntil } from 'rxjs';
 import * as _ from 'lodash';
 
 @Pipe({
@@ -30,9 +30,10 @@ export class LanguagePipe extends DestroyableContainer implements PipeTransform 
     //
     // --------------------------------------------------------------------------
 
-    private key: string;
-    private params: string;
-    private _value: string;
+    private lastKey: string;
+    private lastParams: any;
+
+    private lastValue: string;
 
     // --------------------------------------------------------------------------
     //
@@ -40,9 +41,9 @@ export class LanguagePipe extends DestroyableContainer implements PipeTransform 
     //
     // --------------------------------------------------------------------------
 
-    constructor(private language: LanguageService) {
+    constructor(private detection: ChangeDetectorRef, private language: LanguageService) {
         super();
-        language.completed.pipe(takeUntil(this.destroyed)).subscribe(this.valueUpdate);
+        language.completed.pipe(takeUntil(this.destroyed)).subscribe(this.lastValueUpdate);
     }
 
     // --------------------------------------------------------------------------
@@ -51,8 +52,9 @@ export class LanguagePipe extends DestroyableContainer implements PipeTransform 
     //
     // --------------------------------------------------------------------------
 
-    private valueUpdate = (): void => {
-        this._value = this.language.translate(this.key, this.params);
+    private lastValueUpdate = (): void => {
+        this.lastValue = this.language.translate(this.lastKey, this.lastParams);
+        this.detection.markForCheck();
     };
 
     // --------------------------------------------------------------------------
@@ -62,12 +64,17 @@ export class LanguagePipe extends DestroyableContainer implements PipeTransform 
     // --------------------------------------------------------------------------
 
     public transform(key: string, params?: any): string {
-        this.key = key;
-        this.params = params;
-        if (_.isNil(this._value)) {
-            this.valueUpdate();
+        if (key === this.lastKey) {
+            if (params === this.lastParams || (_.isNil(params) && _.isNil(this.lastParams))) {
+                return this.lastValue;
+            }
         }
-        return this._value;
+
+        this.lastKey = key;
+        this.lastParams = params;
+        this.lastValueUpdate();
+
+        return this.lastValue;
     }
 
     public destroy(): void {
@@ -76,8 +83,11 @@ export class LanguagePipe extends DestroyableContainer implements PipeTransform 
         }
         super.destroy();
         this.language = null;
+        this.detection = null;
 
-        this.key = null;
-        this.params = null;
+        this.lastKey = null;
+        this.lastParams = null;
+
+        this.lastValue = null;
     }
 }

@@ -21,6 +21,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 import { CdkTableCellValuePipe } from './cdk-table/cell/CdkTableCellValuePipe';
+import { CdkTableCellValuePipePure } from './cdk-table/cell/CdkTableCellValuePipePure';
 import { CdkTableCellClassNamePipe } from './cdk-table/cell/CdkTableCellClassNamePipe';
 import { CdkTableCellStyleNamePipe } from './cdk-table/cell/CdkTableCellStyleNamePipe';
 import { CdkTableColumnStyleNamePipe } from './cdk-table/column/CdkTableColumnStyleNamePipe';
@@ -45,6 +46,7 @@ const IMPORTS = [
 const ENTRY_COMPONENTS = [];
 const DECLARATIONS = [
     CdkTableCellValuePipe,
+    CdkTableCellValuePipePure,
     CdkTableCellClassNamePipe,
     CdkTableCellStyleNamePipe,
     CdkTableColumnClassNamePipe,

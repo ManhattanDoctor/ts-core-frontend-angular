@@ -1,6 +1,6 @@
 import { InjectionToken, ModuleWithProviders, NgModule } from '@angular/core';
-import { ICookieService } from '@ts-core/frontend/cookie';
-import { ILanguageServiceOptions, LanguageService } from '@ts-core/frontend/language';
+import { ICookieService } from '@ts-core/frontend';
+import { ILanguageServiceOptions, LanguageService } from '@ts-core/frontend';
 import { CookieModule } from '../cookie/CookieModule';
 import { CookieService } from '../cookie/CookieService';
 import { LanguageMatPaginatorIntl } from './LanguageMatPaginatorIntl';

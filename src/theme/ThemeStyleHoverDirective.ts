@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, RendererStyleFlags2 } from '@angular/core';
-import { ThemeService } from '@ts-core/frontend/theme';
+import { ThemeService } from '@ts-core/frontend';
 import { ThemeStyleDirective } from './ThemeStyleDirective';
 import * as _ from 'lodash';
 

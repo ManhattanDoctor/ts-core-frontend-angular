@@ -1,7 +1,7 @@
 import { CdkTableDataSource } from './CdkTableDataSource';
-import { FilterableDataSourceMapCollection } from '@ts-core/common/map/dataSource';
+import { FilterableDataSourceMapCollection } from '@ts-core/common';
 import * as _ from 'lodash';
-import { ObjectUtil } from '@ts-core/common/util';
+import { ObjectUtil } from '@ts-core/common';
 import { Sort, SortDirection } from '@angular/material/sort';
 
 export abstract class CdkTableFilterableMapCollection<U, V> extends FilterableDataSourceMapCollection<U, V> {

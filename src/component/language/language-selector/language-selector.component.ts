@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
-import { LanguageService } from '@ts-core/frontend/language';
+import { LanguageService } from '@ts-core/frontend';
 import { ViewUtil } from '../../../util/ViewUtil';
 
 @Component({

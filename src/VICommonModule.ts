@@ -1,10 +1,10 @@
-import { InjectionToken, ModuleWithProviders, NgModule } from '@angular/core';
-import { ILogger, Logger, LoggerLevel } from '@ts-core/common/logger';
-import { ICookieOptions } from '@ts-core/frontend/cookie';
-import { ILanguageServiceOptions } from '@ts-core/frontend/language';
-import { DefaultLogger } from '@ts-core/frontend/logger';
-import { LoadingService, NativeWindowService } from '@ts-core/frontend/service';
-import { IThemeServiceOptions } from '@ts-core/frontend/theme';
+import { APP_INITIALIZER, InjectionToken, ModuleWithProviders, NgModule, Renderer2, RendererFactory2 } from '@angular/core';
+import { ILogger, Logger, LoggerLevel } from '@ts-core/common';
+import { ICookieOptions } from '@ts-core/frontend';
+import { ILanguageServiceOptions } from '@ts-core/frontend';
+import { DefaultLogger } from '@ts-core/frontend';
+import { LoadingService, NativeWindowService } from '@ts-core/frontend';
+import { IThemeServiceOptions } from '@ts-core/frontend';
 import * as _ from 'lodash';
 import { AssetModule } from './asset/AssetModule';
 import { CookieModule } from './cookie/CookieModule';
@@ -38,7 +38,12 @@ import { TruncatePipe } from './pipe/TruncatePipe';
 import { PrettifyPipe } from './pipe/PrettifyPipe';
 import { ThemeModule } from './theme/ThemeModule';
 import { WindowModule } from './window/WindowModule';
+import { IsServerDirective } from './directive/IsServerDirective';
+import { IsBrowserDirective } from './directive/IsBrowserDirective';
 import { MenuTriggerForDirective } from './directive/MenuTriggerForDirective';
+import { DOCUMENT } from '@angular/common';
+import { PlatformService } from './service/PlatformService';
+import { ViewUtil } from './util/ViewUtil';
 
 const IMPORTS = [CookieModule, ThemeModule, LanguageModule, AssetModule, WindowModule, NotificationModule];
 
@@ -51,6 +56,9 @@ const DECLARATIONS = [
     CamelCasePipe,
     StartCasePipe,
     NgModelErrorPipe,
+
+    IsServerDirective,
+    IsBrowserDirective,
 
     MomentDatePipe,
     MomentTimePipe,
@@ -88,12 +96,20 @@ export class VICommonModule {
         return {
             ngModule: VICommonModule,
             providers: [
+                {
+                    provide: APP_INITIALIZER,
+                    deps: [NativeWindowService, RendererFactory2],
+                    useFactory: initializerFactory,
+                    multi: true
+                },
+
                 LoadingService,
+                PlatformService,
                 CanDeactivateGuard,
-                NativeWindowService,
 
                 { provide: VI_ANGULAR_OPTIONS, useValue: options || {} },
                 { provide: Logger, deps: [VI_ANGULAR_OPTIONS], useFactory: loggerServiceFactory },
+                { provide: NativeWindowService, deps: [DOCUMENT], useFactory: nativeWindowServiceFactory },
 
                 ...WindowModule.forRoot().providers,
                 ...BottomSheetModule.forRoot().providers,
@@ -112,8 +128,17 @@ export class IVICommonOptions extends ICookieOptions {
     languageOptions?: ILanguageServiceOptions;
 }
 
+export function initializerFactory(nativeWindow: NativeWindowService, rendererFactory2: RendererFactory2): ViewUtil {
+    ViewUtil.renderer = rendererFactory2.createRenderer(null, null);
+    ViewUtil.document = nativeWindow.document;
+    return () => Promise.resolve();
+}
+
 export function loggerServiceFactory(options: IVICommonOptions): ILogger {
     return new DefaultLogger(!_.isNil(options.loggerLevel) ? options.loggerLevel : LoggerLevel.LOG);
+}
+export function nativeWindowServiceFactory(document: Document): NativeWindowService {
+    return new NativeWindowService(document);
 }
 
 export const VI_ANGULAR_OPTIONS = new InjectionToken<IVICommonOptions>(`VI_ANGULAR_OPTIONS`);

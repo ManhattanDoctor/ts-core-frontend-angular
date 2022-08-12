@@ -9,7 +9,7 @@ import { WindowProperties } from '../window/WindowProperties';
 import { ViewUtil } from '../util/ViewUtil';
 import { WindowImpl } from '../window/WindowImpl';
 import { WindowElement } from '../window/component/WindowElement';
-import { ArrayUtil } from '@ts-core/common/util';
+import { ArrayUtil } from '@ts-core/common';
 import { ComponentRef } from '@angular/core';
 
 export class BottomSheetImpl<T = any> extends DestroyableContainer implements IWindow {

@@ -1,7 +1,7 @@
 import * as _ from 'lodash';
 import { ISelectListItem } from './ISelectListItem';
 import { ListItems } from '../ListItems';
-import { LanguageService } from '@ts-core/frontend/language';
+import { LanguageService } from '@ts-core/frontend';
 import { EventEmitter } from '@angular/core';
 
 export class SelectListItems<U extends ISelectListItem<V>, V = any> extends ListItems<U, V> {

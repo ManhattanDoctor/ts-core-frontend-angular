@@ -31,13 +31,13 @@
                         *ngSwitchCase="true"
                         [ngClass]="row | viCdkTableCellClassName: column"
                         [ngStyle]="row | viCdkTableCellStyleName: column"
-                        [src]="row | viCdkTableCellValue: column"
+                        [src]="column.isAsync ? (row | viCdkTableCellValue: column) : (row | viCdkTableCellValuePure: column)"
                     />
                     <span
                         *ngSwitchDefault
                         [ngClass]="row | viCdkTableCellClassName: column"
                         [ngStyle]="row | viCdkTableCellStyleName: column"
-                        [vi-html-content-title]="row | viCdkTableCellValue: column"
+                        [vi-html-content-title]="column.isAsync ? (row | viCdkTableCellValue: column) : (row | viCdkTableCellValuePure: column)"
                     ></span>
                 </ng-container>
             </mat-cell>

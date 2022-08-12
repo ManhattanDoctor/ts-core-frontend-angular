@@ -8,7 +8,7 @@ import { WindowConfig } from './WindowConfig';
 import { WindowProperties } from './WindowProperties';
 import * as _ from 'lodash';
 import { WindowElement } from './component/WindowElement';
-import { ArrayUtil } from '@ts-core/common/util';
+import { ArrayUtil } from '@ts-core/common';
 import { ComponentRef } from '@angular/core';
 
 export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {

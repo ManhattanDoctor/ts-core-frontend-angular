@@ -1,28 +1,44 @@
-import { ICookieOptions, ICookieService } from '@ts-core/frontend/cookie';
+import { ICookieOptions, ICookieService, NativeWindowService } from '@ts-core/frontend';
 import * as _ from 'lodash';
 import * as Cookie from 'ngx-cookie';
 import { CookieOptionsProvider } from 'ngx-cookie';
+import { PlatformService } from '../service/PlatformService';
 import { CookieOptions } from './CookieOptions';
 
 export class CookieService extends Cookie.CookieService implements ICookieService {
+    // --------------------------------------------------------------------------
+    //
+    // 	Properties
+    //
+    // --------------------------------------------------------------------------
+
+    private _document: Document;
+
     // --------------------------------------------------------------------------
     //
     // 	Constructor
     //
     // --------------------------------------------------------------------------
 
-    constructor(options?: CookieOptions) {
-        options = _.assign(
-            {
-                path: '/',
-                domain: null,
-                expires: null,
-                secure: false,
-                httpOnly: false
-            },
-            options
-        );
+    constructor(options: CookieOptions, platform: PlatformService, item?: Document) {
         super({ options } as CookieOptionsProvider);
+        this._document = !_.isNil(item) ? item : document;
+
+        let cookieString = '';
+        Object.defineProperty(this, 'cookieString', {
+            get: (): string => {
+                return platform.isPlatformBrowser ? this.document.cookie : cookieString;
+            },
+            set: (value: string) => {
+                if (platform.isPlatformBrowser) {
+                    this.document.cookie = value;
+                } else {
+                    cookieString = value;
+                }
+            },
+            enumerable: true,
+            configurable: true
+        });
     }
 
     // --------------------------------------------------------------------------
@@ -61,5 +77,15 @@ export class CookieService extends Cookie.CookieService implements ICookieServic
         } else {
             this.remove(key);
         }
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    //  Private Properties
+    //
+    // --------------------------------------------------------------------------
+
+    private get document(): Document {
+        return this._document;
     }
 }

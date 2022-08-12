@@ -13,11 +13,14 @@ export interface ICdkTableColumn<U = any> {
     headerStyleName?: string;
 
     isImage?: boolean;
+    isAsync?: boolean;
     isMultiline?: boolean;
     isDisableSort?: boolean;
 }
 
-export type ICdkTableCellValueFunction<U> = (item: U, column: ICdkTableColumn<U>) => U[keyof U] | string | number;
+export type CdkTableCellValue<U = any> = string | number | U[keyof U];
+
+export type ICdkTableCellValueFunction<U> = (item: U, column: ICdkTableColumn<U>) => CdkTableCellValue<U> | Promise<CdkTableCellValue<U>>;
 export type ICdkTableCellClassNameFunction<U> = (item: U, column: ICdkTableColumn<U>) => string;
 export type ICdkTableCellStyleNameFunction<U> = (item: U, column: ICdkTableColumn<U>) => { [key: string]: any };
 

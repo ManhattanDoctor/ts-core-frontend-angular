@@ -1,4 +1,4 @@
-import { ExtendedError } from '@ts-core/common/error';
+import { ExtendedError } from '@ts-core/common';
 import * as _ from 'lodash';
 
 export class WindowClosedError extends ExtendedError<void, number> {

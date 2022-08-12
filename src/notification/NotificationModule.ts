@@ -3,7 +3,7 @@ import { ModuleWithProviders, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { LanguageService } from '@ts-core/frontend/language';
+import { LanguageService } from '@ts-core/frontend';
 import { LanguageModule } from '../language/LanguageModule';
 import { NotificationBaseComponent } from './component/NotificationBaseComponent';
 import { NotificationComponent } from './component/notification/notification.component';

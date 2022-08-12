@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
-import { LanguageService } from '@ts-core/frontend/language';
-import { takeUntil } from 'rxjs/operators';
+import { LanguageService } from '@ts-core/frontend';
+import { takeUntil } from 'rxjs';
 import * as _ from 'lodash';
 
 @Pipe({

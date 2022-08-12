@@ -1,4 +1,4 @@
-import { LanguageService } from '@ts-core/frontend/language';
+import { LanguageService } from '@ts-core/frontend';
 import { LanguageRequireResolver } from './LanguageRequireResolver';
 import { Injectable } from '@angular/core';
 

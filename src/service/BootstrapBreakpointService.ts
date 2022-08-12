@@ -1,11 +1,11 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
-import { ObservableData } from '@ts-core/common/observer';
+import { ObservableData } from '@ts-core/common';
 
 import * as _ from 'lodash';
 import { merge, Observable, Subject } from 'rxjs';
-import { filter, map, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class BootstrapBreakpointService extends DestroyableContainer {

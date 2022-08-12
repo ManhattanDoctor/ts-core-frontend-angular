@@ -1,4 +1,4 @@
-import { IUIDable } from '@ts-core/common/dto';
+import { IUIDable } from '@ts-core/common';
 
 export interface IListItem<T = any> extends IUIDable {
     label: string;

@@ -1,5 +1,5 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { LanguageService } from '@ts-core/frontend/language';
+import { LanguageService } from '@ts-core/frontend';
 import { ViewUtil } from '../../../util/ViewUtil';
 import { WindowQuestionBaseComponent } from '../WindowQuestionBaseComponent';
 import * as _ from 'lodash';

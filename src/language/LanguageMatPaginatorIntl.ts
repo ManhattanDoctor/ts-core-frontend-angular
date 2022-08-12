@@ -1,5 +1,5 @@
 import { MatPaginatorIntl } from '@angular/material/paginator';
-import { LanguageService } from '@ts-core/frontend/language';
+import { LanguageService } from '@ts-core/frontend';
 import { Subscription } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import * as _ from 'lodash';

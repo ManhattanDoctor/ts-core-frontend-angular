@@ -1,7 +1,7 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { DestroyableContainer } from '@ts-core/common';
 import * as _ from 'lodash';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs';
 import { NotificationConfig } from '../notification/NotificationConfig';
 import { NotificationService, NotificationServiceEvent } from '../notification/NotificationService';
 

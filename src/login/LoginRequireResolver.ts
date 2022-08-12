@@ -1,6 +1,6 @@
 import { Resolve } from '@angular/router';
 import { LoginBaseService, LoginBaseServiceEvent } from './LoginBaseService';
-import { PromiseHandler } from '@ts-core/common/promise';
+import { PromiseHandler } from '@ts-core/common';
 
 export class LoginRequireResolver<T extends LoginBaseService = LoginBaseService> implements Resolve<void> {
     // --------------------------------------------------------------------------

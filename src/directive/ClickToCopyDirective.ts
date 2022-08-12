@@ -1,6 +1,6 @@
 import { Directive, HostListener, Input } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
-import { DateUtil } from '@ts-core/common/util';
+import { DateUtil } from '@ts-core/common';
 import { ViewUtil } from '../util/ViewUtil';
 
 @Directive({

@@ -1,4 +1,4 @@
-import { ICookieOptions } from '@ts-core/frontend/cookie';
+import { ICookieOptions } from '@ts-core/frontend';
 import * as Cookie from 'ngx-cookie';
 
 export class CookieOptions implements ICookieOptions, Cookie.CookieOptions {

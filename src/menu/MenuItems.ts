@@ -1,7 +1,7 @@
 import { DestroyableContainer, LoadableEvent } from '@ts-core/common';
-import { ArrayUtil } from '@ts-core/common/util';
-import { LanguageService } from '@ts-core/frontend/language';
-import { filter, takeUntil } from 'rxjs/operators';
+import { ArrayUtil } from '@ts-core/common';
+import { LanguageService } from '@ts-core/frontend';
+import { filter, takeUntil } from 'rxjs';
 import { MenuItem } from './MenuItem';
 import { MenuItemBase } from './MenuItemBase';
 

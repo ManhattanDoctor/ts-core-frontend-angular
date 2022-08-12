@@ -1,7 +1,7 @@
 import { Directive, ElementRef, Input } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
 import * as _ from 'lodash';
-import { LanguagePipe } from '../public-api';
+import { LanguagePipe } from '../language/LanguagePipe';
 import { ViewUtil } from '../util/ViewUtil';
 
 @Directive({
