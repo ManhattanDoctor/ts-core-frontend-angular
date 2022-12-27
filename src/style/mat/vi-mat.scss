@@ -63,18 +63,8 @@
             @include vertical-scroll-only();
         }
 
-        vi-window-close-element {
-            top: -20px;
-            right: -20px;
-        }
-
-        vi-window-expand-element,
-        vi-window-minimize-element {
-            top: -20px;
-            right: 10px;
-        }
-
         vi-window-resize-element {
+            width: 32px;
             right: -16px;
             bottom: -16px;
             display: none !important;
@@ -95,10 +85,31 @@
             max-height: inherit;
             @include vertical-scroll-only();
         }
+    }
 
+    mat-dialog-container,
+    mat-bottom-sheet-container {
+        vi-window-close-element,
+        vi-window-expand-element,
+        vi-window-minimize-element {
+            top: -16px;
+            width: 32px;
+        }
         vi-window-close-element {
-            top: -20px;
-            right: -20px;
+            right: -16px;
+        }
+        vi-window-expand-element,
+        vi-window-minimize-element {
+            right: 24px;
+        }
+        @include media-breakpoint-down(lg) {
+            vi-window-close-element {
+                right: 16px;
+            }
+            vi-window-expand-element,
+            vi-window-minimize-element {
+                right: 56px;
+            }
         }
     }
 
@@ -448,7 +459,7 @@
     $thumb-color: rgba(0, 0, 0, 0.15);
 
     @if map-get($theme, is-dark) {
-        $thumb-color: rgba(255, 255, 255, 0.10);
+        $thumb-color: rgba(255, 255, 255, 0.1);
         .mat-drawer-backdrop.mat-drawer-shown {
             background-color: rgba(0, 0, 0, 0.8);
         }
@@ -479,17 +490,39 @@
     $theme-color: map-get($theme, color);
     $color-background-palette: map-get($theme-color, background);
     @if $color-background-palette {
-        $color-background-palette: map-merge($color-background-palette, ($name: $value));
+        $color-background-palette: map-merge(
+            $color-background-palette,
+            (
+                $name: $value
+            )
+        );
     }
     @if $color-background-palette {
-        $modified-theme: map-merge($modified-theme, (color: (background: $color-background-palette)));
+        $modified-theme: map-merge(
+            $modified-theme,
+            (
+                color: (
+                    background: $color-background-palette
+                )
+            )
+        );
     }
     $background-palette: map-get($theme, background);
     @if $background-palette {
-        $background-palette: map-merge($background-palette,($name: $value));
+        $background-palette: map-merge(
+            $background-palette,
+            (
+                $name: $value
+            )
+        );
     }
     @if $background-palette {
-        $modified-theme: map-merge($modified-theme,(background: $background-palette));
+        $modified-theme: map-merge(
+            $modified-theme,
+            (
+                background: $background-palette
+            )
+        );
     }
     @return $modified-theme;
 }
@@ -499,18 +532,39 @@
     $theme-color: map-get($theme, color);
     $color-foreground-palette: map-get($theme-color, foreground);
     @if $color-foreground-palette {
-        $color-foreground-palette: map-merge($color-foreground-palette, ($name: $value));
+        $color-foreground-palette: map-merge(
+            $color-foreground-palette,
+            (
+                $name: $value
+            )
+        );
     }
     @if $color-foreground-palette {
-        $modified-theme: map-merge($modified-theme, (color: (foreground: $color-foreground-palette)));
+        $modified-theme: map-merge(
+            $modified-theme,
+            (
+                color: (
+                    foreground: $color-foreground-palette
+                )
+            )
+        );
     }
     $foreground-palette: map-get($theme, foreground);
     @if $foreground-palette {
-        $foreground-palette: map-merge($foreground-palette,($name: $value));
+        $foreground-palette: map-merge(
+            $foreground-palette,
+            (
+                $name: $value
+            )
+        );
     }
     @if $foreground-palette {
-        $modified-theme: map-merge($modified-theme,(foreground: $foreground-palette));
+        $modified-theme: map-merge(
+            $modified-theme,
+            (
+                foreground: $foreground-palette
+            )
+        );
     }
     @return $modified-theme;
 }
-

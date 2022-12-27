@@ -16,11 +16,21 @@ export class ScrollCheckDirective extends DestroyableContainer {
     //--------------------------------------------------------------------------
 
     @Output()
+    public top: EventEmitter<boolean> = new EventEmitter();
+    @Output()
+    public bottom: EventEmitter<boolean> = new EventEmitter();
+    @Output()
     public limitExceed: EventEmitter<boolean> = new EventEmitter();
 
     private _scrollLimit: number;
-    private _scrollValue: number;
+
+    private element: HTMLElement;
     private isExceedLimit: boolean = false;
+
+    @Input()
+    public delay: number = DateUtil.MILLISECONDS_SECOND / 10;
+    @Input()
+    public offset: number = 50;
 
     //--------------------------------------------------------------------------
     //
@@ -30,14 +40,10 @@ export class ScrollCheckDirective extends DestroyableContainer {
 
     constructor(element: ElementRef) {
         super();
+        this.delay = DateUtil.MILLISECONDS_SECOND / 10;
+        this.element = element.nativeElement;
 
-        this._scrollValue = element.nativeElement.scrollTop;
-        fromEvent(element.nativeElement, 'scroll')
-            .pipe(debounceTime(DateUtil.MILISECONDS_SECOND / 10), takeUntil(this.destroyed))
-            .subscribe(() => {
-                this._scrollValue = element.nativeElement.scrollTop;
-                this.check();
-            });
+        fromEvent(this.element, 'scroll').pipe(debounceTime(this.delay), takeUntil(this.destroyed)).subscribe(this.check);
     }
 
     //--------------------------------------------------------------------------
@@ -46,12 +52,41 @@ export class ScrollCheckDirective extends DestroyableContainer {
     //
     //--------------------------------------------------------------------------
 
-    protected check(): void {
-        let value = this._scrollValue >= this.scrollLimit;
+    protected check = (): void => {
+        let value = this.scrollValue >= this.scrollLimit;
         if (value !== this.isExceedLimit) {
             this.isExceedLimit = value;
-            this.limitExceed.emit(this.isExceedLimit);
+            this.limitExceed.emit(value);
         }
+
+        let offset = !_.isNaN(this.offset) ? this.offset : 0;
+        value = this.scrollValue + this.clientHeight + offset >= this.scrollHeight;
+        this.bottom.next(value);
+
+        value = this.scrollValue <= offset;
+        this.top.next(value);
+    };
+
+    //--------------------------------------------------------------------------
+    //
+    //	Private Properties
+    //
+    //--------------------------------------------------------------------------
+
+    // --------------------------------------------------------------------------
+    //
+    //	Private Properties
+    //
+    // --------------------------------------------------------------------------
+
+    protected get scrollValue(): number {
+        return this.element.scrollTop;
+    }
+    protected get scrollHeight() {
+        return this.element.scrollHeight;
+    }
+    protected get clientHeight(): number {
+        return this.element.clientHeight;
     }
 
     //--------------------------------------------------------------------------

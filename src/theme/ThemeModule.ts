@@ -5,12 +5,20 @@ import { CookieModule } from '../cookie/CookieModule';
 import { CookieService } from '../cookie/CookieService';
 import { ThemeAssetBackgroundDirective } from './ThemeAssetBackgroundDirective';
 import { ThemeAssetImageDirective } from './ThemeAssetImageDirective';
+import { ThemeAssetIconDirective } from './ThemeAssetIconDirective';
 import { ThemeToggleDirective } from './ThemeToggleDirective';
 import { ThemeStyleDirective } from './ThemeStyleDirective';
 import { ThemeStyleHoverDirective } from './ThemeStyleHoverDirective';
 import * as _ from 'lodash';
 
-let declarations = [ThemeToggleDirective, ThemeAssetImageDirective, ThemeAssetBackgroundDirective, ThemeStyleDirective, ThemeStyleHoverDirective];
+let declarations = [
+    ThemeToggleDirective,
+    ThemeAssetImageDirective,
+    ThemeAssetIconDirective,
+    ThemeAssetBackgroundDirective,
+    ThemeStyleDirective,
+    ThemeStyleHoverDirective
+];
 
 @NgModule({
     imports: [CookieModule],

@@ -4,14 +4,14 @@ import * as _ from 'lodash';
 import { ObjectUtil } from '@ts-core/common';
 import { Sort, SortDirection } from '@angular/material/sort';
 
-export abstract class CdkTableFilterableMapCollection<U, V> extends FilterableDataSourceMapCollection<U, V> {
+export abstract class CdkTableFilterableMapCollection<U, V, T = any> extends FilterableDataSourceMapCollection<U, V, T> {
     // --------------------------------------------------------------------------
     //
     // 	Static Methods
     //
     // --------------------------------------------------------------------------
 
-    public static getSort<U, V = any>(collection: FilterableDataSourceMapCollection<U, V>): Sort {
+    public static getSort<U, V = any, T = any>(collection: FilterableDataSourceMapCollection<U, V, T>): Sort {
         if (_.isNil(collection) || _.isEmpty(collection.sort)) {
             return null;
         }

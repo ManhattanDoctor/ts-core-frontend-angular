@@ -247,7 +247,7 @@ export class WindowService extends Destroyable {
         let window: IWindow<T> = null;
         if (config.id) {
             window = this.getById(config.id);
-            if (window) {
+            if (!_.isNil(window)) {
                 return window.content as T;
             }
         }

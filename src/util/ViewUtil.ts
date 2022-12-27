@@ -54,9 +54,9 @@ export class ViewUtil {
     //
     // --------------------------------------------------------------------------
 
-    public static parseElement(element: IViewElement): HTMLElement {
+    public static parseElement<T extends HTMLElement = HTMLElement>(element: IViewElement<T>): T {
         if (element instanceof HTMLElement) {
-            return element;
+            return element as T;
         }
         if (element instanceof ViewContainerRef) {
             element = element.element;
@@ -130,7 +130,7 @@ export class ViewUtil {
     //
     // --------------------------------------------------------------------------
 
-    public static createElement(name: string, className?: string, innerHTML?: string): any {
+    public static createElement<T = any>(name: string, className?: string, innerHTML?: string): T {
         let element = ViewUtil.renderer.createElement(name);
         if (!_.isNil(name)) {
             ViewUtil.setProperty(element, 'className', className);
@@ -177,6 +177,32 @@ export class ViewUtil {
         return ViewUtil.window.innerHeight || ViewUtil.document.body.clientHeight;
     }
 
+    public static getCanvasContext2d(container: IViewElement<HTMLCanvasElement>, options?: CanvasRenderingContext2DSettings): CanvasRenderingContext2D {
+        let canvas = ViewUtil.parseElement(container);
+        try {
+            return canvas.getContext('2d', options);
+        } catch (error) {
+            return null;
+        }
+    }
+
+    public static getBoundingRectangle(container: IViewElement): DOMRect {
+        container = ViewUtil.parseElement(container);
+        if (_.isNil(container) || _.isNil(container.getBoundingClientRect)) {
+            return {
+                x: NaN,
+                y: NaN,
+                width: NaN,
+                height: NaN,
+                top: NaN,
+                right: NaN,
+                left: NaN,
+                bottom: NaN
+            } as DOMRect;
+        }
+        return container.getBoundingClientRect();
+    }
+
     public static getWidth(container: IViewElement): number {
         container = ViewUtil.parseElement(container);
         if (_.isNil(container)) {
@@ -184,7 +210,7 @@ export class ViewUtil {
         }
         let value = parseFloat(ViewUtil.getStyle(container, 'width'));
         if (_.isNaN(value)) {
-            value = container.getBoundingClientRect().width;
+            value = ViewUtil.getBoundingRectangle(container).width;
         }
         if (_.isNaN(value)) {
             value = container.offsetWidth;
@@ -238,7 +264,7 @@ export class ViewUtil {
 
         let value = parseFloat(ViewUtil.getStyle(container, 'height'));
         if (_.isNaN(value)) {
-            value = container.getBoundingClientRect().height;
+            value = ViewUtil.getBoundingRectangle(container).height;
         }
         if (_.isNaN(value)) {
             value = container.offsetHeight;

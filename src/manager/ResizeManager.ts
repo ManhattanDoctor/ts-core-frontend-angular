@@ -1,4 +1,4 @@
-import { ResizeSensor } from 'css-element-queries';
+// import { ResizeSensor } from 'css-element-queries';
 import { IDestroyable } from '@ts-core/common';
 import * as _ from 'lodash';
 import { BehaviorSubject, distinctUntilChanged, Observable } from 'rxjs';
@@ -25,9 +25,11 @@ export class ResizeManager implements IDestroyable {
     // --------------------------------------------------------------------------
 
     protected size: ISize;
-    protected sensor: ResizeSensor;
+    protected sensor: ResizeObserver;
     protected subject: BehaviorSubject<ISize>;
     protected element: HTMLElement;
+
+    // protected sensor: ResizeSensor;
 
     // --------------------------------------------------------------------------
     //
@@ -38,7 +40,13 @@ export class ResizeManager implements IDestroyable {
     constructor(element: IViewElement) {
         this.element = ViewUtil.parseElement(element);
         this.subject = new BehaviorSubject({ width: ViewUtil.getWidth(this.element), height: ViewUtil.getHeight(this.element) });
-        this.sensor = new ResizeSensor(this.element, this.handler);
+
+        // this.sensor = new ResizeSensor(this.element, this.handler);
+        // Could be undefined in ssr
+        try {
+            this.sensor = new ResizeObserver(this.handler2);
+            this.sensor.observe(this.element);
+        } catch (error) {}
     }
 
     // --------------------------------------------------------------------------
@@ -56,6 +64,12 @@ export class ResizeManager implements IDestroyable {
         }
         this.size = item;
         this.subject.next(item);
+    };
+
+    protected handler2 = (items: Array<ResizeObserverEntry>) => {
+        if (!_.isEmpty(items)) {
+            this.handler(items[0].contentRect);
+        }
     };
 
     // --------------------------------------------------------------------------
@@ -80,11 +94,16 @@ export class ResizeManager implements IDestroyable {
 
     public destroy(): void {
         if (!_.isNil(this.sensor)) {
+            this.sensor.unobserve(this.element);
+            this.sensor.disconnect();
+            this.sensor = null;
+            /*
             this.sensor.detach(this.handler);
             try {
                 this.sensor.reset();
             } catch (error) {}
             this.sensor = null;
+            */
         }
         if (!_.isNil(this.subject)) {
             this.subject.complete();

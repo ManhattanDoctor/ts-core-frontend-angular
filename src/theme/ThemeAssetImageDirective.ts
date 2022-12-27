@@ -1,4 +1,4 @@
-import { Directive, ElementRef } from '@angular/core';
+import { Directive, ElementRef, Input } from '@angular/core';
 import { ThemeAssetService, ThemeService } from '@ts-core/frontend';
 import { ThemeAssetDirective } from './ThemeAssetDirective';
 
@@ -14,6 +14,7 @@ export class ThemeAssetImageDirective extends ThemeAssetDirective<HTMLImageEleme
 
     constructor(element: ElementRef, theme: ThemeService, themeAsset: ThemeAssetService) {
         super(element, theme, themeAsset);
+        this.isImage = true;
     }
 
     // --------------------------------------------------------------------------
@@ -27,5 +28,19 @@ export class ThemeAssetImageDirective extends ThemeAssetDirective<HTMLImageEleme
     }
     protected removeSourceProperties(): void {
         this.element.src = null;
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    //	Public Properties
+    //
+    // --------------------------------------------------------------------------
+
+    @Input('vi-theme-image')
+    public set name(value: string) {
+        super.name = value;
+    }
+    public get name(): string {
+        return super.name;
     }
 }

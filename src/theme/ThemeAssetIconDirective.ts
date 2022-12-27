@@ -1,12 +1,11 @@
 import { Directive, ElementRef, Input } from '@angular/core';
 import { ThemeAssetService, ThemeService } from '@ts-core/frontend';
-import { ViewUtil } from '../util/ViewUtil';
 import { ThemeAssetDirective } from './ThemeAssetDirective';
 
 @Directive({
-    selector: '[vi-theme-background]'
+    selector: '[vi-theme-icon]'
 })
-export class ThemeAssetBackgroundDirective extends ThemeAssetDirective {
+export class ThemeAssetIconDirective extends ThemeAssetDirective<HTMLImageElement> {
     // --------------------------------------------------------------------------
     //
     //	Constructor
@@ -15,7 +14,6 @@ export class ThemeAssetBackgroundDirective extends ThemeAssetDirective {
 
     constructor(element: ElementRef, theme: ThemeService, themeAsset: ThemeAssetService) {
         super(element, theme, themeAsset);
-        this.isBackground = true;
     }
 
     // --------------------------------------------------------------------------
@@ -25,12 +23,10 @@ export class ThemeAssetBackgroundDirective extends ThemeAssetDirective {
     // --------------------------------------------------------------------------
 
     protected commitSourceProperties(): void {
-        let value = 'url(' + this.source + ')';
-        ViewUtil.setStyle(this.element, 'backgroundImage', value);
+        this.element.src = this.source;
     }
-
     protected removeSourceProperties(): void {
-        ViewUtil.removeStyle(this.element, 'backgroundImage');
+        this.element.src = null;
     }
 
     // --------------------------------------------------------------------------
@@ -39,7 +35,7 @@ export class ThemeAssetBackgroundDirective extends ThemeAssetDirective {
     //
     // --------------------------------------------------------------------------
 
-    @Input('vi-theme-background')
+    @Input('vi-theme-icon')
     public set name(value: string) {
         super.name = value;
     }

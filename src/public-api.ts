@@ -141,6 +141,7 @@ export * from './theme/ThemeStyleHoverDirective';
 export * from './theme/ThemeStyleDirective';
 export * from './theme/ThemeAssetBackgroundDirective';
 export * from './theme/ThemeAssetImageDirective';
+export * from './theme/ThemeAssetIconDirective';
 export * from './theme/ThemeAssetDirective';
 export * from './theme/ThemeModule';
 export * from './theme/ThemeToggleDirective';
