@@ -1,26 +1,60 @@
-@mixin vi-mat-theme-bootstrap-border($theme, $text-primary-default, $text-accent-default) {
-    $warn: map-get($theme, warn);
-    $accent: map-get($theme, accent);
-    $primary: map-get($theme, primary);
-    $is-dark: map-get($theme, is-dark);
-    $foreground: map-get($theme, foreground);
+@use 'sass:map';
+@use '@angular/material' as mat;
+@use '../variables' as var;
 
-    $border-color: map-get($foreground, divider);
-    $text-base-color: map-get($foreground, base);
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/mixins/breakpoints';
 
-    $warn-color: mat-color($warn);
-    $accent-color: mat-color($accent, $text-accent-default);
-    $primary-color: mat-color($primary, $text-primary-default);
-
-    @if $is-dark {
-        $accent-color: mat-color($accent);
-        $primary-color: mat-color($primary);
+@mixin core() {
+    $border-radius: var.$border-radius;
+    // Rounded
+    .rounded {
+        border-radius: $border-radius !important;
     }
+    .rounded-top {
+        border-top-left-radius: $border-radius !important;
+        border-top-right-radius: $border-radius !important;
+    }
+    .rounded-right {
+        border-top-right-radius: $border-radius !important;
+        border-bottom-right-radius: $border-radius !important;
+    }
+    .rounded-bottom {
+        border-bottom-right-radius: $border-radius !important;
+        border-bottom-left-radius: $border-radius !important;
+    }
+    .rounded-left {
+        border-top-left-radius: $border-radius !important;
+        border-bottom-left-radius: $border-radius !important;
+    }
+    .rounded-circle {
+        border-radius: 50% !important;
+    }
+}
+
+@mixin color($theme) {
+    $warn: map.get($theme, 'warn');
+    $accent: map.get($theme, 'accent');
+    $primary: map.get($theme, 'primary');
+    $is-dark: map.get($theme, 'is-dark');
+    $foreground: map.get($theme, 'foreground');
+
+    $base-color: map.get($foreground, 'base');
+    $base-color-invert: map.get($foreground, 'base-invert');
+
+    $border-color: map.get($foreground, 'divider');
+
+    $warn-color: mat.get-color-from-palette($warn);
+    $accent-color: mat.get-color-from-palette($accent);
+    $primary-color: mat.get-color-from-palette($primary);
+
+    $border-width: 1px;
 
     @each $breakpoint in map-keys($grid-breakpoints) {
         @include media-breakpoint-up($breakpoint) {
             $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
-            @include vi-mat-theme-bootstrap-border-mixin($infix, $border-width, $border-color);
+            @include border-mixin($infix, $border-width, $border-color);
         }
     }
 
@@ -50,55 +84,24 @@
         }
     }
     .border-base {
-        border-color: $text-base-color !important;
+        border-color: $base-color !important;
     }
     .border-base-hover {
         &:hover {
-            border-color: $text-base-color !important;
+            border-color: $base-color !important;
         }
     }
     .border-base-invert {
-        border-color: $text-base-color !important;
-        @include filter-invert(1);
+        border-color: $base-color-invert !important;
     }
     .border-base-invert-hover {
         &:hover {
-            border-color: $text-base-color !important;
-            @include filter-invert(1);
+            border-color: $base-color-invert !important;
         }
-    }
-
-    // Rounded
-    .rounded {
-        border-radius: $border-radius !important;
-    }
-
-    .rounded-top {
-        border-top-left-radius: $border-radius !important;
-        border-top-right-radius: $border-radius !important;
-    }
-
-    .rounded-right {
-        border-top-right-radius: $border-radius !important;
-        border-bottom-right-radius: $border-radius !important;
-    }
-
-    .rounded-bottom {
-        border-bottom-right-radius: $border-radius !important;
-        border-bottom-left-radius: $border-radius !important;
-    }
-
-    .rounded-left {
-        border-top-left-radius: $border-radius !important;
-        border-bottom-left-radius: $border-radius !important;
-    }
-
-    .rounded-circle {
-        border-radius: 50% !important;
     }
 }
 
-@mixin vi-mat-theme-bootstrap-border-mixin($infix, $width, $color) {
+@mixin border-mixin($infix, $width, $color) {
     // Transparent
     .border-transparent {
         border-width: $width;
@@ -110,9 +113,6 @@
         border-top-width: $width;
         border-top-color: $color !important;
         border-top-style: solid !important;
-        &.dashed {
-            border-top-style: dashed !important;
-        }
     }
     .border#{$infix}-top-0 {
         border-top-style: none !important;
@@ -122,9 +122,6 @@
         border-right-width: $width;
         border-right-color: $color !important;
         border-right-style: solid !important;
-        &.dashed {
-            border-right-style: dashed !important;
-        }
     }
     .border#{$infix}-right-0 {
         border-right-style: none !important;
@@ -134,9 +131,6 @@
         border-bottom-width: $width;
         border-bottom-color: $color !important;
         border-bottom-style: solid !important;
-        &.dashed {
-            border-bottom-style: dashed !important;
-        }
     }
     .border#{$infix}-bottom-0 {
         border-bottom-style: none !important;
@@ -146,9 +140,6 @@
         border-left-width: $width;
         border-left-color: $color !important;
         border-left-style: solid !important;
-        &.dashed {
-            border-left-style: dashed !important;
-        }
     }
     .border#{$infix}-left-0 {
         border-left-style: none !important;
@@ -163,10 +154,6 @@
         border-right-width: $width;
         border-right-color: $color !important;
         border-right-style: solid !important;
-        &.dashed {
-            border-left-style: dashed !important;
-            border-right-style: dashed !important;
-        }
     }
     .border#{$infix}-x-0 {
         border-left-style: none !important;
@@ -195,13 +182,21 @@
         border-bottom-width: $width;
         border-bottom-color: $color;
         border-bottom-style: solid !important;
-        &.dashed {
-            border-top-style: dashed !important;
-            border-bottom-style: dashed !important;
-        }
     }
     .border#{$infix}-x-0 {
         border-top-style: none !important;
         border-bottom-style: none !important;
+    }
+}
+
+@mixin typography($typography) {
+}
+@mixin theme($theme, $typography) {
+    $color: mat.get-color-config($theme);
+    @if $color != null {
+        @include color($theme);
+    }
+    @if $typography != null {
+        @include typography($typography);
     }
 }

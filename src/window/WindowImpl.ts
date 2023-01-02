@@ -29,7 +29,6 @@ export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
     // --------------------------------------------------------------------------
 
     private _isBlink: boolean = false;
-    private blinkTimer: any;
 
     private _isShaking: boolean = false;
     private shakeTimer: any;
@@ -165,7 +164,13 @@ export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
     protected commitIsBlinkProperties(): void {}
     protected commitIsShakingProperties(): void {}
     protected commitIsDisabledProperties(): void {}
-    protected commitIsMinimizedProperties(): void {}
+
+    protected commitIsOnTopProperties(): void {
+        this.isBlink = false;
+    }
+    protected commitIsMinimizedProperties(): void {
+        this.isBlink = false;
+    }
 
     protected getConfig(): WindowConfig {
         return this.properties.config;
@@ -187,15 +192,6 @@ export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
         }
         element.instance.clickHandler(event);
         return true;
-    }
-
-    private stopBlinkIfNeed(): void {
-        this.isBlink = false;
-        if (!this.blinkTimer) {
-            return;
-        }
-        clearInterval(this.blinkTimer);
-        this.blinkTimer = null;
     }
 
     protected resizeHandler = (): void => {
@@ -266,9 +262,6 @@ export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
         this._backdrop = null;
         this._container = null;
 
-        clearInterval(this.blinkTimer);
-        this.blinkTimer = null;
-
         clearInterval(this.shakeTimer);
         this.shakeTimer = null;
 
@@ -277,8 +270,7 @@ export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
     }
 
     public blink(): void {
-        clearInterval(this.blinkTimer);
-        this.blinkTimer = setInterval(this.blinkToggle, WindowImpl.BLINK_DELAY);
+        this.isBlink = true;
     }
 
     public shake(): void {
@@ -428,8 +420,8 @@ export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
             return;
         }
         this._isOnTop = value;
-        clearInterval(this.blinkTimer);
-        this.isBlink = false;
+        this.commitIsOnTopProperties();
+        this.emit(WindowEvent.IS_ON_TOP_CHANGED);
     }
 
     public get isMinimized(): boolean {
@@ -442,7 +434,6 @@ export class WindowImpl<T = any> extends WindowBase<T> implements IWindow {
         this._isMinimized = value;
         this.commitIsMinimizedProperties();
         this.emit(WindowEvent.MINIMIZED_CHANGED);
-        this.stopBlinkIfNeed();
     }
 
     public get isDisabled(): boolean {

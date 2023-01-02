@@ -18,6 +18,7 @@ import { IWindowContent } from './IWindowContent';
 import { WindowAlign, WindowConfig, WindowConfigOptions } from './WindowConfig';
 import { WindowFactory } from './WindowFactory';
 import { WindowServiceEvent } from './WindowServiceEvent';
+import { DialogRef } from '@angular/cdk/dialog';
 
 @Injectable({ providedIn: 'root' })
 export class WindowService extends Destroyable {
@@ -257,8 +258,8 @@ export class WindowService extends Destroyable {
         // let dialog = this.dialog as any;
         // dialog._getOverlayState = config.isModal ? dialog.getOverlayStateModal : dialog.getOverlayStateNonModal;
 
-        let reference: MatDialogRef<IWindowContent> = this.dialog.open(component, config);
-        window = this.factory.create({ config, reference, overlay: (reference as any)._overlayRef });
+        let reference = this.dialog.open<IWindowContent>(component, config);
+        window = this.factory.create({ config, reference, overlay: reference['_ref'].overlayRef });
 
         this.observer.next(new ObservableData(WindowServiceEvent.OPEN_STARTED, window));
 

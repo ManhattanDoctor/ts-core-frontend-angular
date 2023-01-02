@@ -1,0 +1,27 @@
+@use 'text' as text;
+@use 'border' as border;
+@use 'background' as background;
+@use '../helper/typography' as typography;
+
+@mixin core() {
+    @include border.core();
+}
+@mixin color($theme) {
+    @include text.color($theme);
+    @include border.color($theme);
+    @include background.color($theme);
+}
+@mixin typography($typography) {
+    @include text.typography($typography);
+    @include border.typography($typography);
+    @include background.typography($typography);
+}
+@mixin theme($theme, $typography) {
+    $color: mat.get-color-config($theme);
+    @if $color != null {
+        @include color($theme);
+    }
+    @if $typography != null {
+        @include typography($typography);
+    }
+}

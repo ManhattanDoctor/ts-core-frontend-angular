@@ -1,0 +1,14 @@
+@mixin grayscale($value) {
+    filter: none;
+    -o-filter: grayscale($value);
+    -ms-filter: grayscale($value);
+    -moz-filter: grayscale($value);
+    -webkit-filter: grayscale($value);
+}
+@mixin invert($value) {
+    filter: none;
+    -o-filter: invert($value);
+    -ms-filter: invert($value);
+    -moz-filter: invert($value);
+    -webkit-filter: invert($value);
+}

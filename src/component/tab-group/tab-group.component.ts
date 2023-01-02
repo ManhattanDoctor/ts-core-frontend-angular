@@ -19,6 +19,10 @@ export class TabGroupComponent<T = any> extends DestroyableContainer {
 
     @Input()
     public className: string;
+
+    @Input()
+    public isStretch: boolean = true;
+
     protected _list: SelectListItems<ISelectListItem<T>>;
 
     // --------------------------------------------------------------------------
@@ -35,7 +39,13 @@ export class TabGroupComponent<T = any> extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    public selectedTabChange(event: MatTabChangeEvent): void {
+    public selectedIndexChanged(event: number): void {
+        if (!_.isNil(this.list)) {
+            this.list.selectedIndex = event;
+        }
+    }
+
+    public selectedTabChanged(event: MatTabChangeEvent): void {
         if (_.isNil(this.list)) {
             return;
         }

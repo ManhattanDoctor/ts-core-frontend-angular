@@ -1,5 +1,5 @@
 import { MatMenuPanel, MatMenuTrigger } from '@angular/material/menu';
-import { FlexibleConnectedPositionStrategy, PositionStrategy } from '@angular/cdk/overlay';
+import { FlexibleConnectedPositionStrategy, OverlayRef, PositionStrategy } from '@angular/cdk/overlay';
 import * as _ from 'lodash';
 import { Directive, Input } from '@angular/core';
 
@@ -14,7 +14,9 @@ export class MenuTriggerForDirective extends MatMenuTrigger {
     //--------------------------------------------------------------------------
 
     public openMenuOn(target: any): void {
-        if (_.isNil(target)) return;
+        if (_.isNil(target)) {
+            return;
+        }
 
         this.openMenu();
         let strategy = this.getPositionStrategy();
@@ -31,7 +33,8 @@ export class MenuTriggerForDirective extends MatMenuTrigger {
     //--------------------------------------------------------------------------
 
     protected getPositionStrategy(): PositionStrategy {
-        return !_.isNil(this['_overlayRef']) ? this['_overlayRef'].getConfig().positionStrategy : null;
+        let reference: OverlayRef = this['_overlayRef'];
+        return !_.isNil(reference) ? reference.getConfig().positionStrategy : null;
     }
 
     //--------------------------------------------------------------------------

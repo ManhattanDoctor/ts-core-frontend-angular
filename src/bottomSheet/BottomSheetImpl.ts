@@ -7,7 +7,6 @@ import { IWindow, WindowEvent } from '../window/IWindow';
 import { IWindowContent } from '../window/IWindowContent';
 import { WindowProperties } from '../window/WindowProperties';
 import { ViewUtil } from '../util/ViewUtil';
-import { WindowImpl } from '../window/WindowImpl';
 import { WindowElement } from '../window/component/WindowElement';
 import { ArrayUtil } from '@ts-core/common';
 import { ComponentRef } from '@angular/core';
@@ -15,21 +14,9 @@ import { ComponentRef } from '@angular/core';
 export class BottomSheetImpl<T = any> extends DestroyableContainer implements IWindow {
     // --------------------------------------------------------------------------
     //
-    //  Constants
-    //
-    // --------------------------------------------------------------------------
-
-    public static BLINK_DELAY = 500;
-    public static SHAKE_DELAY = 500;
-
-    // --------------------------------------------------------------------------
-    //
     //  Properties
     //
     // --------------------------------------------------------------------------
-
-    private _isBlink: boolean = false;
-    private blinkTimer: any;
 
     private _wrapper: HTMLElement;
     private _backdrop: HTMLElement;
@@ -115,10 +102,6 @@ export class BottomSheetImpl<T = any> extends DestroyableContainer implements IW
         this.emit(WindowEvent.OPENED);
     };
 
-    protected blinkToggle = (): void => {
-        this.isBlink = !this.isBlink;
-    };
-
     protected setProperties(): void {
         ViewUtil.addClass(this.container, 'vi-bottom-sheet');
         ViewUtil.toggleClass(this.container, 'vi-modal', this.config.isModal);
@@ -131,8 +114,6 @@ export class BottomSheetImpl<T = any> extends DestroyableContainer implements IW
         }
         */
     }
-
-    protected commitIsBlinkProperties(): void {}
 
     protected commitIsDisabledProperties(): void {}
 
@@ -153,15 +134,6 @@ export class BottomSheetImpl<T = any> extends DestroyableContainer implements IW
         }
         element.instance.clickHandler(event);
         return true;
-    }
-
-    private stopBlinkIfNeed(): void {
-        this.isBlink = false;
-        if (!this.blinkTimer) {
-            return;
-        }
-        clearInterval(this.blinkTimer);
-        this.blinkTimer = null;
     }
 
     // --------------------------------------------------------------------------
@@ -226,15 +198,9 @@ export class BottomSheetImpl<T = any> extends DestroyableContainer implements IW
         this._wrapper = null;
         this._backdrop = null;
         this._container = null;
-
-        clearInterval(this.blinkTimer);
-        this.blinkTimer = null;
     }
 
-    public blink(): void {
-        clearInterval(this.blinkTimer);
-        this.blinkTimer = setInterval(this.blinkToggle, WindowImpl.BLINK_DELAY);
-    }
+    public blink(): void {}
 
     public shake(): void {}
 
@@ -288,22 +254,6 @@ export class BottomSheetImpl<T = any> extends DestroyableContainer implements IW
     protected get reference(): MatBottomSheetRef<IWindowContent<T>> {
         return this.properties.reference as any;
     }
-
-    protected get isBlink(): boolean {
-        return this._isBlink;
-    }
-    protected set isBlink(value: boolean) {
-        if (value === this._isBlink) {
-            return;
-        }
-        this._isBlink = value;
-        this.commitIsBlinkProperties();
-    }
-
-    protected get isShaking(): boolean {
-        return false;
-    }
-    protected set isShaking(value: boolean) {}
 
     // --------------------------------------------------------------------------
     //

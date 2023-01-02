@@ -1,0 +1,12 @@
+@mixin word-wrap-break-word() {
+    word-wrap: break-word;
+}
+@mixin word-break-break-all() {
+    word-break: break-all;
+}
+@mixin one-line() {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

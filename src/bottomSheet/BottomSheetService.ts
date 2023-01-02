@@ -59,7 +59,7 @@ export class BottomSheetService extends Destroyable {
     public open<T extends IWindowContent>(component: ComponentType<T>, config: WindowConfig): T {
         let reference: MatBottomSheetRef<T> = this.dialog.open(component, config as MatBottomSheetConfig<T>);
 
-        let window = this.factory.create({ config, reference: reference as any, overlay: (reference as any)._overlayRef });
+        let window = this.factory.create({ config, reference: reference as any, overlay: reference['_ref'].overlayRef });
         this.observer.next(new ObservableData(WindowServiceEvent.OPEN_STARTED, window));
 
         let subscription = window.events.subscribe(event => {

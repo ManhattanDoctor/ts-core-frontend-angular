@@ -16,7 +16,7 @@ export class ResizeDirective extends Destroyable {
     // --------------------------------------------------------------------------
 
     @Output()
-    public resize: EventEmitter<any> = new EventEmitter();
+    public resized: EventEmitter<any> = new EventEmitter();
 
     @Input()
     public isTop: boolean = false;
@@ -58,7 +58,7 @@ export class ResizeDirective extends Destroyable {
 
     private resizeHandler = (event: any) => {
         if (event.dx !== 0 || event.dy !== 0) {
-            this.resize.emit(event);
+            this.resized.emit(event);
         }
     };
 

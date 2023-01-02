@@ -31,7 +31,7 @@ export class ThemeStyleDirective extends Destroyable {
         super();
 
         this.element = ViewUtil.parseElement(element.nativeElement);
-        this.theme.changed.pipe(takeUntil(this.destroyed)).subscribe(() => this.stylePropertiesAdd());
+        this.theme.changed.pipe(takeUntil(this.destroyed)).subscribe(() => this.stylePropertiesCheck());
     }
 
     // --------------------------------------------------------------------------

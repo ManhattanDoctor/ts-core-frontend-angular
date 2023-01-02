@@ -1,4 +1,4 @@
-import { ElementRef, InjectionToken, Renderer2, RendererStyleFlags2, ViewContainerRef } from '@angular/core';
+import { ElementRef, Renderer2, RendererStyleFlags2, ViewContainerRef } from '@angular/core';
 import { ExtendedError } from '@ts-core/common';
 import * as _ from 'lodash';
 

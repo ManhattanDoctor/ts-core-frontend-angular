@@ -81,7 +81,7 @@ export class NotificationService {
         this.setDefaultProperties(config);
 
         let reference: MatDialogRef<INotificationContent<T>> = this.dialog.open(component, config);
-        notification = this.factory.create({ config, reference, overlay: (reference as any)._overlayRef });
+        notification = this.factory.create({ config, reference, overlay: reference['_ref'].overlayRef });
 
         let subscription = notification.events.subscribe(event => {
             switch (event) {

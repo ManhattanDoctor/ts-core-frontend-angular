@@ -1,4 +1,3 @@
-// import { ResizeSensor } from 'css-element-queries';
 import { IDestroyable } from '@ts-core/common';
 import * as _ from 'lodash';
 import { BehaviorSubject, distinctUntilChanged, Observable } from 'rxjs';
@@ -41,7 +40,6 @@ export class ResizeManager implements IDestroyable {
         this.element = ViewUtil.parseElement(element);
         this.subject = new BehaviorSubject({ width: ViewUtil.getWidth(this.element), height: ViewUtil.getHeight(this.element) });
 
-        // this.sensor = new ResizeSensor(this.element, this.handler);
         // Could be undefined in ssr
         try {
             this.sensor = new ResizeObserver(this.handler2);
@@ -55,7 +53,7 @@ export class ResizeManager implements IDestroyable {
     //
     // --------------------------------------------------------------------------
 
-    protected handler = (item: ISize) => {
+    protected handlerItem = (item: ISize) => {
         if (!ResizeManager.isSizeValid(item)) {
             return;
         }
@@ -68,7 +66,7 @@ export class ResizeManager implements IDestroyable {
 
     protected handler2 = (items: Array<ResizeObserverEntry>) => {
         if (!_.isEmpty(items)) {
-            this.handler(items[0].contentRect);
+            this.handlerItem(items[0].contentRect);
         }
     };
 
@@ -97,13 +95,6 @@ export class ResizeManager implements IDestroyable {
             this.sensor.unobserve(this.element);
             this.sensor.disconnect();
             this.sensor = null;
-            /*
-            this.sensor.detach(this.handler);
-            try {
-                this.sensor.reset();
-            } catch (error) {}
-            this.sensor = null;
-            */
         }
         if (!_.isNil(this.subject)) {
             this.subject.complete();

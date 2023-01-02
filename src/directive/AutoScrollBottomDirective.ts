@@ -30,7 +30,7 @@ export class AutoScrollBottomDirective extends InfiniteScrollDirective {
     // --------------------------------------------------------------------------
 
     protected initialize(): void {
-        if (!this._scrollValue) {
+        if (this._scrollValue) {
             this._scrollValue = this.scrollHeight;
         }
         super.initialize();

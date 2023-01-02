@@ -1,0 +1,15 @@
+@use 'sass:map';
+@use '@angular/material' as mat;
+
+@mixin level($typography, $name, $isImportant: true) {
+    @if $isImportant {
+        font-size: mat.font-size($typography, $name) !important;
+        font-family: mat.font-family($typography, $name) !important;
+        font-weight: mat.font-weight($typography, $name) !important;
+        line-height: mat.line-height($typography, $name) !important;
+        letter-spacing: mat.letter-spacing($typography, $name) !important;
+    }
+    @else {
+        @include mat.typography-level($typography, $name);
+    }
+}

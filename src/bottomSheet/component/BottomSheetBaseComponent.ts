@@ -33,18 +33,10 @@ export class BottomSheetBaseComponent extends BottomSheetImpl {
         }
     }
 
-    protected commitIsBlinkProperties(): void {
-        ViewUtil.toggleClass(this.container, this.blinkClass, this.isBlink);
-    }
-
     protected commitIsDisabledProperties(): void {
         ViewUtil.toggleClass(this.container, this.disabledClass, this.isDisabled);
         ViewUtil.toggleClass(this.content.element, this.disabledClass, this.isDisabled);
         ViewUtil.toggleClass(this.content.element.nativeElement.parentElement, this.disabledClass, this.isDisabled);
-    }
-
-    protected commitIsShakingProperties(): void {
-        ViewUtil.toggleClass(this.container, this.shakingClass, this.isShaking);
     }
 
     // --------------------------------------------------------------------------
@@ -53,19 +45,7 @@ export class BottomSheetBaseComponent extends BottomSheetImpl {
     //
     // --------------------------------------------------------------------------
 
-    protected get blinkClass(): string {
-        return 'vi-blink';
-    }
-
     protected get disabledClass(): string {
         return 'vi-disabled';
-    }
-
-    protected get minimizedClass(): string {
-        return 'vi-minimized';
-    }
-
-    protected get shakingClass(): string {
-        return 'shake-constant shake-horizontal';
     }
 }

@@ -24,8 +24,8 @@ export class SelectOnFocusDirective extends Destroyable {
     // --------------------------------------------------------------------------
 
     @HostListener('focus')
-    private focusHandler(): void {
-        ViewUtil.selectContent(this.element.nativeElement);
+    public focusHandler(): void {
+        ViewUtil.selectContent(this.element);
     }
 
     // --------------------------------------------------------------------------

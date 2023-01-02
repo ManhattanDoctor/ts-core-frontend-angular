@@ -1,0 +1,27 @@
+@mixin active() {
+	@include cursor-mixin(pointer);
+}
+@mixin inactive() {
+	@include cursor-mixin(default);
+}
+@mixin move(){
+	@include cursor-mixin(move);
+}
+@mixin help(){
+	@include cursor-mixin(help);
+}
+@mixin wait(){
+	@include cursor-mixin(wait);
+}
+@mixin enabled() {
+	@include pointer-events-mixin(auto);
+}
+@mixin disabled() {
+	@include pointer-events-mixin(none);
+}
+@mixin cursor-mixin($value) {
+	cursor: $value !important;
+}
+@mixin pointer-events-mixin($value) {
+	pointer-events: $value !important;
+}

@@ -1,0 +1,96 @@
+@use 'sass:map';
+
+@function background-change($theme, $name, $value) {
+    $modified-theme: $theme;
+    $theme-color: map.get($theme, 'color');
+    $color-palette: map.get($theme-color, 'background');
+    @if $color-palette {
+        $color-palette: map.merge(
+            $color-palette,
+            (
+                $name: $value,
+            )
+        );
+    }
+    @if $color-palette {
+        $modified-theme: map.merge(
+            $modified-theme,
+            (
+                color:
+                    map.merge(
+                        $theme-color,
+                        (
+                            background: $color-palette,
+                        )
+                    ),
+            )
+        );
+    }
+
+    $palette: map.get($theme, 'background');
+    @if $palette{
+        $palette: map.merge(
+            $palette,
+            (
+                $name: $value,
+            )
+        );
+    }
+    @if $palette {
+        $modified-theme: map.merge(
+            $modified-theme,
+            (
+                background: $palette,
+            )
+        );
+    }
+    @return $modified-theme;
+}
+
+@function foreground-change($theme, $name, $value) {
+    $modified-theme: $theme;
+    $theme-color: map.get($theme, color);
+    $color-palette: map.get($theme-color, 'foreground');
+    @if $color-palette {
+        $color-palette: map.merge(
+            $color-palette,
+            (
+                $name: $value,
+            )
+        );
+    }
+    @if $color-palette {
+        $modified-theme: map.merge(
+            $modified-theme,
+            (
+                color:
+                    map.merge(
+                        $theme-color,
+                        (
+                            foreground: $color-palette,
+                        )
+                    ),
+            )
+        );
+    }
+
+    $palette: map.get($theme, 'foreground');
+    @if $palette{
+        $palette: map.merge(
+            $palette,
+            (
+                $name: $value,
+            )
+        );
+    }
+    @if $palette {
+        $modified-theme: map.merge(
+            $modified-theme,
+            (
+                foreground: $palette,
+            )
+        );
+    }
+    @return $modified-theme;
+}
+
