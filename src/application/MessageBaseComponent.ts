@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { DestroyableContainer, LoadableEvent } from '@ts-core/common';
+import { DestroyableContainer } from '@ts-core/common';
 import { LanguageService } from '@ts-core/frontend';
 import * as _ from 'lodash';
 import { takeUntil } from 'rxjs';

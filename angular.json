@@ -2,8 +2,13 @@
     "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
     "version": 1,
     "newProjectRoot": "projects",
+    "cli": {
+        "cache": {
+            "enabled": false
+        }
+    },
     "projects": {
-        "@ts-core/frontend-angular": {
+        "@ts-core/angular": {
             "projectType": "library",
             "root": "./",
             "sourceRoot": "./",
@@ -24,5 +29,5 @@
             }
         }
     },
-    "defaultProject": "@ts-core/frontend-angular"
+    "defaultProject": "@ts-core/angular"
 }

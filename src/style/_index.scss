@@ -1,10 +1,12 @@
-@use 'sass:map';
-@use 'variables' as var;
+@forward 'text' as text-*;
+@forward 'mouse' as mouse-*;
+@forward 'scroll' as scroll-*;
+@forward 'filter' as filter-*;
 
-@use '../text' as text;
-@use '../mouse' as mouse;
-@use '../scroll' as scroll;
-
+@use 'text' as text;
+@use 'mouse' as mouse;
+@use 'scroll' as scroll;
+@use 'filter' as filter;
 
 // Scrollbar
 @mixin scrollbar() {

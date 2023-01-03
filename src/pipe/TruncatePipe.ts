@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from 'lodash';
+import { PrettifyPipe } from './PrettifyPipe';
 
 @Pipe({
     name: 'viTruncate'
@@ -12,9 +13,6 @@ export class TruncatePipe implements PipeTransform {
     // --------------------------------------------------------------------------
 
     public transform(value: any, maxLength?: number): string {
-        if (!value) {
-            return '---';
-        }
-        return _.truncate(value, { length: maxLength });
+        return !_.isEmpty(value) ? _.truncate(value, { length: maxLength }) : PrettifyPipe.EMPTY_SYMBOL;
     }
 }

@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DestroyableContainer, LoadableEvent } from '@ts-core/common';
+import { DestroyableContainer } from '@ts-core/common';
 import { LanguageService } from '@ts-core/frontend';
 import { takeUntil } from 'rxjs';
 import { CamelCasePipe } from '../pipe/CamelCasePipe';

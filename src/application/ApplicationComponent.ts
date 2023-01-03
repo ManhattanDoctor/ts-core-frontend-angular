@@ -1,10 +1,6 @@
 import { LoadableEvent } from '@ts-core/common';
-import { Assets } from '@ts-core/frontend';
-import { AssetUrlProvider } from '@ts-core/frontend';
+import { Assets, AssetUrlProvider, ThemeService, LanguageService, SettingsBaseService } from '@ts-core/frontend';
 import { Language } from '@ts-core/language';
-import { LanguageService } from '@ts-core/frontend';
-import { SettingsBaseService } from '@ts-core/frontend';
-import { ThemeService } from '@ts-core/frontend';
 import { takeUntil } from 'rxjs';
 import { ApplicationBaseComponent } from './ApplicationBaseComponent';
 import * as _ from 'lodash';

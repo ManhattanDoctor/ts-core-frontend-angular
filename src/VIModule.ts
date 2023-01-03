@@ -22,8 +22,6 @@ import { ResizeDirective } from './directive/ResizeDirective';
 import { ScrollCheckDirective } from './directive/ScrollCheckDirective';
 import { ScrollDirective } from './directive/ScrollDirective';
 import { LanguageModule } from './language/LanguageModule';
-import { BottomSheetModule } from './bottomSheet/BottomSheetModule';
-import { NotificationModule } from './notification/NotificationModule';
 import { CamelCasePipe } from './pipe/CamelCasePipe';
 import { FinancePipe } from './pipe/FinancePipe';
 import { MomentDateAdaptivePipe } from './pipe/MomentDateAdaptivePipe';
@@ -37,15 +35,13 @@ import { TimePipe } from './pipe/TimePipe';
 import { TruncatePipe } from './pipe/TruncatePipe';
 import { PrettifyPipe } from './pipe/PrettifyPipe';
 import { ThemeModule } from './theme/ThemeModule';
-import { WindowModule } from './window/WindowModule';
 import { IsServerDirective } from './directive/IsServerDirective';
 import { IsBrowserDirective } from './directive/IsBrowserDirective';
-import { MenuTriggerForDirective } from './directive/MenuTriggerForDirective';
 import { DOCUMENT } from '@angular/common';
 import { PlatformService } from './service/PlatformService';
 import { ViewUtil } from './util/ViewUtil';
 
-const IMPORTS = [CookieModule, ThemeModule, LanguageModule, AssetModule, WindowModule, NotificationModule];
+const IMPORTS = [CookieModule, ThemeModule, LanguageModule, AssetModule];
 
 const DECLARATIONS = [
     TimePipe,
@@ -72,7 +68,6 @@ const DECLARATIONS = [
     ClickToCopyDirective,
     SelectOnFocusDirective,
     ClickToSelectDirective,
-    MenuTriggerForDirective,
     InfiniteScrollDirective,
     HTMLTitleDirective,
     HTMLContentTitleDirective,
@@ -85,16 +80,16 @@ const DECLARATIONS = [
     declarations: DECLARATIONS,
     exports: [...IMPORTS, ...DECLARATIONS]
 })
-export class VICommonModule {
+export class VIModule {
     // --------------------------------------------------------------------------
     //
     // 	Static Methods
     //
     // --------------------------------------------------------------------------
 
-    public static forRoot(options?: IVICommonOptions): ModuleWithProviders<VICommonModule> {
+    public static forRoot(options?: IVIOptions): ModuleWithProviders<VIModule> {
         return {
-            ngModule: VICommonModule,
+            ngModule: VIModule,
             providers: [
                 {
                     provide: APP_INITIALIZER,
@@ -111,9 +106,6 @@ export class VICommonModule {
                 { provide: Logger, deps: [VI_ANGULAR_OPTIONS], useFactory: loggerServiceFactory },
                 { provide: NativeWindowService, deps: [DOCUMENT], useFactory: nativeWindowServiceFactory },
 
-                ...WindowModule.forRoot().providers,
-                ...BottomSheetModule.forRoot().providers,
-                ...NotificationModule.forRoot().providers,
                 ...CookieModule.forRoot(options).providers,
                 ...ThemeModule.forRoot(options ? options.themeOptions : null).providers,
                 ...LanguageModule.forRoot(options ? options.languageOptions : null).providers
@@ -122,7 +114,7 @@ export class VICommonModule {
     }
 }
 
-export class IVICommonOptions extends ICookieOptions {
+export class IVIOptions extends ICookieOptions {
     loggerLevel?: LoggerLevel;
     themeOptions?: IThemeServiceOptions;
     languageOptions?: ILanguageServiceOptions;
@@ -134,11 +126,11 @@ export function initializerFactory(nativeWindow: NativeWindowService, rendererFa
     return () => Promise.resolve();
 }
 
-export function loggerServiceFactory(options: IVICommonOptions): ILogger {
+export function loggerServiceFactory(options: IVIOptions): ILogger {
     return new DefaultLogger(!_.isNil(options.loggerLevel) ? options.loggerLevel : LoggerLevel.LOG);
 }
 export function nativeWindowServiceFactory(document: Document): NativeWindowService {
     return new NativeWindowService(document);
 }
 
-export const VI_ANGULAR_OPTIONS = new InjectionToken<IVICommonOptions>(`VI_ANGULAR_OPTIONS`);
+export const VI_ANGULAR_OPTIONS = new InjectionToken<IVIOptions>(`VI_ANGULAR_OPTIONS`);

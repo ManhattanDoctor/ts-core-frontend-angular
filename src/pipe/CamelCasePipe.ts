@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from 'lodash';
+import { PrettifyPipe } from './PrettifyPipe';
 
 @Pipe({
     name: 'viCamelCase'
@@ -12,17 +13,6 @@ export class CamelCasePipe implements PipeTransform {
     // --------------------------------------------------------------------------
 
     public transform(value: any): string {
-        if (!value) {
-            return '---';
-        }
-        return _.camelCase(value);
+        return !_.isNil(value) ? _.camelCase(value) : PrettifyPipe.EMPTY_SYMBOL;
     }
-
-    // --------------------------------------------------------------------------
-    //
-    //	Constructor
-    //
-    // --------------------------------------------------------------------------
-
-    constructor() {}
 }

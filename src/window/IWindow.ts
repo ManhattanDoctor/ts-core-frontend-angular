@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { Destroyable } from '@ts-core/common';
 import { IWindowContent } from './IWindowContent';
-import { WindowConfig } from './WindowConfig';
+import { IWindowConfig } from './IWindowConfig';
 
 export abstract class IWindow<T = any> extends Destroyable {
     // --------------------------------------------------------------------------
@@ -45,7 +45,7 @@ export abstract class IWindow<T = any> extends Destroyable {
     readonly wrapper: HTMLElement;
     readonly backdrop: HTMLElement;
 
-    readonly config: WindowConfig<T>;
+    readonly config: IWindowConfig<T>;
     readonly content: IWindowContent<T>;
 }
 

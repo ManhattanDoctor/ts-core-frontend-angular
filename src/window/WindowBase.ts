@@ -1,10 +1,39 @@
-import { MatDialogRef } from '@angular/material/dialog';
 import * as _ from 'lodash';
 import { DestroyableContainer } from '@ts-core/common';
+import { IWindowConfig, WindowAlign } from './IWindowConfig';
 import { ViewUtil } from '../util/ViewUtil';
-import { WindowAlign, WindowConfig } from './WindowConfig';
 
 export abstract class WindowBase<T = any> extends DestroyableContainer {
+    // --------------------------------------------------------------------------
+    //
+    // 	Static Methods
+    //
+    // --------------------------------------------------------------------------
+
+    protected static parseX<T>(value: number, config: IWindowConfig<T>): number {
+        value = Math.max(value, config.elementMinX);
+        value = Math.min(value, config.elementMaxX);
+        return value;
+    }
+
+    protected static parseY<T>(value: number, config: IWindowConfig<T>): number {
+        value = Math.max(value, config.elementMinY);
+        value = Math.min(value, config.elementMaxY);
+        return value;
+    }
+
+    protected static parseWidth<T>(value: number, config: IWindowConfig<T>): number {
+        value = Math.max(value, config.elementMinWidth);
+        value = Math.min(value, config.elementMaxWidth);
+        return value;
+    }
+
+    protected static parseHeight<T>(value: number, config: IWindowConfig<T>): number {
+        value = Math.max(value, config.elementMinHeight);
+        value = Math.min(value, config.elementMaxHeight);
+        return value;
+    }
+
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -33,8 +62,7 @@ export abstract class WindowBase<T = any> extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    protected abstract getConfig(): WindowConfig<T>;
-    protected abstract getReference(): MatDialogRef<any>;
+    protected abstract getConfig(): IWindowConfig<T>;
     protected abstract getContainer(): HTMLElement;
 
     protected setProperties(): void {
@@ -91,23 +119,27 @@ export abstract class WindowBase<T = any> extends DestroyableContainer {
     }
 
     protected commitSizeProperties(): void {
-        let width = !_.isNaN(this.width) ? this.width + 'px' : 'auto';
-        let height = !_.isNaN(this.height) ? this.height + 'px' : 'auto';
+        /*
+        let width = !_.isNaN(this.width) ? `${this.width}px` : 'auto';
+        let height = !_.isNaN(this.height) ? `${this.height}px` : 'auto';
         this.getReference().updateSize(width, height);
+        */
     }
 
     protected commitPositionProperties(): void {
+        /*
         if (_.isNaN(this._x) && _.isNaN(this._y)) {
             return;
         }
         let position = {} as any;
         if (!_.isNaN(this._y)) {
-            position.top = this._y + 'px';
+            position.top = `${this._y}px`;
         }
         if (!_.isNaN(this._x)) {
-            position.left = this._x + 'px';
+            position.left = `${this._x}px`;
         }
         this.getReference().updatePosition(position);
+        */
     }
 
     protected updatePosition = (): void => this.setPosition();
@@ -135,7 +167,7 @@ export abstract class WindowBase<T = any> extends DestroyableContainer {
         return this._width;
     }
     protected set width(value: number) {
-        value = this.getConfig().parseWidth(value);
+        value = WindowBase.parseWidth(value, this.getConfig());
         if (value === this._width) {
             return;
         }
@@ -147,7 +179,7 @@ export abstract class WindowBase<T = any> extends DestroyableContainer {
         return this._height;
     }
     protected set height(value: number) {
-        value = this.getConfig().parseHeight(value);
+        value = WindowBase.parseWidth(value, this.getConfig());
         if (value === this._height) {
             return;
         }
@@ -166,7 +198,7 @@ export abstract class WindowBase<T = any> extends DestroyableContainer {
     }
 
     public set x(value: number) {
-        value = this.getConfig().parseX(value);
+        value = WindowBase.parseX(value, this.getConfig());
         if (value === this._x) {
             return;
         }
@@ -179,7 +211,7 @@ export abstract class WindowBase<T = any> extends DestroyableContainer {
     }
 
     public set y(value: number) {
-        value = this.getConfig().parseY(value);
+        value = WindowBase.parseY(value, this.getConfig());
         if (value === this._y) {
             return;
         }

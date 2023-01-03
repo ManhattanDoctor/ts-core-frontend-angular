@@ -2,7 +2,7 @@ import { AfterViewInit, ElementRef, ViewContainerRef, Inject, Optional, Componen
 import { Observable } from 'rxjs';
 import { DestroyableContainer } from '@ts-core/common';
 import { IWindow, WindowEvent } from './IWindow';
-import { WindowConfig } from './WindowConfig';
+import { IWindowConfig } from './IWindowConfig';
 import * as _ from 'lodash';
 
 @Component({ template: '' })
@@ -130,7 +130,7 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
         return this.container instanceof ViewContainerRef ? this.container.element : this.container;
     }
 
-    public get config(): WindowConfig<T> {
+    public get config(): IWindowConfig<T> {
         return !_.isNil(this.window) ? this.window.config : null;
     }
 

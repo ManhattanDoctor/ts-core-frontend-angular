@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Injectable, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
 import { Theme, ThemeAssetService, ThemeService } from '@ts-core/frontend';
 import * as _ from 'lodash';

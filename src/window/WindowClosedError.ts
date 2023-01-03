@@ -9,7 +9,7 @@ export class WindowClosedError extends ExtendedError<void, number> {
     // --------------------------------------------------------------------------
 
     public static CODE = ExtendedError.DEFAULT_ERROR_CODE;
-    public static MESSAGE = 'Window was closed';
+    public static MESSAGE = 'WINDOW_CLOSED';
 
     // --------------------------------------------------------------------------
     //

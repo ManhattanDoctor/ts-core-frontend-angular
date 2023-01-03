@@ -3,12 +3,10 @@ import { ICookieService } from '@ts-core/frontend';
 import { ILanguageServiceOptions, LanguageService } from '@ts-core/frontend';
 import { CookieModule } from '../cookie/CookieModule';
 import { CookieService } from '../cookie/CookieService';
-import { LanguageMatPaginatorIntl } from './LanguageMatPaginatorIntl';
 import { LanguagePipe } from './LanguagePipe';
 import { LanguagePipePure } from './LanguagePipePure';
 import { LanguageResolver } from './LanguageResolver';
 import { LanguageDirective } from './LanguageDirective';
-import { MatPaginatorIntl } from '@angular/material/paginator';
 import { LanguagePipeHas } from './LanguagePipeHas';
 import { LanguagePipeHasPure } from './LanguagePipeHasPure';
 import { LanguageHasDirective } from './LanguageHasDirective';
@@ -43,11 +41,6 @@ export class LanguageModule {
                     provide: LanguageResolver,
                     deps: [LanguageService],
                     useClass: LanguageResolver
-                },
-                {
-                    provide: MatPaginatorIntl,
-                    deps: [LanguageService],
-                    useClass: LanguageMatPaginatorIntl
                 }
             ]
         };
