@@ -1,0 +1,120 @@
+@use 'sass:map';
+@use 'variables' as var;
+
+@use '../text' as text;
+@use '../mouse' as mouse;
+@use '../scroll' as scroll;
+
+
+// Scrollbar
+@mixin scrollbar() {
+    ::-webkit-scrollbar {
+        width: 14px;
+        height: 14px;
+    }
+    ::-webkit-scrollbar-thumb {
+        height: 6px;
+        min-height: 16px;
+        border: 4px solid;
+        background-clip: padding-box;
+        -webkit-border-radius: 7px;
+    }
+    ::-webkit-scrollbar-thumb {
+        border-color: transparent;
+        -webkit-box-shadow: inset -1px -1px 0px rgba(0, 0, 0, 0.05), inset 1px 1px 0px rgba(0, 0, 0, 0.05);
+    }
+    ::-webkit-scrollbar-corner {
+        background-color: transparent;
+    }
+    ::-webkit-scrollbar-button {
+        width: 0;
+        height: 0;
+        display: none;
+    }
+}
+// Text
+@mixin text() {
+    .text-underline {
+        text-decoration: underline !important;
+    }
+    .text-one-line {
+        @include text.one-line();
+    }
+    .text-multi-line {
+        @include text.word-wrap-break-word();
+        @include text.word-break-break-all();
+    }
+    .text-word-wrap-break-word {
+        @include text.word-wrap-break-word();
+    }
+    .text-word-break-break-all {
+        @include text.word-break-break-all();
+    }
+    .text-no-select {
+        @include text.no-select();
+    }
+}
+// Scroll
+@mixin scroll() {
+    .scroll-no {
+        @include scroll.no();
+    }
+    .scroll-auto {
+        @include scroll.auto();
+    }
+    .scroll-vertical {
+        @include scroll.vertical();
+    }
+    .scroll-horizontal {
+        @include scroll.horizontal();
+    }
+}
+// Mouse
+@mixin mouse() {
+    .mouse-help {
+        @include mouse.help();
+    }
+    .mouse-wait {
+        @include mouse.wait();
+    }
+    .mouse-active {
+        @include mouse.active();
+    }
+    .mouse-enabled {
+        @include mouse.enabled();
+    }
+    .mouse-disabled {
+        @include mouse.disabled();
+    }
+    .mouse-inactive {
+        @include mouse.inactive();
+    }
+    .mouse-disabled {
+        @include mouse.disabled();
+    }
+}
+
+@mixin core() {
+    @include text();
+    @include mouse();
+    @include scroll();
+    @include scrollbar();
+
+    p,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    body {
+        padding: 0;
+        margin: 0;
+    }
+
+    a:focus,
+    div:focus,
+    button:focus {
+        outline: 0;
+    }
+}
