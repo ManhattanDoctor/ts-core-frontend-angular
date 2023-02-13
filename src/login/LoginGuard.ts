@@ -31,10 +31,7 @@ export class LoginGuard<T extends LoginBaseService = LoginBaseService> extends L
     //
     // --------------------------------------------------------------------------
 
-    public canActivate(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Promise<boolean | UrlTree> {
         return this.isLoggedIn() ? true : this.router.parseUrl(LoginGuard.redirectUrl);
     }
 }

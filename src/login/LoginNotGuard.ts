@@ -3,7 +3,6 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTr
 import { LoginBaseService } from './LoginBaseService';
 import { LoginRequireResolver } from './LoginRequireResolver';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class LoginNotGuard<T extends LoginBaseService = LoginBaseService> extends LoginRequireResolver<T> implements CanActivate {
@@ -31,10 +30,7 @@ export class LoginNotGuard<T extends LoginBaseService = LoginBaseService> extend
     //
     // --------------------------------------------------------------------------
 
-    public canActivate(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
         return !this.isLoggedIn() ? true : this.router.parseUrl(LoginNotGuard.redirectUrl);
     }
 }

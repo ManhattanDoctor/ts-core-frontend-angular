@@ -4,6 +4,7 @@ export interface IWindowConfig<T = any> {
     isExpandable: boolean;
     isResizeable: boolean;
     isMinimizable: boolean;
+    isDisableClose: boolean;
     isContentDragable: boolean;
 
     x: number;
@@ -17,10 +18,12 @@ export interface IWindowConfig<T = any> {
     elementMinHeight: number;
     elementMaxHeight: number;
 
+    width: string;
     defaultWidth: number;
     defaultMinWidth: number;
     defaultMaxWidth: number;
 
+    height: string;
     defaultHeight: number;
     defaultMinHeight: number;
     defaultMaxHeight: number;

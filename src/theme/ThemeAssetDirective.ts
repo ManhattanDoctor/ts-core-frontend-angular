@@ -1,6 +1,6 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
-import { Theme, ThemeAssetService, ThemeService } from '@ts-core/frontend';
+import { ThemeAssetService, ThemeService } from '@ts-core/frontend';
 import * as _ from 'lodash';
 import { takeUntil } from 'rxjs';
 import { ViewUtil } from '../util/ViewUtil';
@@ -14,6 +14,7 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
     // --------------------------------------------------------------------------
 
     protected _name: string;
+    protected _source: string;
     protected _extension: string = 'png';
 
     protected _isFile: boolean = false;
@@ -23,7 +24,6 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
     protected _isBackground: boolean = false;
     protected _isIgnoreTheme: boolean = true;
 
-    protected source: string;
     protected element: T;
 
     private isTriedThemeDefault: boolean;
@@ -79,7 +79,7 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
     // --------------------------------------------------------------------------
 
     @HostListener('error', ['$event'])
-    private errorLoadingHandler(event: ErrorEvent): void {
+    public errorLoadingHandler(event: ErrorEvent): void {
         this.errorHandler(event);
     }
 
@@ -88,8 +88,7 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
             return;
         }
         this.isTriedThemeDefault = true;
-        this.source = this.getSource(this.getDefaultSourceId());
-        this.commitSourceProperties();
+        this.setDefaultSourceProperties();
     }
 
     // --------------------------------------------------------------------------
@@ -99,12 +98,18 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
     // --------------------------------------------------------------------------
 
     protected setSourceProperties(): void {
-        this.source = this.getSource(this.getSourceId(this.theme.theme));
-        this.commitSourceProperties();
+        this.source = this.getSource(this.getSourceId());
     }
 
-    protected getSourceId(theme: Theme): string {
-        return !_.isNil(theme) ? this.name + _.capitalize(theme.name) : null;
+    protected setDefaultSourceProperties(): void {
+        this.source = this.getSource(this.getDefaultSourceId());
+    }
+
+    protected getSourceId(): string {
+        if (_.isNil(this.name) || _.isNil(this.theme) || _.isNil(this.theme.theme)) {
+            return null;
+        }
+        return this.name + _.capitalize(this.theme.theme.name);
     }
 
     protected getDefaultSourceId(): string {
@@ -130,6 +135,25 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
         this.name = null;
         this.theme = null;
         this.element = null;
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    //	Protected Properties
+    //
+    // --------------------------------------------------------------------------
+
+    protected get source(): string {
+        return this._source;
+    }
+    protected set source(value: string) {
+        if (value === this._source) {
+            return;
+        }
+        this._source = value;
+        if (!_.isNil(value)) {
+            this.commitSourceProperties();
+        }
     }
 
     // --------------------------------------------------------------------------

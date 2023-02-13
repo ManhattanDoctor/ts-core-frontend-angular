@@ -118,29 +118,9 @@ export abstract class WindowBase<T = any> extends DestroyableContainer {
         this._height = NaN;
     }
 
-    protected commitSizeProperties(): void {
-        /*
-        let width = !_.isNaN(this.width) ? `${this.width}px` : 'auto';
-        let height = !_.isNaN(this.height) ? `${this.height}px` : 'auto';
-        this.getReference().updateSize(width, height);
-        */
-    }
+    protected commitSizeProperties(): void {}
 
-    protected commitPositionProperties(): void {
-        /*
-        if (_.isNaN(this._x) && _.isNaN(this._y)) {
-            return;
-        }
-        let position = {} as any;
-        if (!_.isNaN(this._y)) {
-            position.top = `${this._y}px`;
-        }
-        if (!_.isNaN(this._x)) {
-            position.left = `${this._x}px`;
-        }
-        this.getReference().updatePosition(position);
-        */
-    }
+    protected commitPositionProperties(): void {}
 
     protected updatePosition = (): void => this.setPosition();
 

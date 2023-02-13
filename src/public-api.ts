@@ -104,9 +104,21 @@ export * from './user/UserBaseService';
 //
 export * from './window/IWindow';
 export * from './window/WindowBase';
+export * from './window/WindowConfig';
+export * from './window/WindowService';
+export * from './window/WindowServiceEvent';
 export * from './window/IWindowConfig';
 export * from './window/IWindowContent';
 export * from './window/WindowClosedError';
+//
+export * from './notification/INotification';
+export * from './notification/INotificationConfig';
+export * from './notification/INotificationContent';
+export * from './notification/NotificationConfig';
+export * from './notification/NotificationService';
+export * from './notification/NotificationServiceEvent';
+//
+export * from './bottomSheet/BottomSheetService';
 //
 export * from './module/LazyModuleLoader';
 //

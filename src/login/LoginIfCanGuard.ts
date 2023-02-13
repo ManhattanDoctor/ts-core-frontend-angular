@@ -44,6 +44,6 @@ export class LoginIfCanGuard<T extends LoginBaseService = LoginBaseService> exte
         if (!this.isLoggedIn()) {
             await this.loginIfCan();
         }
-        return super.canActivate(route, state) as Promise<boolean | UrlTree>;
+        return super.canActivate(route, state);
     }
 }

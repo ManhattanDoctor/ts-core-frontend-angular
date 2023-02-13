@@ -15,6 +15,15 @@
         "pageRange": "{current} from {total}",
         "previousPage": "Previous page"
     },
+    "serviceWorker": {
+        "update": {
+            "loadedDescription": "The new version has been uploaded successfully, reload the page please.",
+            "loadedCacheDescription": "The new version has been successfully downloaded, clear the cache and reload the page please.",
+            "loaded": "A new version has been uploaded",
+            "loading": "A new version has been detected, downloading update...",
+            "error": "An error while downloading a new version, clear the cache and reload the page please."
+        }
+    },
     "error": {
         "form": {
             "max": "Maximum number {max}",
