@@ -17,7 +17,9 @@ export abstract class BottomSheetService extends Destroyable {
 
     public abstract open<U extends IWindowContent<T>, T>(component: ClassType<U>, config: IWindowConfig<T>): U;
 
-    public abstract close(): void;
+    public abstract close<T>(value: WindowId<T>): void;
+
+    public abstract closeAll(): void;
 
     // --------------------------------------------------------------------------
     //

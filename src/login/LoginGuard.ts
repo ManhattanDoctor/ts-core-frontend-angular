@@ -3,7 +3,6 @@ import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTr
 import { LoginBaseService } from './LoginBaseService';
 import { LoginRequireResolver } from './LoginRequireResolver';
 import * as _ from 'lodash';
-import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class LoginGuard<T extends LoginBaseService = LoginBaseService> extends LoginRequireResolver<T> implements CanActivate {

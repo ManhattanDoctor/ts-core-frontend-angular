@@ -30,6 +30,6 @@ export class TimePipe implements PipeTransform {
         if (_.isNil(format)) {
             format = TimePipe.DEFAULT_FORMAT;
         }
-        return FinancePipe.format(milliseconds / DateUtil.MILISECONDS_SECOND, format);
+        return FinancePipe.format(milliseconds / DateUtil.MILLISECONDS_SECOND, format);
     }
 }

@@ -14,6 +14,7 @@ export class MomentTimePipe implements PipeTransform {
     // --------------------------------------------------------------------------
 
     public static DEFAULT_FORMAT = 'hh:mm:ss';
+
     // --------------------------------------------------------------------------
     //
     //	Public Methods

@@ -56,7 +56,7 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
                 this.loginBySid();
             }
         } catch (error) {
-            let extendedError = ExtendedError.create(error as any);
+            let extendedError = ExtendedError.create<any, number>(error as any);
 
             this.status = LoadableStatus.ERROR;
             this.parseLoginErrorResponse(extendedError);
@@ -84,7 +84,7 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
             this.observer.next(new ObservableData(LoadableEvent.COMPLETE, response));
             this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_COMPLETE, response));
         } catch (error) {
-            let extendedError = ExtendedError.create(error as any);
+            let extendedError = ExtendedError.create<any, number>(error);
             this.parseLoginSidErrorResponse(extendedError);
 
             this._isLoggedIn = false;
@@ -182,7 +182,7 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
         try {
             await this.logoutRequest();
         } catch (error) {
-            let extendedError = ExtendedError.create(error as any);
+            let extendedError = ExtendedError.create<any, number>(error);
             this.parseLogoutErrorResponse(extendedError);
         } finally {
             this.reset();

@@ -12,12 +12,13 @@ export class TransportLazy extends TransportLocal {
     //  Constructor
     //
     // --------------------------------------------------------------------------
+
     constructor(logger: ILogger, protected loader: LazyModuleLoader<ITransportLazyModuleData>, settings?: ITransportSettings) {
         super(logger, settings, null);
-
         this.getDispatcher<TransportLazyModuleLoadedEvent<ITransportLazyModuleData>>(TransportLazyModuleLoadedEvent.NAME).subscribe(event =>
             this.moduleLoadedHandler(event.data)
         );
+        this.logEventFilters.push(item => item.name !== TransportLazyModuleLoadedEvent.NAME);
     }
 
     // --------------------------------------------------------------------------
@@ -42,12 +43,21 @@ export class TransportLazy extends TransportLocal {
     //
     // --------------------------------------------------------------------------
 
-    protected async dispatchCommand<U>(command: ITransportCommand<U>, options: ITransportCommandOptions, isNeedReply: boolean): Promise<void> {
+    protected async commandResponseRequestDispatch<U>(command: ITransportCommand<U>, options: ITransportCommandOptions, isNeedReply: boolean): Promise<void> {
         let item = this.getModuleByCommand(command.name);
         if (!_.isNil(item)) {
             await this.loader.loadIfNeed(item.id);
         }
-        super.dispatchCommand(command, options, isNeedReply);
+        return super.commandResponseRequestDispatch(command, options, isNeedReply);
+    }
+
+    protected async eventRequestExecute<U>(event: ITransportEvent<U>): Promise<void> {
+        let item = this.getModuleByEvent(event.name);
+        if (!_.isNil(this.loader) && !_.isNil(item)) {
+            this.loader.loadIfNeed(item.id).then(() => super.eventRequestExecute(event));
+        } else {
+            super.eventRequestExecute(event);
+        }
     }
 
     protected getModuleByCommand(name: string): ITransportLazyModuleData {
@@ -85,15 +95,6 @@ export class TransportLazy extends TransportLocal {
     //  Public Methods
     //
     // --------------------------------------------------------------------------
-
-    public dispatch<T>(event: ITransportEvent<T>): void {
-        let item = this.getModuleByEvent(event.name);
-        if (!_.isNil(this.loader) && !_.isNil(item)) {
-            this.loader.loadIfNeed(item.id).then(() => super.dispatch(event));
-        } else {
-            super.dispatch(event);
-        }
-    }
 
     public destroy(): void {
         if (this.isDestroyed) {

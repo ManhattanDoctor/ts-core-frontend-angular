@@ -1,13 +1,13 @@
-import { Directive, EmbeddedViewRef, Input, TemplateRef, ViewContainerRef } from '@angular/core';
-import { Destroyable } from '@ts-core/common';
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { LanguageService } from '@ts-core/frontend';
-import * as _ from 'lodash';
 import { takeUntil } from 'rxjs';
+import { StructureDirective } from '../directive/StructureDirective';
+import * as _ from 'lodash';
 
 @Directive({
     selector: '[viTranslateHas]'
 })
-export class LanguageHasDirective extends Destroyable {
+export class LanguageHasDirective<T = any> extends StructureDirective<T> {
     // --------------------------------------------------------------------------
     //
     //	Properties
@@ -17,17 +17,14 @@ export class LanguageHasDirective extends Destroyable {
     protected _viTranslateHas: string;
     protected _isOnlyIfNotEmpty: boolean = true;
 
-    protected view: any;
-    protected index: EmbeddedViewRef<any>;
-
     // --------------------------------------------------------------------------
     //
     //	Constructor
     //
     // --------------------------------------------------------------------------
 
-    constructor(private template: TemplateRef<any>, private container: ViewContainerRef, protected language: LanguageService) {
-        super();
+    constructor(template: TemplateRef<T>, container: ViewContainerRef, protected language: LanguageService) {
+        super(template, container);
         language.completed.pipe(takeUntil(this.destroyed)).subscribe(() => this.check());
     }
 
@@ -38,29 +35,7 @@ export class LanguageHasDirective extends Destroyable {
     // --------------------------------------------------------------------------
 
     protected check(): void {
-        let isNeedAdd = false;
-        let isNeedRemove = false;
-        let isHasTranslation = !_.isNil(this.viTranslateHas) && this.language.isHasTranslation(this.viTranslateHas, this.viTranslateHasIsOnlyIfNotEmpty);
-
-        if (isHasTranslation) {
-            if (_.isNil(this.view)) {
-                isNeedAdd = true;
-            }
-        } else {
-            if (!_.isNil(this.view)) {
-                isNeedRemove = true;
-            }
-        }
-
-        if (isNeedAdd) {
-            this.view = this.container.createEmbeddedView(this.template);
-        } else if (isNeedRemove) {
-            let index = this.container.indexOf(this.view);
-            if (index >= 0) {
-                this.container.remove(index);
-                this.view = null;
-            }
-        }
+        this.isNeedAdd = !_.isNil(this.viTranslateHas) && this.language.isHasTranslation(this.viTranslateHas, this.viTranslateHasIsOnlyIfNotEmpty);
     }
 
     // --------------------------------------------------------------------------
@@ -75,7 +50,6 @@ export class LanguageHasDirective extends Destroyable {
         }
 
         super.destroy();
-        this.view = null;
         this.language = null;
         this._viTranslateHas = null;
     }

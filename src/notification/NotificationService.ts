@@ -6,6 +6,7 @@ import { INotificationContent } from './INotificationContent';
 import { NotificationConfigOptions } from './NotificationConfig';
 import { NotificationServiceEvent } from './NotificationServiceEvent';
 import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
 
 export abstract class NotificationService extends Destroyable {
     // --------------------------------------------------------------------------
@@ -31,6 +32,12 @@ export abstract class NotificationService extends Destroyable {
     public abstract closeAll(): void;
 
     public abstract close<T>(value: NotificationId<T>): INotification<T>;
+
+    // --------------------------------------------------------------------------
+    //
+    // 	Additional Methods
+    //
+    // --------------------------------------------------------------------------
 
     public abstract info(translationId?: string, translation?: any, questionOptions?: IQuestionOptions, configOptions?: NotificationConfigOptions): IQuestion;
 

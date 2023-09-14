@@ -22,6 +22,8 @@ export abstract class WindowService extends Destroyable {
 
     public abstract setOnTop<T>(value: WindowId<T>): boolean;
 
+    public abstract close<T>(value: WindowId<T>): void;
+
     public abstract closeAll(): void;
 
     // --------------------------------------------------------------------------

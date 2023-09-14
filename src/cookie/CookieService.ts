@@ -1,4 +1,4 @@
-import { ICookieOptions, ICookieService, NativeWindowService } from '@ts-core/frontend';
+import { ICookieOptions, ICookieService } from '@ts-core/frontend';
 import * as _ from 'lodash';
 import * as Cookie from 'ngx-cookie';
 import { CookieOptionsProvider } from 'ngx-cookie';
@@ -57,6 +57,14 @@ export class CookieService extends Cookie.CookieService implements ICookieServic
 
     public getObject<T = any>(key: string, defaultValue?: T): T {
         return this.has(key) ? (super.getObject(key) as any) : defaultValue;
+    }
+
+    public put(key: string, value: string, options?: CookieOptions): void {
+        if (!_.isNil(value)) {
+            super.put(key, value, options);
+        } else {
+            super.remove(key);
+        }
     }
 
     public putObject<T = any>(key: string, value: T, options?: CookieOptions): void {

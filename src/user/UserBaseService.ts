@@ -46,8 +46,8 @@ export abstract class UserBaseService<U extends IUser = any, V = void> extends D
         });
     }
 
-    protected initializeUser(): void {
-        this._user = this.createUser(this.login.loginData);
+    protected initializeUser(data: any): void {
+        this._user = this.createUser(data);
     }
 
     protected deinitializeUser(): void {
@@ -55,7 +55,7 @@ export abstract class UserBaseService<U extends IUser = any, V = void> extends D
     }
 
     protected loginedHandler(): void {
-        this.initializeUser();
+        this.initializeUser(this.login.loginData);
         this.observer.next(new ObservableData(UserBaseServiceEvent.LOGINED, this.user));
     }
 

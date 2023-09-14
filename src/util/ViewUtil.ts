@@ -363,7 +363,7 @@ export class ViewUtil {
     // --------------------------------------------------------------------------
 
     public static addClass(container: IViewElement, name: string): void {
-        if (_.isNil(name)) {
+        if (_.isEmpty(name)) {
             return;
         }
         container = ViewUtil.parseElement(container);
@@ -380,7 +380,7 @@ export class ViewUtil {
     }
 
     public static removeClass(container: IViewElement, name: string): void {
-        if (_.isNil(name)) {
+        if (_.isEmpty(name)) {
             return;
         }
         container = ViewUtil.parseElement(container);

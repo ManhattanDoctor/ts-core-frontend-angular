@@ -5,7 +5,6 @@ import { ILanguageServiceOptions } from '@ts-core/frontend';
 import { DefaultLogger } from '@ts-core/frontend';
 import { LoadingService, NativeWindowService } from '@ts-core/frontend';
 import { IThemeServiceOptions } from '@ts-core/frontend';
-import * as _ from 'lodash';
 import { AssetModule } from './asset/AssetModule';
 import { CookieModule } from './cookie/CookieModule';
 import { CanDeactivateGuard } from './service/route/CanDeactivateGuard';
@@ -40,10 +39,14 @@ import { IsBrowserDirective } from './directive/IsBrowserDirective';
 import { DOCUMENT } from '@angular/common';
 import { PlatformService } from './service/PlatformService';
 import { ViewUtil } from './util/ViewUtil';
+import { CookieService } from './cookie/CookieService';
+import { LoginTokenStorage } from './login/LoginTokenStorage';
+import { LocalStorageService } from './storage/LocalStorageService';
+import * as _ from 'lodash';
 
-const IMPORTS = [CookieModule, ThemeModule, LanguageModule, AssetModule];
+let imports = [CookieModule, ThemeModule, LanguageModule, AssetModule];
 
-const DECLARATIONS = [
+let declarations = [
     TimePipe,
     FinancePipe,
     SanitizePipe,
@@ -75,10 +78,12 @@ const DECLARATIONS = [
     AspectRatioResizeDirective
 ];
 
+let exports = [...imports, ...declarations];
+
 @NgModule({
-    imports: IMPORTS,
-    declarations: DECLARATIONS,
-    exports: [...IMPORTS, ...DECLARATIONS]
+    imports,
+    declarations,
+    exports
 })
 export class VIModule {
     // --------------------------------------------------------------------------
@@ -105,6 +110,8 @@ export class VIModule {
                 { provide: VI_ANGULAR_OPTIONS, useValue: options || {} },
                 { provide: Logger, deps: [VI_ANGULAR_OPTIONS], useFactory: loggerServiceFactory },
                 { provide: NativeWindowService, deps: [DOCUMENT], useFactory: nativeWindowServiceFactory },
+                { provide: LocalStorageService, deps: [NativeWindowService], useFactory: localStorageServiceFactory },
+                { provide: LoginTokenStorage, deps: [LocalStorageService, CookieService], useFactory: loginTokenStorageServiceFactory },
 
                 ...CookieModule.forRoot(options).providers,
                 ...ThemeModule.forRoot(options ? options.themeOptions : null).providers,
@@ -127,10 +134,19 @@ export function initializerFactory(nativeWindow: NativeWindowService, rendererFa
 }
 
 export function loggerServiceFactory(options: IVIOptions): ILogger {
-    return new DefaultLogger(!_.isNil(options.loggerLevel) ? options.loggerLevel : LoggerLevel.LOG);
+    return new DefaultLogger(!_.isNil(options.loggerLevel) ? options.loggerLevel : LoggerLevel.ALL);
 }
+
 export function nativeWindowServiceFactory(document: Document): NativeWindowService {
     return new NativeWindowService(document);
+}
+
+export function localStorageServiceFactory(nativeWindow: NativeWindowService): LocalStorageService {
+    return new LocalStorageService(nativeWindow);
+}
+
+export function loginTokenStorageServiceFactory(storage: LocalStorageService, cookies: CookieService): LoginTokenStorage {
+    return new LoginTokenStorage(storage, cookies);
 }
 
 export const VI_ANGULAR_OPTIONS = new InjectionToken<IVIOptions>(`VI_ANGULAR_OPTIONS`);

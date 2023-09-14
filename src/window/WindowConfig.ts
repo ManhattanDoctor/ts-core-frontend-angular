@@ -42,6 +42,10 @@ export class WindowConfig<T = any> implements IWindowConfig<T>, IDestroyable {
     public paddingRight: number = NaN;
     public paddingBottom: number = NaN;
 
+    public autoFocus: string;
+    public restoreFocus: boolean;
+    public delayFocusTrap: boolean;
+
     public verticalAlign: WindowAlign;
     public horizontalAlign: WindowAlign;
 

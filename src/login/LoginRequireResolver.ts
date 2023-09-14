@@ -2,14 +2,14 @@ import { Resolve } from '@angular/router';
 import { LoginBaseService, LoginBaseServiceEvent } from './LoginBaseService';
 import { PromiseHandler } from '@ts-core/common';
 
-export class LoginRequireResolver<T extends LoginBaseService = LoginBaseService> implements Resolve<void> {
+export class LoginRequireResolver<U extends LoginBaseService = LoginBaseService, V = void> implements Resolve<V> {
     // --------------------------------------------------------------------------
     //
     // 	Constructor
     //
     // --------------------------------------------------------------------------
 
-    constructor(protected login: T) {}
+    constructor(protected login: U) {}
 
     // --------------------------------------------------------------------------
     //
@@ -17,12 +17,12 @@ export class LoginRequireResolver<T extends LoginBaseService = LoginBaseService>
     //
     // --------------------------------------------------------------------------
 
-    public resolve(): Promise<void> {
+    public resolve(...params): Promise<V> {
         if (this.isLoggedIn()) {
-            return Promise.resolve();
+            return Promise.resolve(null);
         }
 
-        let promise = PromiseHandler.create<void>();
+        let promise = PromiseHandler.create<null>();
         let subscription = this.login.events.subscribe(data => {
             if (data.type === LoginBaseServiceEvent.LOGIN_ERROR) {
                 promise.reject(data.error.toString());

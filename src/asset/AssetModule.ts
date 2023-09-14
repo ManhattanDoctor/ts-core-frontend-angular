@@ -8,9 +8,11 @@ import { AssetImagePipe } from './AssetImagePipe';
 import { AssetSoundPipe } from './AssetSoundPipe';
 import { AssetVideoPipe } from './AssetVideoPipe';
 
+let declarations = [AssetImagePipe, AssetIconPipe, AssetFilePipe, AssetSoundPipe, AssetVideoPipe, AssetBackgroundPipe, AssetBackgroundDirective];
+
 @NgModule({
     imports: [CommonModule],
-    declarations: [AssetBackgroundDirective, AssetImagePipe, AssetIconPipe, AssetFilePipe, AssetSoundPipe, AssetVideoPipe, AssetBackgroundPipe],
-    exports: [AssetBackgroundDirective, AssetImagePipe, AssetIconPipe, AssetFilePipe, AssetSoundPipe, AssetVideoPipe, AssetBackgroundPipe]
+    exports: declarations,
+    declarations
 })
 export class AssetModule {}

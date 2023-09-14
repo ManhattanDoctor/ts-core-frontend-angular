@@ -37,7 +37,7 @@ export class RouterBaseService extends Loadable<void, RouterBaseServiceEventData
     //
     // --------------------------------------------------------------------------
 
-    constructor(protected _router: Router, protected window: NativeWindowService) {
+    constructor(protected _router: Router, protected _route: ActivatedRoute, protected window: NativeWindowService) {
         super();
         this.params = new Map();
         this.observer = new Subject();
@@ -227,9 +227,9 @@ export class RouterBaseService extends Loadable<void, RouterBaseServiceEventData
     //
     // --------------------------------------------------------------------------
 
-    public getFragment(snapshot: ActivatedRoute | ActivatedRouteSnapshot, defaultValue?: string): string {
-        if (snapshot instanceof ActivatedRoute) {
-            snapshot = snapshot.snapshot;
+    public getFragment(snapshot?: ActivatedRouteSnapshot, defaultValue?: string): string {
+        if (_.isNil(snapshot)) {
+            snapshot = this.route.snapshot;
         }
         return !_.isNil(snapshot.fragment) ? snapshot.fragment : defaultValue;
     }
@@ -263,6 +263,10 @@ export class RouterBaseService extends Loadable<void, RouterBaseServiceEventData
     }
     public get previousUrlTree(): UrlTree {
         return this.router.parseUrl(this.previousUrl);
+    }
+
+    public get route(): ActivatedRoute {
+        return this._route;
     }
 
     public get router(): Router {

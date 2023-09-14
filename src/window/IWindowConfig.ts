@@ -33,10 +33,14 @@ export interface IWindowConfig<T = any> {
     paddingRight: number;
     paddingBottom: number;
 
-    data?: T;
     propertiesId: string;
     verticalAlign: WindowAlign;
     horizontalAlign: WindowAlign;
+
+    data?: T;
+    autoFocus: string;
+    restoreFocus: boolean;
+    delayFocusTrap: boolean;
 }
 
 export enum WindowAlign {

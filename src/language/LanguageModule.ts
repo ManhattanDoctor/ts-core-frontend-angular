@@ -1,7 +1,6 @@
 import { InjectionToken, ModuleWithProviders, NgModule } from '@angular/core';
 import { ICookieService } from '@ts-core/frontend';
 import { ILanguageServiceOptions, LanguageService } from '@ts-core/frontend';
-import { CookieModule } from '../cookie/CookieModule';
 import { CookieService } from '../cookie/CookieService';
 import { LanguagePipe } from './LanguagePipe';
 import { LanguagePipePure } from './LanguagePipePure';
@@ -10,12 +9,15 @@ import { LanguageDirective } from './LanguageDirective';
 import { LanguagePipeHas } from './LanguagePipeHas';
 import { LanguagePipeHasPure } from './LanguagePipeHasPure';
 import { LanguageHasDirective } from './LanguageHasDirective';
+import { CookieModule } from '../cookie/CookieModule';
 import * as _ from 'lodash';
+
+let declarations = [LanguagePipe, LanguagePipePure, LanguagePipeHas, LanguagePipeHasPure, LanguageHasDirective, LanguageDirective];
 
 @NgModule({
     imports: [CookieModule],
-    declarations: [LanguagePipe, LanguagePipePure, LanguagePipeHas, LanguagePipeHasPure, LanguageHasDirective, LanguageDirective],
-    exports: [LanguagePipe, LanguagePipePure, LanguagePipeHas, LanguagePipeHasPure, LanguageHasDirective, LanguageDirective]
+    exports: declarations,
+    declarations
 })
 export class LanguageModule {
     // --------------------------------------------------------------------------
