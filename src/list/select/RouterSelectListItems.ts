@@ -2,10 +2,18 @@ import { LanguageService } from '@ts-core/frontend';
 import { SelectListItems } from './SelectListItems';
 import { ISelectListItem } from './ISelectListItem';
 import { RouterBaseService } from '../../service/RouterBaseService';
-import { takeUntil } from 'rxjs';
+import { filter, takeUntil } from 'rxjs';
 import * as _ from 'lodash';
 
 export class RouterSelectListItems<U = string> extends SelectListItems<ISelectListItem<U>, U> {
+    //--------------------------------------------------------------------------
+    //
+    // 	Public Properties
+    //
+    //--------------------------------------------------------------------------
+
+    public isDisabled: boolean;
+
     //--------------------------------------------------------------------------
     //
     // 	Constructor
@@ -14,8 +22,18 @@ export class RouterSelectListItems<U = string> extends SelectListItems<ISelectLi
 
     constructor(protected router: RouterBaseService, language: LanguageService) {
         super(language, true);
-        this.changed.pipe(takeUntil(this.destroyed)).subscribe(this.setFragment);
-        this.router.completed.pipe(takeUntil(this.destroyed)).subscribe(this.setData);
+        this.changed
+            .pipe(
+                filter(() => !this.isDisabled),
+                takeUntil(this.destroyed)
+            )
+            .subscribe(item => this.setFragment(item));
+        this.router.completed
+            .pipe(
+                filter(() => !this.isDisabled),
+                takeUntil(this.destroyed)
+            )
+            .subscribe(() => this.setData());
     }
 
     //--------------------------------------------------------------------------
@@ -24,17 +42,18 @@ export class RouterSelectListItems<U = string> extends SelectListItems<ISelectLi
     //
     //--------------------------------------------------------------------------
 
-    protected setData = (): void => {
-        this.selectedData = this.getRouterSelectedData();
-    };
+    protected setData(): void {
+        let item = this.getRouterSelectedItem();
+        this.selectedItem = !_.isNil(item) ? item : _.first(this.collection);
+    }
 
-    protected setFragment = (item: ISelectListItem<U>): void => {
-        this.router.setFragment(item.data.toString());
-    };
+    protected setFragment(item: ISelectListItem<U>): void {
+        let index = _.indexOf(this.collection, item);
+        this.router.setFragment(index > 0 ? item.data.toString() : null);
+    }
 
-    protected getRouterSelectedData(): U {
-        let item = _.find(this.collection, { data: this.router.getFragment() }) as ISelectListItem<U>;
-        return !_.isNil(item) ? item.data : null;
+    protected getRouterSelectedItem(): ISelectListItem<U> {
+        return _.find(this.collection, { data: this.router.getFragment() }) as ISelectListItem<U>;
     }
 
     //--------------------------------------------------------------------------
@@ -44,8 +63,8 @@ export class RouterSelectListItems<U = string> extends SelectListItems<ISelectLi
     //--------------------------------------------------------------------------
 
     public complete(): void {
-        let item = this.getRouterSelectedData();
-        super.complete(_.isNil(item) ? 0 : item);
+        let item = this.getRouterSelectedItem();
+        super.complete(!_.isNil(item) ? item.data : 0);
     }
 
     public destroy(): void {

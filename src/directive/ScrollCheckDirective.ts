@@ -1,9 +1,7 @@
 import { Directive, ElementRef, Input, EventEmitter, Output } from '@angular/core';
-import { DestroyableContainer } from '@ts-core/common';
-import { DateUtil } from '@ts-core/common';
+import { DateUtil, DestroyableContainer } from '@ts-core/common';
+import { fromEvent, debounceTime, takeUntil } from 'rxjs';
 import * as _ from 'lodash';
-import { fromEvent } from 'rxjs';
-import { debounceTime, takeUntil } from 'rxjs';
 
 @Directive({
     selector: '[vi-scroll-check]'

@@ -231,11 +231,18 @@ export class RouterBaseService extends Loadable<void, RouterBaseServiceEventData
         if (_.isNil(snapshot)) {
             snapshot = this.route.snapshot;
         }
+        if (_.isNil(defaultValue)) {
+            defaultValue = null;
+        }
         return !_.isNil(snapshot.fragment) ? snapshot.fragment : defaultValue;
     }
 
+    public hasFragment(snapshot?: ActivatedRouteSnapshot): boolean {
+        return !_.isNil(this.getFragment(snapshot));
+    }
+
     public async setFragment(value: string): Promise<boolean> {
-        return this.applyExtras({ fragment: value });
+        return value !== this.getFragment() ? this.applyExtras({ fragment: value }) : false;
     }
 
     // --------------------------------------------------------------------------

@@ -51,17 +51,17 @@ export class CookieService extends Cookie.CookieService implements ICookieServic
         return !_.isNil(super.get(key));
     }
 
-    public get(key: string, defaultValue?: string): string {
-        return this.has(key) ? super.get(key) : defaultValue;
+    public get<T = string>(key: string, defaultValue?: T): T {
+        return this.has(key as any) ? (super.get(key) as any) : defaultValue;
     }
 
     public getObject<T = any>(key: string, defaultValue?: T): T {
         return this.has(key) ? (super.getObject(key) as any) : defaultValue;
     }
 
-    public put(key: string, value: string, options?: CookieOptions): void {
+    public put<T = string>(key: string, value: T, options?: CookieOptions): void {
         if (!_.isNil(value)) {
-            super.put(key, value, options);
+            super.put(key, value as any, options);
         } else {
             super.remove(key);
         }

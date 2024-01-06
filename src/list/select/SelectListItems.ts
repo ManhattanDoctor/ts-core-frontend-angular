@@ -46,8 +46,17 @@ export class SelectListItems<U extends ISelectListItem<V>, V = any> extends List
     protected commitSelectedDataProperties(): void {
         this.selectedItem = !_.isNil(this.selectedData) ? _.find(this.collection, item => item.data === this.selectedData) : null;
     }
+
     protected commitSelectedIndexProperties(): void {
         this.selectedItem = !_.isNil(this.selectedIndex) ? _.find(this.collection, item => item.sortIndex === this.selectedIndex) : null;
+    }
+
+    protected selectIndexOrData(indexOrDataToSelect: number | V): void {
+        if (_.isNumber(indexOrDataToSelect)) {
+            this.selectedIndex = indexOrDataToSelect;
+        } else {
+            this.selectedItem = _.find(this.collection, item => item.data === indexOrDataToSelect);
+        }
     }
 
     // --------------------------------------------------------------------------
@@ -97,13 +106,8 @@ export class SelectListItems<U extends ISelectListItem<V>, V = any> extends List
 
     public complete(indexOrDataToSelect?: number | V): void {
         super.complete();
-        if (_.isNil(indexOrDataToSelect)) {
-            return;
-        }
-        if (_.isNumber(indexOrDataToSelect)) {
-            this.selectedIndex = indexOrDataToSelect;
-        } else {
-            this.selectedItem = _.find(this.collection, item => item.data === indexOrDataToSelect);
+        if (!_.isNil(indexOrDataToSelect)) {
+            this.selectIndexOrData(indexOrDataToSelect);
         }
     }
 

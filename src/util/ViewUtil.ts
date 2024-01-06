@@ -109,19 +109,24 @@ export class ViewUtil {
         }
     }
 
-    public static setBackground(container: IViewElement, image: string, repeat: string = 'repeat'): void {
+    public static setBackground(container: IViewElement, image: string, repeat: string = 'repeat', error?: string): void {
         if (_.isNil(image)) {
             ViewUtil.removeStyle(container, 'backgroundImage');
             ViewUtil.removeStyle(container, 'backgroundRepeat');
             return;
         }
 
-        if (!image.includes('url(')) {
-            image = 'url(' + image + ')';
+        image = ViewUtil.getBackgroundUrl(image);
+        if (!_.isEmpty(error)) {
+            image += `, ${ViewUtil.getBackgroundUrl(error)}`;
         }
 
         ViewUtil.setStyle(container, 'backgroundImage', image);
         ViewUtil.setStyle(container, 'backgroundRepeat', repeat);
+    }
+
+    public static getBackgroundUrl(item: string): string {
+        return !item.includes('url(') ? `url(${item})` : item;
     }
 
     // --------------------------------------------------------------------------
@@ -442,6 +447,14 @@ export class ViewUtil {
 
     public static removeProperty(container: IViewElement, name: string): void {
         ViewUtil.removeAttribute(container, name);
+    }
+
+    public static getAttribute(container: IViewElement, name: string): any {
+        if (_.isNil(name)) {
+            return null;
+        }
+        container = ViewUtil.parseElement(container);
+        return !_.isNil(container) ? container.getAttribute(name) : null;
     }
 
     public static removeAttribute(container: IViewElement, name: string): void {

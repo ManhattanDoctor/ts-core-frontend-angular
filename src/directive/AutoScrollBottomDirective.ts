@@ -1,5 +1,7 @@
 import { Directive, EventEmitter, Input, Output } from '@angular/core';
 import { InfiniteScrollDirective } from './InfiniteScrollDirective';
+import * as _ from 'lodash';
+
 @Directive({
     selector: '[vi-auto-scroll-bottom]'
 })
@@ -10,8 +12,11 @@ export class AutoScrollBottomDirective extends InfiniteScrollDirective {
     //
     // --------------------------------------------------------------------------
 
+    @Input()
+    public behavior: ScrollBehavior = 'auto';
+
     @Output()
-    public triggerChanged: EventEmitter<void> = new EventEmitter<void>();
+    public triggerChanged: EventEmitter<number> = new EventEmitter<number>();
 
     private _trigger: any;
     private triggerTimer: any;
@@ -25,12 +30,12 @@ export class AutoScrollBottomDirective extends InfiniteScrollDirective {
 
     // --------------------------------------------------------------------------
     //
-    //	Private Methods
+    //	Protected Methods
     //
     // --------------------------------------------------------------------------
 
     protected initialize(): void {
-        if (this._scrollValue) {
+        if (!_.isNil(this.scrollHeight)) {
             this._scrollValue = this.scrollHeight;
         }
         super.initialize();
@@ -43,18 +48,14 @@ export class AutoScrollBottomDirective extends InfiniteScrollDirective {
         } else if (this.isNeedRemainScroll) {
             this.scrollRemain();
         } else if (this.triggerDelta > 0) {
+            this.triggerChanged.emit(this.triggerDelta);
             this.triggerDelta = 0;
-            this.triggerChanged.emit();
         }
     };
 
     protected scrollRemain(): void {
         this.isNeedRemainScroll = false;
         this.scrollTo(this.scrollHeight - this.lastScrollHeight);
-    }
-
-    public scrollBottom(): void {
-        this.scrollTo(this.scrollHeight);
     }
 
     // --------------------------------------------------------------------------
@@ -86,6 +87,15 @@ export class AutoScrollBottomDirective extends InfiniteScrollDirective {
     //
     // --------------------------------------------------------------------------
 
+    public scrollCheck(): void {
+        clearTimeout(this.triggerTimer);
+        this.triggerTimer = setTimeout(this.checkTrigger, InfiniteScrollDirective.INITIALIZATION_DELAY);
+    }
+
+    public scrollBottom(): void {
+        this.scrollTo(this.scrollHeight, this.behavior);
+    }
+
     public destroy(): void {
         if (this.isDestroyed) {
             return;
@@ -103,7 +113,7 @@ export class AutoScrollBottomDirective extends InfiniteScrollDirective {
     //
     // --------------------------------------------------------------------------
 
-    @Input('vi-auto-bottom-scroll')
+    @Input('vi-auto-scroll-bottom')
     public set trigger(value: number) {
         if (value === this._trigger) {
             return;
@@ -117,7 +127,6 @@ export class AutoScrollBottomDirective extends InfiniteScrollDirective {
             return;
         }
         this.isScrollLocked = true;
-        clearTimeout(this.triggerTimer);
-        this.triggerTimer = setTimeout(this.checkTrigger, InfiniteScrollDirective.INITIALIZATION_DELAY);
+        this.scrollCheck();
     }
 }

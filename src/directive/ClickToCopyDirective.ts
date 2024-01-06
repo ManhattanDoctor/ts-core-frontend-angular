@@ -28,7 +28,7 @@ export class ClickToCopyDirective extends Destroyable {
         ViewUtil.selectContent(this.element, true);
 
         clearTimeout(this.selectionClearTimer);
-        this.selectionClearTimer = setTimeout(this.selectionRemove, DateUtil.MILISECONDS_SECOND / 2);
+        this.selectionClearTimer = setTimeout(this.selectionRemove, DateUtil.MILLISECONDS_SECOND / 2);
     }
 
     private selectionRemove = (): void => ViewUtil.selectContent(null);
@@ -44,7 +44,6 @@ export class ClickToCopyDirective extends Destroyable {
             return;
         }
         super.destroy();
-
         this.element = null;
         clearTimeout(this.selectionClearTimer);
     }

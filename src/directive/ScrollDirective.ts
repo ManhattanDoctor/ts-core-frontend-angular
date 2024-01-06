@@ -1,7 +1,7 @@
-import { Directive, ElementRef, EventEmitter, HostListener, Input, Output } from '@angular/core';
-import * as _ from 'lodash';
+import { Directive, EventEmitter, ElementRef, HostListener, Input, Output } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
-import { ViewUtil } from '../util/ViewUtil';
+import * as _ from 'lodash';
+import { ViewUtil } from '../public-api';
 
 @Directive({
     selector: '[vi-scroll]'
@@ -49,15 +49,15 @@ export class ScrollDirective extends Destroyable {
     // --------------------------------------------------------------------------
 
     protected initialize(): void {
-        if (this.scrollValue) {
+        if (!_.isNil(this.scrollValue)) {
             this.scrollTo(this.scrollValue);
         }
         this.isInitialized = true;
     }
 
-    protected scrollTo(value: number): void {
+    protected scrollTo(value: number, behavior?: ScrollBehavior): void {
         this._scrollValue = value;
-        this.element.scrollTop = value;
+        this.element.scroll({ top: value, behavior });
     }
 
     // --------------------------------------------------------------------------
