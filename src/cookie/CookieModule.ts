@@ -22,7 +22,7 @@ export class CookieModule {
                 },
                 {
                     provide: CookieService,
-                    deps: [NativeWindowService, PlatformService, COOKIE_OPTIONS],
+                    deps: [NativeWindowService, COOKIE_OPTIONS],
                     useFactory: cookieServiceFactory
                 }
             ]
@@ -30,7 +30,7 @@ export class CookieModule {
     }
 }
 
-export function cookieServiceFactory(nativeWindow: NativeWindowService, platform: PlatformService, options: ICookieOptions): CookieService {
+export function cookieServiceFactory(nativeWindow: NativeWindowService, options: ICookieOptions): CookieService {
     options = _.assign(
         {
             path: '/',
@@ -41,7 +41,7 @@ export function cookieServiceFactory(nativeWindow: NativeWindowService, platform
         },
         options
     );
-    return new CookieService(options, platform, nativeWindow.document);
+    return new CookieService(options, nativeWindow.document);
 }
 
 export const COOKIE_OPTIONS = new InjectionToken<ICookieOptions>(`COOKIE_OPTIONS`);

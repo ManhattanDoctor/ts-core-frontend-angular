@@ -1,6 +1,6 @@
 {
     "name": "@ts-core/angular",
-    "version": "17.0.13",
+    "version": "17.0.15",
     "description": "Modules for frontend based on angular",
     "main": "public-api.js",
     "author": {

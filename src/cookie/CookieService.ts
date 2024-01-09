@@ -2,7 +2,6 @@ import { ICookieOptions, ICookieService } from '@ts-core/frontend';
 import * as _ from 'lodash';
 import * as Cookie from 'ngx-cookie';
 import { CookieOptionsProvider, CookieWriterService } from 'ngx-cookie';
-import { PlatformService } from '../service/PlatformService';
 import { CookieOptions } from './CookieOptions';
 
 export class CookieService extends Cookie.CookieService implements ICookieService {
@@ -12,24 +11,8 @@ export class CookieService extends Cookie.CookieService implements ICookieServic
     //
     // --------------------------------------------------------------------------
 
-    constructor(options: CookieOptions, platform: PlatformService, document: Document) {
+    constructor(options: CookieOptions, document: Document) {
         super(document, { options } as CookieOptionsProvider, new CookieWriterService(document));
-
-        let cookieString = '';
-        Object.defineProperty(this, 'cookieString', {
-            get: (): string => {
-                return platform.isPlatformBrowser ? document.cookie : cookieString;
-            },
-            set: (value: string) => {
-                if (platform.isPlatformBrowser) {
-                    document.cookie = value;
-                } else {
-                    cookieString = value;
-                }
-            },
-            enumerable: true,
-            configurable: true
-        });
     }
 
     // --------------------------------------------------------------------------
@@ -39,42 +22,30 @@ export class CookieService extends Cookie.CookieService implements ICookieServic
     // --------------------------------------------------------------------------
 
     public has(key: string): boolean {
-        return !_.isNil(super.get(key));
+        return !_.isNil(this.get(key));
     }
 
     public get<T = string>(key: string, defaultValue?: T): T {
-        return this.has(key as any) ? (super.get(key) as any) : defaultValue;
+        return this.has(key) ? (super.get(key) as T) : defaultValue;
     }
 
     public getObject<T = any>(key: string, defaultValue?: T): T {
-        return this.has(key) ? (super.getObject(key) as any) : defaultValue;
+        return this.has(key) ? (super.getObject(key) as T) : defaultValue;
     }
 
     public put<T = string>(key: string, value: T, options?: CookieOptions): void {
-        if (!_.isNil(value)) {
-            super.put(key, value as any, options);
-        } else {
-            super.remove(key);
-        }
+        super.put(key, value as string, options);
     }
 
     public putObject<T = any>(key: string, value: T, options?: CookieOptions): void {
-        super.putObject(key, value as any, options);
+        super.putObject(key, value as object, options);
     }
 
     public update(key: string, value: string, options?: ICookieOptions): void {
-        if (!_.isNil(value)) {
-            this.put(key, value, options);
-        } else {
-            this.remove(key);
-        }
+        this.put(key, value, options);
     }
 
     public updateObject(key: string, value: Object, options?: ICookieOptions): void {
-        if (!_.isNil(value)) {
-            this.putObject(key, value, options);
-        } else {
-            this.remove(key);
-        }
+        this.putObject(key, value, options);
     }
 }
