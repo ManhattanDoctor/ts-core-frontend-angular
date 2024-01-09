@@ -34,9 +34,6 @@ export * from './directive/HTMLContentTitleDirective';
 export * from './directive/IsBrowserDirective';
 export * from './directive/IsServerDirective';
 //
-export * from './form/FormElementAsync';
-export * from './form/FormElementSync';
-//
 export * from './language/LanguageModule';
 export * from './language/LanguagePipe';
 export * from './language/LanguagePipePure';

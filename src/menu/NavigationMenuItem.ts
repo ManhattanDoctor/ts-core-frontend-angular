@@ -9,7 +9,7 @@ export class NavigationMenuItem extends MenuItem {
 
     public url: string;
     public isActive: boolean = false;
-    public select: (item: NavigationMenuItem) => void;
+    public declare select: (item: NavigationMenuItem) => void;
 
     // --------------------------------------------------------------------------
     //

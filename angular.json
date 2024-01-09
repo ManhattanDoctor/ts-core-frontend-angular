@@ -28,6 +28,5 @@
                 }
             }
         }
-    },
-    "defaultProject": "@ts-core/angular"
+    }
 }
