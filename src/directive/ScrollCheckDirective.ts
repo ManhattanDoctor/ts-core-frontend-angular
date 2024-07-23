@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, EventEmitter, Output } from '@angular/core';
+import { Directive, ElementRef, Input, EventEmitter, Output, numberAttribute } from '@angular/core';
 import { DateUtil, DestroyableContainer } from '@ts-core/common';
 import { fromEvent, debounceTime, takeUntil } from 'rxjs';
 import * as _ from 'lodash';
@@ -25,9 +25,10 @@ export class ScrollCheckDirective extends DestroyableContainer {
     private element: HTMLElement;
     private isExceedLimit: boolean = false;
 
-    @Input()
+    @Input({ transform: numberAttribute })
     public delay: number = DateUtil.MILLISECONDS_SECOND / 10;
-    @Input()
+
+    @Input({ transform: numberAttribute })
     public offset: number = 50;
 
     //--------------------------------------------------------------------------

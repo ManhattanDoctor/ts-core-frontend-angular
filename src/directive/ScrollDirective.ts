@@ -1,4 +1,4 @@
-import { Directive, EventEmitter, ElementRef, HostListener, Input, Output } from '@angular/core';
+import { Directive, EventEmitter, ElementRef, HostListener, Input, Output, numberAttribute } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
 import * as _ from 'lodash';
 import { ViewUtil } from '../public-api';
@@ -117,7 +117,7 @@ export class ScrollDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    @Input()
+    @Input({ transform: numberAttribute })
     public set scrollValue(value: number) {
         if (value === this._scrollValue || _.isNaN(value)) {
             return;

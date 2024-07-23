@@ -142,11 +142,11 @@ export function nativeWindowServiceFactory(document: Document): NativeWindowServ
 }
 
 export function localStorageServiceFactory(nativeWindow: NativeWindowService): LocalStorageService {
-    return new LocalStorageService(nativeWindow);
+    return new LocalStorageService(nativeWindow.window.localStorage);
 }
 
-export function loginTokenStorageServiceFactory(storage: LocalStorageService, cookies: CookieService): LoginTokenStorage {
-    return new LoginTokenStorage(storage, cookies);
+export function loginTokenStorageServiceFactory(local: LocalStorageService, cookies: CookieService): LoginTokenStorage {
+    return new LoginTokenStorage(local, cookies);
 }
 
 export const VI_ANGULAR_OPTIONS = new InjectionToken<IVIOptions>(`VI_ANGULAR_OPTIONS`);

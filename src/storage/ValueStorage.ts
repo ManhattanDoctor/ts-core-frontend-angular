@@ -45,6 +45,9 @@ export class ValueStorage<T = string> extends DestroyableContainer implements IV
     //--------------------------------------------------------------------------
 
     public get(defaultValue?: T): T {
+        if (this.isDestroyed) {
+            return null;
+        }
         let item = null;
         if (this.storage.has(this.name)) {
             item = this.storage.get(this.name);
@@ -55,10 +58,16 @@ export class ValueStorage<T = string> extends DestroyableContainer implements IV
     }
 
     public has(): boolean {
+        if (this.isDestroyed) {
+            return false;
+        }
         return this.storage.has(this.name) || this.cookies.has(this.name);
     }
 
     public set(value: T): T {
+        if (this.isDestroyed) {
+            return null;
+        }
         let item = !_.isNil(value) ? this.deserialize(value) : null;
         this.cookies.put(this.name, item);
         this.storage.set(this.name, item);

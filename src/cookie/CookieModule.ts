@@ -3,6 +3,7 @@ import { ICookieOptions, NativeWindowService } from '@ts-core/frontend';
 import { CookieService } from './CookieService';
 import { PlatformService } from '../service/PlatformService';
 import * as _ from 'lodash';
+import { DOCUMENT } from '@angular/common';
 
 @NgModule()
 export class CookieModule {
@@ -22,7 +23,7 @@ export class CookieModule {
                 },
                 {
                     provide: CookieService,
-                    deps: [NativeWindowService, COOKIE_OPTIONS],
+                    deps: [NativeWindowService, COOKIE_OPTIONS, PlatformService],
                     useFactory: cookieServiceFactory
                 }
             ]
@@ -30,7 +31,7 @@ export class CookieModule {
     }
 }
 
-export function cookieServiceFactory(nativeWindow: NativeWindowService, options: ICookieOptions): CookieService {
+export function cookieServiceFactory(nativeWindow: NativeWindowService, options: ICookieOptions, platform: PlatformService): CookieService {
     options = _.assign(
         {
             path: '/',
@@ -41,7 +42,7 @@ export function cookieServiceFactory(nativeWindow: NativeWindowService, options:
         },
         options
     );
-    return new CookieService(options, nativeWindow.document);
+    return new CookieService(nativeWindow.document, options, platform.isPlatformBrowser);
 }
 
 export const COOKIE_OPTIONS = new InjectionToken<ICookieOptions>(`COOKIE_OPTIONS`);

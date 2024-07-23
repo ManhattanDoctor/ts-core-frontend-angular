@@ -1,4 +1,4 @@
-import { Directive, EventEmitter, Input, Output } from '@angular/core';
+import { Directive, EventEmitter, Input, Output, numberAttribute } from '@angular/core';
 import { ScrollDirective } from './ScrollDirective';
 
 @Directive({
@@ -16,7 +16,7 @@ export class InfiniteScrollDirective extends ScrollDirective {
     @Output()
     public bottom: EventEmitter<number> = new EventEmitter();
 
-    @Input()
+    @Input({ transform: numberAttribute })
     public elementHeight: number = 50;
 
     // --------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, Input, booleanAttribute } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
 import { ThemeAssetService, ThemeService } from '@ts-core/frontend';
 import * as _ from 'lodash';
@@ -116,7 +116,7 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
         return this.themeAsset.getName(this.name, this.isIgnoreTheme);
     }
 
-    protected abstract commitSourceProperties(): void;
+    protected abstract addSourceProperties(): void;
 
     protected abstract removeSourceProperties(): void;
 
@@ -152,7 +152,9 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
         }
         this._source = value;
         if (!_.isNil(value)) {
-            this.commitSourceProperties();
+            this.addSourceProperties();
+        } else {
+            this.removeSourceProperties();
         }
     }
 
@@ -162,7 +164,7 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
     //
     // --------------------------------------------------------------------------
 
-    @Input()
+    @Input({ transform: booleanAttribute })
     public set isSound(value: boolean) {
         if (value === this._isSound) {
             return;
@@ -174,7 +176,7 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
         return this._isSound;
     }
 
-    @Input()
+    @Input({ transform: booleanAttribute })
     public set isVideo(value: boolean) {
         if (value === this._isVideo) {
             return;
@@ -186,7 +188,7 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
         return this._isVideo;
     }
 
-    @Input()
+    @Input({ transform: booleanAttribute })
     public set isFile(value: boolean) {
         if (value === this._isFile) {
             return;
@@ -198,7 +200,7 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
         return this._isFile;
     }
 
-    @Input()
+    @Input({ transform: booleanAttribute })
     public set isImage(value: boolean) {
         if (value === this._isImage) {
             return;
@@ -210,7 +212,7 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
         return this._isImage;
     }
 
-    @Input()
+    @Input({ transform: booleanAttribute })
     public set isBackground(value: boolean) {
         if (value === this._isBackground) {
             return;
@@ -222,7 +224,7 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
         return this._isBackground;
     }
 
-    @Input()
+    @Input({ transform: booleanAttribute })
     public set isIgnoreTheme(value: boolean) {
         if (value === this._isIgnoreTheme) {
             return;
@@ -242,13 +244,8 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
         if (value === this._name) {
             return;
         }
-        if (!_.isNil(this._name)) {
-            this.removeSourceProperties();
-        }
         this._name = value;
-        if (!_.isNil(value)) {
-            this.setSourceProperties();
-        }
+        this.setSourceProperties();
     }
 
     public get extension(): string {
@@ -260,8 +257,6 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
             return;
         }
         this._extension = value;
-        if (!_.isNil(value)) {
-            this.setSourceProperties();
-        }
+        this.setSourceProperties();
     }
 }

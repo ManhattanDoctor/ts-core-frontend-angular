@@ -18,7 +18,7 @@ export class LoginTokenStorage extends ValueStorage {
     //
     //--------------------------------------------------------------------------
 
-    constructor(localStorage: LocalStorageService, cookies: CookieService) {
-        super(LoginTokenStorage.TOKEN_KEY, localStorage, cookies);
+    constructor(local: LocalStorageService, cookies: CookieService) {
+        super(LoginTokenStorage.TOKEN_KEY, local, cookies);
     }
 }

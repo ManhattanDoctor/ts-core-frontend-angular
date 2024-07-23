@@ -1,4 +1,4 @@
-import { Directive, ElementRef, EventEmitter, Input, Output } from '@angular/core';
+import { Directive, ElementRef, EventEmitter, Input, Output, booleanAttribute } from '@angular/core';
 import { Interactable } from '@interactjs/types';
 import * as interact from 'interactjs';
 import { Destroyable } from '@ts-core/common';
@@ -18,13 +18,13 @@ export class ResizeDirective extends Destroyable {
     @Output()
     public resized: EventEmitter<any> = new EventEmitter();
 
-    @Input()
+    @Input({ transform: booleanAttribute })
     public isTop: boolean = false;
-    @Input()
+    @Input({ transform: booleanAttribute })
     public isLeft: boolean = false;
-    @Input()
+    @Input({ transform: booleanAttribute })
     public isRight: boolean = false;
-    @Input()
+    @Input({ transform: booleanAttribute })
     public isBottom: boolean = false;
 
     private interactable: Interactable;

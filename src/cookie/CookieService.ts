@@ -1,8 +1,8 @@
 import { ICookieOptions, ICookieService } from '@ts-core/frontend';
-import * as _ from 'lodash';
-import * as Cookie from 'ngx-cookie';
-import { CookieOptionsProvider, CookieWriterService } from 'ngx-cookie';
+import { CookieOptionsProvider } from 'ngx-cookie';
 import { CookieOptions } from './CookieOptions';
+import * as Cookie from 'ngx-cookie';
+import * as _ from 'lodash';
 
 export class CookieService extends Cookie.CookieService implements ICookieService {
     // --------------------------------------------------------------------------
@@ -11,8 +11,8 @@ export class CookieService extends Cookie.CookieService implements ICookieServic
     //
     // --------------------------------------------------------------------------
 
-    constructor(options: CookieOptions, document: Document) {
-        super(document, { options } as CookieOptionsProvider, new CookieWriterService(document));
+    constructor(document: Document, options: CookieOptions, isPlatformBrowser: boolean) {
+        super(document, { options } as CookieOptionsProvider, new CookieWriterService(document, isPlatformBrowser));
     }
 
     // --------------------------------------------------------------------------
@@ -22,7 +22,7 @@ export class CookieService extends Cookie.CookieService implements ICookieServic
     // --------------------------------------------------------------------------
 
     public has(key: string): boolean {
-        return !_.isNil(this.get(key));
+        return !_.isNil(super.get(key));
     }
 
     public get<T = string>(key: string, defaultValue?: T): T {
@@ -47,5 +47,42 @@ export class CookieService extends Cookie.CookieService implements ICookieServic
 
     public updateObject(key: string, value: Object, options?: ICookieOptions): void {
         this.putObject(key, value, options);
+    }
+}
+
+class CookieWriterService extends Cookie.CookieWriterService {
+    // --------------------------------------------------------------------------
+    //
+    // 	Properties
+    //
+    // --------------------------------------------------------------------------
+
+    private isPlatformBrowser: boolean;
+
+    // --------------------------------------------------------------------------
+    //
+    // 	Constructor
+    //
+    // --------------------------------------------------------------------------
+
+    constructor(document: Document, isPlatformBrowser: boolean) {
+        super(document);
+        this.isPlatformBrowser = isPlatformBrowser;
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    // 	Public Methods
+    //
+    // --------------------------------------------------------------------------
+
+    public readAllAsString(): string {
+        return this.isPlatformBrowser ? super.readAllAsString() : '';
+    }
+
+    public write(name: string, value: string | undefined, options?: CookieOptions): void {
+        if (this.isPlatformBrowser) {
+            super.write(name, value, options);
+        }
     }
 }

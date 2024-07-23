@@ -24,7 +24,7 @@ export class ThemeAssetBackgroundDirective extends ThemeAssetDirective {
     //
     // --------------------------------------------------------------------------
 
-    protected commitSourceProperties(): void {
+    protected addSourceProperties(): void {
         let value = 'url(' + this.source + ')';
         ViewUtil.setStyle(this.element, 'backgroundImage', value);
     }

@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Directive, ElementRef, Input, booleanAttribute } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
 import { Assets } from '@ts-core/frontend';
 import * as _ from 'lodash';
@@ -79,7 +79,7 @@ export class AssetBackgroundDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    @Input()
+    @Input({ transform: booleanAttribute })
     public set isIcon(value: boolean) {
         if (value === this._isIcon) {
             return;
@@ -91,7 +91,7 @@ export class AssetBackgroundDirective extends Destroyable {
         return this._isIcon;
     }
 
-    @Input()
+    @Input({ transform: booleanAttribute })
     public set isImage(value: boolean) {
         if (value === this._isImage) {
             return;
@@ -103,7 +103,7 @@ export class AssetBackgroundDirective extends Destroyable {
         return this._isImage;
     }
 
-    @Input()
+    @Input({ transform: booleanAttribute })
     public set isUrl(value: boolean) {
         if (value === this._isUrl) {
             return;

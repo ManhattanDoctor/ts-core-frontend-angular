@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input } from '@angular/core';
+import { Directive, ElementRef, Input, booleanAttribute } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
 import { LanguageService } from '@ts-core/frontend';
 import * as _ from 'lodash';
@@ -15,7 +15,7 @@ export class LanguageDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    @Input()
+    @Input({ transform: booleanAttribute })
     public isNeedTitle: boolean;
 
     protected _key: string;

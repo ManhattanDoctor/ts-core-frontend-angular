@@ -23,7 +23,7 @@ export class ThemeAssetImageDirective extends ThemeAssetDirective<HTMLImageEleme
     //
     // --------------------------------------------------------------------------
 
-    protected commitSourceProperties(): void {
+    protected addSourceProperties(): void {
         this.element.src = this.source;
     }
     protected removeSourceProperties(): void {

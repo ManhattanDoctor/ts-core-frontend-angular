@@ -1,4 +1,4 @@
-import { AfterViewInit, Directive, ElementRef, Input } from '@angular/core';
+import { AfterViewInit, Directive, ElementRef, Input, numberAttribute } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import * as _ from 'lodash';
 import { debounceTime, takeUntil } from 'rxjs';
@@ -127,7 +127,7 @@ export class AspectRatioResizeDirective extends DestroyableContainer implements 
         return this._direction;
     }
 
-    @Input()
+    @Input({ transform: numberAttribute })
     public set ratio(value: number) {
         if (value === this._ratio) {
             return;

@@ -1,4 +1,4 @@
-import { AfterViewInit, ElementRef, ViewContainerRef, Inject, Optional, Component, InjectionToken, Input } from '@angular/core';
+import { AfterViewInit, ElementRef, ViewContainerRef, Inject, Optional, Component, InjectionToken, Input, booleanAttribute } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DestroyableContainer } from '@ts-core/common';
 import { IWindow, WindowEvent } from './IWindow';
@@ -110,14 +110,14 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
         return !_.isNil(this.window) ? this.window.events : null;
     }
 
-    public get isDisabled(): boolean {
-        return !_.isNil(this.window) ? this.window.isDisabled : false;
-    }
-    @Input()
+    @Input({ transform: booleanAttribute })
     public set isDisabled(value: boolean) {
         if (!_.isNil(this.window)) {
             this.window.isDisabled = value;
         }
+    }
+    public get isDisabled(): boolean {
+        return !_.isNil(this.window) ? this.window.isDisabled : false;
     }
 
     // --------------------------------------------------------------------------

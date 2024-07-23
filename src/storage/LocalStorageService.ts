@@ -1,16 +1,24 @@
 import { DestroyableContainer } from '@ts-core/common';
-import { NativeWindowService } from '@ts-core/frontend';
 import * as _ from 'lodash';
 
 export class LocalStorageService extends DestroyableContainer {
+    //--------------------------------------------------------------------------
+    //
+    // 	Properties
+    //
+    //--------------------------------------------------------------------------
+
+    protected storage: Storage;
+
     //--------------------------------------------------------------------------
     //
     // 	Constructor
     //
     //--------------------------------------------------------------------------
 
-    constructor(private nativeWindow: NativeWindowService) {
+    constructor(storage: Storage) {
         super();
+        this.storage = storage;
     }
 
     //--------------------------------------------------------------------------
@@ -20,14 +28,23 @@ export class LocalStorageService extends DestroyableContainer {
     //--------------------------------------------------------------------------
 
     public get(key: string, defaultValue?: string): string {
+        if (_.isNil(this.storage)) {
+            return null;
+        }
         return this.has(key) ? this.storage.getItem(key) : defaultValue;
     }
 
     public has(key: string): boolean {
+        if (_.isNil(this.storage)) {
+            return false;
+        }
         return !_.isNil(this.storage.getItem(key));
     }
 
     public set(key: string, value: string): void {
+        if (_.isNil(this.storage)) {
+            return;
+        }
         if (!_.isNil(value)) {
             this.storage.setItem(key, value);
         } else {
@@ -36,11 +53,15 @@ export class LocalStorageService extends DestroyableContainer {
     }
 
     public remove(key: string): void {
-        this.storage.removeItem(key);
+        if (!_.isNil(this.storage)) {
+            this.storage.removeItem(key);
+        }
     }
 
     public clear(): void {
-        this.storage.clear();
+        if (!_.isNil(this.storage)) {
+            this.storage.clear();
+        }
     }
 
     public destroy(): void {
@@ -48,7 +69,7 @@ export class LocalStorageService extends DestroyableContainer {
             return;
         }
         super.destroy();
-        this.nativeWindow = null;
+        this.storage = null;
     }
 
     //--------------------------------------------------------------------------
@@ -59,9 +80,5 @@ export class LocalStorageService extends DestroyableContainer {
 
     protected get length(): number {
         return this.storage.length;
-    }
-
-    protected get storage(): Storage {
-        return this.nativeWindow.window.localStorage;
     }
 }
