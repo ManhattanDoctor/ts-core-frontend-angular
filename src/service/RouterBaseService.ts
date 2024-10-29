@@ -9,12 +9,10 @@ import {
     Router,
     UrlTree
 } from '@angular/router';
-import { Loadable, LoadableEvent, LoadableStatus } from '@ts-core/common';
-import { ObservableData } from '@ts-core/common';
+import { ObservableData, Loadable, LoadableEvent, LoadableStatus } from '@ts-core/common';
 import { NativeWindowService } from '@ts-core/frontend';
+import { Subject, takeUntil } from 'rxjs';
 import * as _ from 'lodash';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs';
 
 export class RouterBaseService extends Loadable<void, RouterBaseServiceEventData> {
     // --------------------------------------------------------------------------

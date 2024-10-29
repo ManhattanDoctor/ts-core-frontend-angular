@@ -87,6 +87,7 @@ export * from './question/QuestionManager';
 export * from './service/PipeBaseService';
 export * from './service/PlatformService';
 export * from './service/RouterBaseService';
+export * from './service/ServiceWorkerService';
 export * from './service/route/CanDeactivateGuard';
 export * from './service/route/IRouterDeactivatable';
 //
