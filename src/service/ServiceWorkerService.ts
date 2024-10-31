@@ -56,13 +56,19 @@ export class ServiceWorkerService extends Loadable {
     //
     //--------------------------------------------------------------------------
 
-    protected start(status: LoadableStatus): void {
-        this.status = status;
+    protected start(value: LoadableStatus): void {
+        if (value === this.status) {
+            return;
+        }
+        this.status = value;
         this.observer.next(new ObservableData(LoadableEvent.STARTED));
     }
 
-    protected finish(status: LoadableStatus): void {
-        this.status = status;
+    protected finish(value: LoadableStatus): void {
+        if (value === this.status) {
+            return;
+        }
+        this.status = value;
         this.observer.next(new ObservableData(LoadableEvent.FINISHED));
     }
 
@@ -73,15 +79,13 @@ export class ServiceWorkerService extends Loadable {
     //--------------------------------------------------------------------------
 
     protected async readyHandler(event: VersionReadyEvent): Promise<void> {
-        let status = null;
+        this.start(LoadableStatus.LOADING);
         try {
             await this.updates.activateUpdate();
-            status = LoadableStatus.LOADED;
+            this.finish(LoadableStatus.LOADED);
         } catch (error) {
-            status = LoadableStatus.ERROR;
+            this.finish(LoadableStatus.ERROR);
             this.logger.error(`Unable to activate version: ${error}`);
-        } finally {
-            this.finish(status);
         }
     }
 
@@ -99,7 +103,7 @@ export class ServiceWorkerService extends Loadable {
     }
 
     protected async noNewVersionDetectedHandler(event: NoNewVersionDetectedEvent): Promise<void> {
-        this.finish(LoadableStatus.LOADED);
+        this.finish(LoadableStatus.NOT_LOADED);
     }
 
     //--------------------------------------------------------------------------
