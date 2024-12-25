@@ -4,12 +4,12 @@ import {
     SwUpdate,
     UnrecoverableStateEvent,
     VersionDetectedEvent,
-    VersionEvent,
     VersionInstallationFailedEvent,
     VersionReadyEvent
 } from '@angular/service-worker';
 import { Loadable, LoadableEvent, LoadableStatus, Logger, ObservableData } from '@ts-core/common';
 import { takeUntil, filter } from 'rxjs';
+import { NotificationService } from '../notification/NotificationService';
 import * as _ from 'lodash';
 
 @Injectable({ providedIn: 'root' })
@@ -20,7 +20,7 @@ export class ServiceWorkerService extends Loadable {
     //
     //--------------------------------------------------------------------------
 
-    constructor(protected updates: SwUpdate, protected logger: Logger) {
+    constructor(protected updates: SwUpdate, protected logger: Logger, protected notifications: NotificationService) {
         super();
 
         updates.unrecoverable.pipe(takeUntil(this.destroyed)).subscribe(event => this.unrecoverableHandler(event));

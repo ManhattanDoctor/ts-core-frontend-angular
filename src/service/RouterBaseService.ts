@@ -35,12 +35,16 @@ export class RouterBaseService extends Loadable<void, RouterBaseServiceEventData
     //
     // --------------------------------------------------------------------------
 
-    constructor(protected _router: Router, protected _route: ActivatedRoute, protected window: NativeWindowService) {
+    constructor(
+        protected _router: Router,
+        protected _route: ActivatedRoute,
+        protected window: NativeWindowService) {
         super();
         this.params = new Map();
         this.observer = new Subject();
 
         this._lastUrl = this.url;
+
         this.window.getParams().forEach((value, key) => this.params.set(key, value));
         this.initializeObservers();
     }
@@ -273,7 +277,6 @@ export class RouterBaseService extends Loadable<void, RouterBaseServiceEventData
     public get route(): ActivatedRoute {
         return this._route;
     }
-
     public get router(): Router {
         return this._router;
     }
