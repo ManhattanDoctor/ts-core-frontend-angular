@@ -16,7 +16,11 @@ export class MenuItemBase {
     //
     // --------------------------------------------------------------------------
 
-    constructor(public nameId: string, public sortIndex: number = NaN, public iconId?: string) {}
+    constructor(
+        public nameId: string,
+        public sortIndex: number = NaN,
+        public iconId?: string
+    ) {}
 
     // --------------------------------------------------------------------------
     //

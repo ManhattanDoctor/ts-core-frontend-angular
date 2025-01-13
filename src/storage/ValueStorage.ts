@@ -19,7 +19,11 @@ export class ValueStorage<T = string> extends DestroyableContainer implements IV
     //
     //--------------------------------------------------------------------------
 
-    constructor(name: string, protected storage: LocalStorageService, protected cookies: CookieService) {
+    constructor(
+        name: string,
+        protected storage: LocalStorageService,
+        protected cookies: CookieService
+    ) {
         super();
         this._name = name;
     }

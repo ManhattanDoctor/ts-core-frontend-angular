@@ -1,10 +1,11 @@
 import { Directive, ElementRef, Input } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
-import * as _ from 'lodash';
 import { FocusManager } from '../manager/FocusManager';
+import * as _ from 'lodash';
 
 @Directive({
-    selector: '[vi-focus]'
+    selector: '[vi-focus]',
+    standalone: false
 })
 export class FocusDirective<T = any> extends Destroyable {
     // --------------------------------------------------------------------------

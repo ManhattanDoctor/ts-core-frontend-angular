@@ -3,7 +3,8 @@ import { PlatformService } from '../service/PlatformService';
 import { StructureDirective } from './StructureDirective';
 
 @Directive({
-    selector: '[viIsBrowser]'
+    selector: '[viIsBrowser]',
+    standalone: false
 })
 export class IsBrowserDirective extends StructureDirective {
     // --------------------------------------------------------------------------

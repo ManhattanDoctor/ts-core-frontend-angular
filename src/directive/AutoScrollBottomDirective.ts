@@ -3,7 +3,8 @@ import { InfiniteScrollDirective } from './InfiniteScrollDirective';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: '[vi-auto-scroll-bottom]'
+    selector: '[vi-auto-scroll-bottom]',
+    standalone: false
 })
 export class AutoScrollBottomDirective extends InfiniteScrollDirective {
     // --------------------------------------------------------------------------

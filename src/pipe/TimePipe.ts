@@ -1,11 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DateUtil } from '@ts-core/common';
-import * as _ from 'lodash';
 import { FinancePipe } from './FinancePipe';
 import { PrettifyPipe } from './PrettifyPipe';
+import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viTime'
+    name: 'viTime',
+    standalone: false
 })
 export class TimePipe implements PipeTransform {
     // --------------------------------------------------------------------------

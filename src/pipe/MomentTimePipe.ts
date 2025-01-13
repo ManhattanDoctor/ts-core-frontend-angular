@@ -1,10 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { MomentAvailableType, MomentDatePipe } from './MomentDatePipe';
-import * as _ from 'lodash';
 import moment from 'moment';
+import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viMomentTime'
+    name: 'viMomentTime',
+    standalone: false
 })
 export class MomentTimePipe implements PipeTransform {
     // --------------------------------------------------------------------------

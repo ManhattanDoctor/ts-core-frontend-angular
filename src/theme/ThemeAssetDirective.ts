@@ -34,7 +34,11 @@ export abstract class ThemeAssetDirective<T extends HTMLElement = HTMLElement> e
     //
     // --------------------------------------------------------------------------
 
-    constructor(element: ElementRef, protected theme: ThemeService, protected themeAsset: ThemeAssetService) {
+    constructor(
+        element: ElementRef,
+        protected theme: ThemeService,
+        protected themeAsset: ThemeAssetService
+    ) {
         super();
         this.element = ViewUtil.parseElement(element.nativeElement) as T;
 

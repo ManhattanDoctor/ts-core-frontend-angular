@@ -1,11 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as _ from 'lodash';
 import { Moment } from 'moment';
 import moment from 'moment';
 import { GetFilterableCondition, RemoveFilterableCondition } from '@ts-core/common';
+import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viMomentDate'
+    name: 'viMomentDate',
+    standalone: false
 })
 export class MomentDatePipe implements PipeTransform {
     // --------------------------------------------------------------------------

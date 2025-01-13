@@ -1,12 +1,13 @@
 import { Directive, ElementRef, Input, RendererStyleFlags2 } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
 import { ThemeService } from '@ts-core/frontend';
-import * as _ from 'lodash';
 import { takeUntil } from 'rxjs';
 import { ViewUtil } from '../util/ViewUtil';
+import * as _ from 'lodash';
 
 @Directive({
-    selector: '[vi-theme-style]'
+    selector: '[vi-theme-style]',
+    standalone: false
 })
 export class ThemeStyleDirective extends Destroyable {
     // --------------------------------------------------------------------------
@@ -27,7 +28,10 @@ export class ThemeStyleDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    constructor(element: ElementRef, protected theme: ThemeService) {
+    constructor(
+        element: ElementRef,
+        protected theme: ThemeService
+    ) {
         super();
 
         this.element = ViewUtil.parseElement(element.nativeElement);

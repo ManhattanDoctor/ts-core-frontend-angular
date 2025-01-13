@@ -3,7 +3,8 @@ import { PlatformService } from '../service/PlatformService';
 import { StructureDirective } from './StructureDirective';
 
 @Directive({
-    selector: '[viIsServer]'
+    selector: '[viIsServer]',
+    standalone: false
 })
 export class IsServerDirective extends StructureDirective {
     // --------------------------------------------------------------------------

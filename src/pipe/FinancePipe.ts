@@ -1,9 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as _ from 'lodash';
 import numeral from 'numeral';
+import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viFinance'
+    name: 'viFinance',
+    standalone: false
 })
 export class FinancePipe implements PipeTransform {
     // --------------------------------------------------------------------------

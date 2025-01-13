@@ -10,7 +10,10 @@ export abstract class TransportLazyModule<T> implements ITransportLazyModuleData
     //
     //--------------------------------------------------------------------------
 
-    constructor(public reference: NgModuleRef<T>, protected transport: Transport) {
+    constructor(
+        public reference: NgModuleRef<T>,
+        protected transport: Transport
+    ) {
         this.moduleLoadedDispatch();
     }
 

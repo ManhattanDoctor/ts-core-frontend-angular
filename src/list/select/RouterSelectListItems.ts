@@ -20,7 +20,10 @@ export class RouterSelectListItems<U = string> extends SelectListItems<ISelectLi
     //
     //--------------------------------------------------------------------------
 
-    constructor(protected router: RouterBaseService, language: LanguageService) {
+    constructor(
+        protected router: RouterBaseService,
+        language: LanguageService
+    ) {
         super(language, true);
         this.changed
             .pipe(

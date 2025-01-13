@@ -13,7 +13,10 @@ export class LoginIfCanGuard<T extends LoginBaseService = LoginBaseService> exte
     //
     // --------------------------------------------------------------------------
 
-    constructor(@Inject(LoginBaseService) login: T, protected router: Router) {
+    constructor(
+        @Inject(LoginBaseService) login: T,
+        protected router: Router
+    ) {
         super(login, router);
     }
 

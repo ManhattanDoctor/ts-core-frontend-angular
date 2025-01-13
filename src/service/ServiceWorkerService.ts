@@ -20,7 +20,11 @@ export class ServiceWorkerService extends Loadable {
     //
     //--------------------------------------------------------------------------
 
-    constructor(protected updates: SwUpdate, protected logger: Logger, protected notifications: NotificationService) {
+    constructor(
+        protected updates: SwUpdate,
+        protected logger: Logger,
+        protected notifications: NotificationService
+    ) {
         super();
 
         updates.unrecoverable.pipe(takeUntil(this.destroyed)).subscribe(event => this.unrecoverableHandler(event));

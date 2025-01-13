@@ -24,7 +24,10 @@ export class ListItems<U extends IListItem<V>, V = any> extends FilterableMapCol
     //
     // --------------------------------------------------------------------------
 
-    constructor(private language: LanguageService, isAutoTranslate: boolean = true) {
+    constructor(
+        private language: LanguageService,
+        isAutoTranslate: boolean = true
+    ) {
         super('uid');
 
         this.lastRefreshParams = new Array();

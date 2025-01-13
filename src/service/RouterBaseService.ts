@@ -38,7 +38,8 @@ export class RouterBaseService extends Loadable<void, RouterBaseServiceEventData
     constructor(
         protected _router: Router,
         protected _route: ActivatedRoute,
-        protected window: NativeWindowService) {
+        protected window: NativeWindowService
+    ) {
         super();
         this.params = new Map();
         this.observer = new Subject();

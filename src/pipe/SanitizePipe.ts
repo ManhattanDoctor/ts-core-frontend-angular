@@ -3,7 +3,8 @@ import { DomSanitizer, SafeHtml, SafeResourceUrl, SafeScript, SafeStyle, SafeUrl
 import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viSanitize'
+    name: 'viSanitize',
+    standalone: false
 })
 export class SanitizePipe {
     // --------------------------------------------------------------------------

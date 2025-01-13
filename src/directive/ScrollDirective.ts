@@ -1,10 +1,11 @@
 import { Directive, EventEmitter, ElementRef, HostListener, Input, Output, numberAttribute } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
+import { ViewUtil } from '../util/ViewUtil';
 import * as _ from 'lodash';
-import { ViewUtil } from '../public-api';
 
 @Directive({
-    selector: '[vi-scroll]'
+    selector: '[vi-scroll]',
+    standalone: false
 })
 export class ScrollDirective extends Destroyable {
     // --------------------------------------------------------------------------

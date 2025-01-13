@@ -1,11 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as _ from 'lodash';
 import { Moment } from 'moment';
 import moment from 'moment';
 import { MomentDatePipe } from './MomentDatePipe';
+import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viMomentAdaptiveDate'
+    name: 'viMomentAdaptiveDate',
+    standalone: false
 })
 export class MomentDateAdaptivePipe implements PipeTransform {
     // --------------------------------------------------------------------------

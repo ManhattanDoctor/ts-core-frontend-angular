@@ -20,7 +20,10 @@ export class LoginGuard<T extends LoginBaseService = LoginBaseService> extends L
     //
     // --------------------------------------------------------------------------
 
-    constructor(@Inject(LoginBaseService) login: T, protected router: Router) {
+    constructor(
+        @Inject(LoginBaseService) login: T,
+        protected router: Router
+    ) {
         super(login);
     }
 

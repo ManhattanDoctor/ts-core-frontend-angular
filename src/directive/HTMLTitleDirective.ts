@@ -1,11 +1,12 @@
 import { Directive, ElementRef, Input } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
-import * as _ from 'lodash';
 import { LanguagePipe } from '../language/LanguagePipe';
 import { ViewUtil } from '../util/ViewUtil';
+import * as _ from 'lodash';
 
 @Directive({
-    selector: '[vi-html-title]'
+    selector: '[vi-html-title]',
+    standalone: false
 })
 export class HTMLTitleDirective extends Destroyable {
     // --------------------------------------------------------------------------

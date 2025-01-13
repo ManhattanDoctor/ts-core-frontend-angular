@@ -13,7 +13,11 @@ export class TransportLazy extends TransportLocal {
     //
     // --------------------------------------------------------------------------
 
-    constructor(logger: ILogger, protected loader: LazyModuleLoader<ITransportLazyModuleData>, settings?: ITransportSettings) {
+    constructor(
+        logger: ILogger,
+        protected loader: LazyModuleLoader<ITransportLazyModuleData>,
+        settings?: ITransportSettings
+    ) {
         super(logger, settings, null);
         this.getDispatcher<TransportLazyModuleLoadedEvent<ITransportLazyModuleData>>(TransportLazyModuleLoadedEvent.NAME).subscribe(event =>
             this.moduleLoadedHandler(event.data)

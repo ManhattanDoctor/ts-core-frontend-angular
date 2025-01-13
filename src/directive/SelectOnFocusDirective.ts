@@ -1,10 +1,11 @@
 import { Directive, ElementRef, HostListener } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
-import * as _ from 'lodash';
 import { ViewUtil } from '../util/ViewUtil';
+import * as _ from 'lodash';
 
 @Directive({
-    selector: '[vi-select-on-focus]'
+    selector: '[vi-select-on-focus]',
+    standalone: false
 })
 export class SelectOnFocusDirective extends Destroyable {
     // --------------------------------------------------------------------------

@@ -2,7 +2,8 @@ import { Directive, EventEmitter, Input, Output, numberAttribute } from '@angula
 import { ScrollDirective } from './ScrollDirective';
 
 @Directive({
-    selector: '[vi-infinite-scroll]'
+    selector: '[vi-infinite-scroll]',
+    standalone: false
 })
 export class InfiniteScrollDirective extends ScrollDirective {
     // --------------------------------------------------------------------------

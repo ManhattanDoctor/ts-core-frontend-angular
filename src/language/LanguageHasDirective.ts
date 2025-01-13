@@ -5,7 +5,8 @@ import { StructureDirective } from '../directive/StructureDirective';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: '[viTranslateHas]'
+    selector: '[viTranslateHas]',
+    standalone: false
 })
 export class LanguageHasDirective<T = any> extends StructureDirective<T> {
     // --------------------------------------------------------------------------
@@ -23,7 +24,11 @@ export class LanguageHasDirective<T = any> extends StructureDirective<T> {
     //
     // --------------------------------------------------------------------------
 
-    constructor(template: TemplateRef<T>, container: ViewContainerRef, protected language: LanguageService) {
+    constructor(
+        template: TemplateRef<T>,
+        container: ViewContainerRef,
+        protected language: LanguageService
+    ) {
         super(template, container);
         language.completed.pipe(takeUntil(this.destroyed)).subscribe(() => this.check());
     }

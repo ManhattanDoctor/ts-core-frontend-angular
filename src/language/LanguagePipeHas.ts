@@ -6,7 +6,8 @@ import * as _ from 'lodash';
 
 @Pipe({
     name: 'viTranslateHas',
-    pure: false
+    pure: false,
+    standalone: false
 })
 export class LanguagePipeHas extends DestroyableContainer implements PipeTransform {
     // --------------------------------------------------------------------------

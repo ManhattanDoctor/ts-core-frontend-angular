@@ -18,7 +18,10 @@ export class StructureDirective<T = any> extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    constructor(protected template: TemplateRef<T>, protected container: ViewContainerRef) {
+    constructor(
+        protected template: TemplateRef<T>,
+        protected container: ViewContainerRef
+    ) {
         super();
     }
 

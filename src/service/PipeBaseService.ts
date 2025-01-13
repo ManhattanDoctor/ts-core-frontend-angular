@@ -49,7 +49,10 @@ export class PipeBaseService extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    constructor(public language: LanguageService, public sanitizer: DomSanitizer) {
+    constructor(
+        public language: LanguageService,
+        public sanitizer: DomSanitizer
+    ) {
         super();
 
         if (this.language.isLoaded) {

@@ -4,7 +4,8 @@ import { fromEvent, debounceTime, takeUntil } from 'rxjs';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: '[vi-scroll-check]'
+    selector: '[vi-scroll-check]',
+    standalone: false
 })
 export class ScrollCheckDirective extends DestroyableContainer {
     //--------------------------------------------------------------------------

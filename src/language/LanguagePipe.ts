@@ -6,7 +6,8 @@ import * as _ from 'lodash';
 
 @Pipe({
     name: 'viTranslate',
-    pure: false
+    pure: false,
+    standalone: false
 })
 export class LanguagePipe extends DestroyableContainer implements PipeTransform {
     // --------------------------------------------------------------------------
@@ -41,7 +42,10 @@ export class LanguagePipe extends DestroyableContainer implements PipeTransform 
     //
     // --------------------------------------------------------------------------
 
-    constructor(private detection: ChangeDetectorRef, private language: LanguageService) {
+    constructor(
+        private detection: ChangeDetectorRef,
+        private language: LanguageService
+    ) {
         super();
         language.completed.pipe(takeUntil(this.destroyed)).subscribe(this.lastValueUpdate);
     }

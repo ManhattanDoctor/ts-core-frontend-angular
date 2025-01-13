@@ -21,7 +21,10 @@ export class LazyModuleLoader<T extends ILazyModuleData = ILazyModuleData> exten
     //
     //--------------------------------------------------------------------------
 
-    constructor(protected compiler: Compiler, protected injector: Injector) {
+    constructor(
+        protected compiler: Compiler,
+        protected injector: Injector
+    ) {
         super();
         this._modules = new MapCollection('id');
     }

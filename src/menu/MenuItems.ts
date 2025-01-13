@@ -22,7 +22,11 @@ export class MenuItems extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    constructor(private language: LanguageService, filterFunction?: (item: MenuItem) => boolean, isAutoTranslate: boolean = false) {
+    constructor(
+        private language: LanguageService,
+        filterFunction?: (item: MenuItem) => boolean,
+        isAutoTranslate: boolean = false
+    ) {
         super();
 
         this._items = [];

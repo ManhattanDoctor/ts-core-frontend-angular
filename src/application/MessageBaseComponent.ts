@@ -20,7 +20,10 @@ export abstract class MessageBaseComponent extends DestroyableContainer {
     //
     // --------------------------------------------------------------------------
 
-    constructor(protected route: ActivatedRoute, protected language: LanguageService) {
+    constructor(
+        protected route: ActivatedRoute,
+        protected language: LanguageService
+    ) {
         super();
         // this.login.isAutoLogin = true
 

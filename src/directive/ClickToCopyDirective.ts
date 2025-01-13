@@ -1,10 +1,10 @@
 import { Directive, HostListener, Input } from '@angular/core';
-import { Destroyable } from '@ts-core/common';
-import { DateUtil } from '@ts-core/common';
+import { DateUtil, Destroyable } from '@ts-core/common';
 import { ViewUtil } from '../util/ViewUtil';
 
 @Directive({
-    selector: '[vi-click-to-copy]'
+    selector: '[vi-click-to-copy]',
+    standalone: false
 })
 export class ClickToCopyDirective extends Destroyable {
     // --------------------------------------------------------------------------

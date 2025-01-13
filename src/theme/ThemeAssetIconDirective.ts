@@ -3,7 +3,8 @@ import { ThemeAssetService, ThemeService } from '@ts-core/frontend';
 import { ThemeAssetDirective } from './ThemeAssetDirective';
 
 @Directive({
-    selector: '[vi-theme-icon]'
+    selector: '[vi-theme-icon]',
+    standalone: false
 })
 export class ThemeAssetIconDirective extends ThemeAssetDirective<HTMLImageElement> {
     // --------------------------------------------------------------------------

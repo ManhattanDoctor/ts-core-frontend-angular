@@ -1,9 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as _ from 'lodash';
 import { PrettifyPipe } from './PrettifyPipe';
+import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viCamelCase'
+    name: 'viCamelCase',
+    standalone: false
 })
 export class CamelCasePipe implements PipeTransform {
     // --------------------------------------------------------------------------

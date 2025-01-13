@@ -6,7 +6,8 @@ import { takeUntil } from 'rxjs';
 import { ViewUtil } from '../util/ViewUtil';
 
 @Directive({
-    selector: '[vi-translate]'
+    selector: '[vi-translate]',
+    standalone: false
 })
 export class LanguageDirective extends Destroyable {
     // --------------------------------------------------------------------------
@@ -27,7 +28,10 @@ export class LanguageDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    constructor(protected element: ElementRef, protected language: LanguageService) {
+    constructor(
+        protected element: ElementRef,
+        protected language: LanguageService
+    ) {
         super();
         language.completed.pipe(takeUntil(this.destroyed)).subscribe(() => this.translate);
     }

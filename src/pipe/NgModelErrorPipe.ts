@@ -4,7 +4,8 @@ import { LanguageService } from '@ts-core/frontend';
 import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viNgModelError'
+    name: 'viNgModelError',
+    standalone: false
 })
 export class NgModelErrorPipe implements PipeTransform {
     // --------------------------------------------------------------------------
