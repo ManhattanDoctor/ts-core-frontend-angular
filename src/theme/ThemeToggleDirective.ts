@@ -1,5 +1,5 @@
 import { Directive, HostListener } from '@angular/core';
-import { Destroyable } from '@ts-core/common';
+import { ArrayUtil, Destroyable } from '@ts-core/common';
 import { ThemeService } from '@ts-core/frontend';
 
 @Directive({
@@ -23,25 +23,12 @@ export class ThemeToggleDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    @HostListener('click', ['$event'])
-    private clickHandler(event: MouseEvent) {
-        let themes = this.theme.themes.collection;
-        let length = themes.length;
-        if (length < 2) {
-            return;
+    @HostListener('click')
+    protected clickHandler() {
+        let items = this.theme.themes.collection;
+        if (items.length > 1) {
+            this.theme.theme = ArrayUtil.nextItem(this.theme.theme, items, true);
         }
-
-        let index = 0;
-        if (this.theme.theme) {
-            index = themes.indexOf(this.theme.theme);
-            if (index < length - 1) {
-                index++;
-            } else {
-                index = 0;
-            }
-        }
-
-        this.theme.theme = themes[index];
     }
 
     // --------------------------------------------------------------------------
