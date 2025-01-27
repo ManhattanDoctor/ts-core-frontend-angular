@@ -175,11 +175,11 @@ export class ViewUtil {
     // --------------------------------------------------------------------------
 
     public static getStageWidth(): number {
-        return ViewUtil.window.innerWidth || ViewUtil.document.body.clientWidth;
+        return ViewUtil.document.body?.clientWidth || ViewUtil.window.innerWidth;
     }
 
     public static getStageHeight(): number {
-        return ViewUtil.window.innerHeight || ViewUtil.document.body.clientHeight;
+        return ViewUtil.document.body?.clientHeight || ViewUtil.window.innerHeight;
     }
 
     public static getCanvasContext2d(container: IViewElement<HTMLCanvasElement>, options?: CanvasRenderingContext2DSettings): CanvasRenderingContext2D {
