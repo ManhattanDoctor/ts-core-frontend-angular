@@ -1,9 +1,9 @@
 import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
-import { DestroyableContainer } from '@ts-core/common';
+import { Destroyable } from '@ts-core/common';
 
 @Injectable({ providedIn: 'root' })
-export class PlatformService extends DestroyableContainer {
+export class PlatformService extends Destroyable {
     // --------------------------------------------------------------------------
     //
     // 	Constants

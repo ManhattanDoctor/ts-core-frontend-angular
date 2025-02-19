@@ -1,10 +1,8 @@
-import { ITransportCommand, ITransportCommandOptions, ITransportEvent, ITransportSettings } from '@ts-core/common';
-import { TransportLocal } from '@ts-core/common';
-import * as _ from 'lodash';
+import { ILogger, TransportLocal, ITransportCommand, ITransportCommandOptions, ITransportEvent, ITransportSettings } from '@ts-core/common';
 import { LazyModuleLoader } from '../module/LazyModuleLoader';
-import { ILogger } from '@ts-core/common';
 import { ITransportLazyModuleData } from './TransportLazyModule';
 import { TransportLazyModuleLoadedEvent } from './TransportLazyModuleLoadedEvent';
+import * as _ from 'lodash';
 
 export class TransportLazy extends TransportLocal {
     // --------------------------------------------------------------------------

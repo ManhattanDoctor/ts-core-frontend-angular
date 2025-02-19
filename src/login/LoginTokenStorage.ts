@@ -3,7 +3,7 @@ import { ValueStorage } from '../storage/ValueStorage';
 import { LocalStorageService } from '../storage/LocalStorageService';
 import * as _ from 'lodash';
 
-export class LoginTokenStorage extends ValueStorage {
+export class LoginTokenStorage<T = string> extends ValueStorage<T> {
     //--------------------------------------------------------------------------
     //
     // 	Properties

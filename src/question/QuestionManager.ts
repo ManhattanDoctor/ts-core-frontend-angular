@@ -1,7 +1,6 @@
-import * as _ from 'lodash';
-import { PromiseHandler } from '@ts-core/common';
-import { Destroyable } from '@ts-core/common';
+import { PromiseHandler, Destroyable } from '@ts-core/common';
 import { IQuestion, IQuestionOptions, QuestionMode } from './IQuestion';
+import * as _ from 'lodash';
 
 export class QuestionManager extends Destroyable implements IQuestion {
     // --------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DestroyableContainer } from '@ts-core/common';
+import { Destroyable } from '@ts-core/common';
 import { LanguageService } from '@ts-core/frontend';
 import { takeUntil } from 'rxjs';
 import { CamelCasePipe } from '../pipe/CamelCasePipe';
@@ -14,7 +14,7 @@ import { SanitizePipe } from '../pipe/SanitizePipe';
 import { TimePipe } from '../pipe/TimePipe';
 import { TruncatePipe } from '../pipe/TruncatePipe';
 
-export class PipeBaseService extends DestroyableContainer {
+export class PipeBaseService extends Destroyable {
     // --------------------------------------------------------------------------
     //
     // 	Constants

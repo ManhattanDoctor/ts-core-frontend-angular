@@ -1,7 +1,7 @@
-import { DestroyableContainer } from '@ts-core/common';
+import { Destroyable } from '@ts-core/common';
 import * as _ from 'lodash';
 
-export class LocalStorageService extends DestroyableContainer {
+export class LocalStorageService extends Destroyable {
     //--------------------------------------------------------------------------
     //
     // 	Properties

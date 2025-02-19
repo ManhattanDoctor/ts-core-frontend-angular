@@ -1,8 +1,8 @@
 import { Resolve } from '@angular/router';
-import { LoginBaseService, LoginBaseServiceEvent } from './LoginBaseService';
+import { LoginServiceBase, LoginServiceBaseEvent } from './LoginServiceBase';
 import { PromiseHandler } from '@ts-core/common';
 
-export class LoginRequireResolver<U extends LoginBaseService = LoginBaseService, V = void> implements Resolve<V> {
+export class LoginRequireResolver<U extends LoginServiceBase = LoginServiceBase, V = void> implements Resolve<V> {
     // --------------------------------------------------------------------------
     //
     // 	Constructor
@@ -24,11 +24,11 @@ export class LoginRequireResolver<U extends LoginBaseService = LoginBaseService,
 
         let promise = PromiseHandler.create<null>();
         let subscription = this.login.events.subscribe(data => {
-            if (data.type === LoginBaseServiceEvent.LOGIN_ERROR) {
+            if (data.type === LoginServiceBaseEvent.LOGIN_ERROR) {
                 promise.reject(data.error.toString());
-            } else if (data.type === LoginBaseServiceEvent.LOGIN_COMPLETE) {
+            } else if (data.type === LoginServiceBaseEvent.LOGIN_COMPLETE) {
                 promise.resolve();
-            } else if (data.type === LoginBaseServiceEvent.LOGIN_FINISHED) {
+            } else if (data.type === LoginServiceBaseEvent.LOGIN_FINISHED) {
                 subscription.unsubscribe();
             }
         });

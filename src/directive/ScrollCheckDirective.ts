@@ -1,5 +1,5 @@
 import { Directive, ElementRef, Input, EventEmitter, Output, numberAttribute } from '@angular/core';
-import { DateUtil, DestroyableContainer } from '@ts-core/common';
+import { DateUtil, Destroyable } from '@ts-core/common';
 import { fromEvent, debounceTime, takeUntil } from 'rxjs';
 import * as _ from 'lodash';
 
@@ -7,7 +7,7 @@ import * as _ from 'lodash';
     selector: '[vi-scroll-check]',
     standalone: false
 })
-export class ScrollCheckDirective extends DestroyableContainer {
+export class ScrollCheckDirective extends Destroyable {
     //--------------------------------------------------------------------------
     //
     //	Properties

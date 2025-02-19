@@ -1,8 +1,8 @@
 import { EmbeddedViewRef, TemplateRef, ViewContainerRef } from '@angular/core';
-import { DestroyableContainer } from '@ts-core/common';
+import { Destroyable } from '@ts-core/common';
 import * as _ from 'lodash';
 
-export class StructureDirective<T = any> extends DestroyableContainer {
+export class StructureDirective<T = any> extends Destroyable {
     //--------------------------------------------------------------------------
     //
     //	Properties

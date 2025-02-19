@@ -1,9 +1,8 @@
-import { ArrayUtil } from '@ts-core/common';
+import { FilterableMapCollection, ArrayUtil } from '@ts-core/common';
 import { LanguageService } from '@ts-core/frontend';
-import * as _ from 'lodash';
 import { IListItem } from './IListItem';
-import { FilterableMapCollection } from '@ts-core/common';
 import { Subscription } from 'rxjs';
+import * as _ from 'lodash';
 
 export class ListItems<U extends IListItem<V>, V = any> extends FilterableMapCollection<U> {
     // --------------------------------------------------------------------------

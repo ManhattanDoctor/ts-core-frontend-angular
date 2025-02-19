@@ -1,10 +1,10 @@
-import { DestroyableContainer } from '@ts-core/common';
+import { Destroyable } from '@ts-core/common';
 import { CookieService } from '../cookie/CookieService';
 import { LocalStorageService } from '../storage/LocalStorageService';
 import { IValueStorage } from './IValueStorage';
 import * as _ from 'lodash';
 
-export class ValueStorage<T = string> extends DestroyableContainer implements IValueStorage<T> {
+export class ValueStorage<T = string> extends Destroyable implements IValueStorage<T> {
     //--------------------------------------------------------------------------
     //
     // 	Properties
@@ -76,6 +76,11 @@ export class ValueStorage<T = string> extends DestroyableContainer implements IV
         this.cookies.put(this.name, item);
         this.storage.set(this.name, item);
         return value;
+    }
+
+    public clear(): void {
+        this.cookies.put(this.name, null);
+        this.storage.set(this.name, null);
     }
 
     public destroy(): void {

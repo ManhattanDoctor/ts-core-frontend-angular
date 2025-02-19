@@ -10,7 +10,7 @@ export class LanguageResolver extends LanguageRequireResolver {
     //
     // --------------------------------------------------------------------------
 
-    constructor(language: LanguageService) {
-        super(language);
+    constructor(service: LanguageService) {
+        super(service);
     }
 }

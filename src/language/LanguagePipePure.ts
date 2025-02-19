@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DestroyableContainer } from '@ts-core/common';
+import { Destroyable } from '@ts-core/common';
 import { LanguageService } from '@ts-core/frontend';
 
 @Pipe({
     name: 'viTranslatePure',
     standalone: false
 })
-export class LanguagePipePure extends DestroyableContainer implements PipeTransform {
+export class LanguagePipePure extends Destroyable implements PipeTransform {
     // --------------------------------------------------------------------------
     //
     //	Constructor

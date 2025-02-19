@@ -1,12 +1,8 @@
-import { LoadableEvent, Loadable, LoadableStatus } from '@ts-core/common';
-import { ExtendedError } from '@ts-core/common';
-import { ObservableData } from '@ts-core/common';
-import { TransportNoConnectionError, TransportTimeoutError } from '@ts-core/common';
-import { Observable } from 'rxjs';
-import { map, filter } from 'rxjs';
+import { TransportNoConnectionError, TransportTimeoutError, ExtendedError, ObservableData, LoadableEvent, Loadable, LoadableStatus } from '@ts-core/common';
+import { Observable, map, filter } from 'rxjs';
 import * as _ from 'lodash';
 
-export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadable<E | LoginBaseServiceEvent, U | V | ExtendedError> {
+export abstract class LoginServiceBase<E = any, U = any, V = any> extends Loadable<E | LoginServiceBaseEvent, U | V | ExtendedError> {
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -45,7 +41,7 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
         let response: U;
         this.status = LoadableStatus.LOADING;
         this.observer.next(new ObservableData(LoadableEvent.STARTED));
-        this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_STARTED));
+        this.observer.next(new ObservableData(LoginServiceBaseEvent.LOGIN_STARTED));
 
         try {
             response = await sidReturnFunction();
@@ -60,12 +56,12 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
 
             this.status = LoadableStatus.ERROR;
             this.parseLoginErrorResponse(extendedError);
-            this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_ERROR, null, extendedError));
+            this.observer.next(new ObservableData(LoginServiceBaseEvent.LOGIN_ERROR, null, extendedError));
         }
 
         if (!this.isLoading) {
             this.observer.next(new ObservableData(LoadableEvent.FINISHED));
-            this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_FINISHED));
+            this.observer.next(new ObservableData(LoginServiceBaseEvent.LOGIN_FINISHED));
         }
         return response;
     }
@@ -82,7 +78,7 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
             this._isLoggedIn = true;
             this.status = LoadableStatus.LOADED;
             this.observer.next(new ObservableData(LoadableEvent.COMPLETE, response));
-            this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_COMPLETE, response));
+            this.observer.next(new ObservableData(LoginServiceBaseEvent.LOGIN_COMPLETE, response));
         } catch (error) {
             let extendedError = ExtendedError.create<any, number>(error);
             this.parseLoginSidErrorResponse(extendedError);
@@ -90,11 +86,11 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
             this._isLoggedIn = false;
             this.status = LoadableStatus.ERROR;
             this.observer.next(new ObservableData(LoadableEvent.ERROR, null, extendedError));
-            this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_ERROR, null, extendedError));
+            this.observer.next(new ObservableData(LoginServiceBaseEvent.LOGIN_ERROR, null, extendedError));
         }
 
         this.observer.next(new ObservableData(LoadableEvent.FINISHED));
-        this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_FINISHED));
+        this.observer.next(new ObservableData(LoginServiceBaseEvent.LOGIN_FINISHED));
     }
 
     protected reset(): void {
@@ -146,7 +142,7 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
 
         this.status = LoadableStatus.LOADING;
         this.observer.next(new ObservableData(LoadableEvent.STARTED));
-        this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_STARTED));
+        this.observer.next(new ObservableData(LoginServiceBaseEvent.LOGIN_STARTED));
 
         this.parseLoginResponse(param);
         this.status = !this.isCanLoginWithSid() ? LoadableStatus.LOADED : LoadableStatus.LOADING;
@@ -166,7 +162,7 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
 
         this.status = LoadableStatus.LOADING;
         this.observer.next(new ObservableData(LoadableEvent.STARTED));
-        this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGIN_STARTED));
+        this.observer.next(new ObservableData(LoginServiceBaseEvent.LOGIN_STARTED));
         this.loginBySid();
         return true;
     }
@@ -177,7 +173,7 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
         }
 
         this.observer.next(new ObservableData(LoadableEvent.STARTED));
-        this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGOUT_STARTED));
+        this.observer.next(new ObservableData(LoginServiceBaseEvent.LOGOUT_STARTED));
 
         try {
             await this.logoutRequest();
@@ -189,7 +185,7 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
             this._isLoggedIn = false;
             this.status = LoadableStatus.NOT_LOADED;
             this.observer.next(new ObservableData(LoadableEvent.FINISHED));
-            this.observer.next(new ObservableData(LoginBaseServiceEvent.LOGOUT_FINISHED));
+            this.observer.next(new ObservableData(LoginServiceBaseEvent.LOGOUT_FINISHED));
         }
     }
 
@@ -213,14 +209,14 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
 
     public get logined(): Observable<V> {
         return this.events.pipe(
-            filter(item => item.type === LoginBaseServiceEvent.LOGIN_COMPLETE),
+            filter(item => item.type === LoginServiceBaseEvent.LOGIN_COMPLETE),
             map(item => item.data as V)
         );
     }
 
     public get logouted(): Observable<void> {
         return this.events.pipe(
-            filter(item => item.type === LoginBaseServiceEvent.LOGOUT_FINISHED),
+            filter(item => item.type === LoginServiceBaseEvent.LOGOUT_FINISHED),
             map(() => null)
         );
     }
@@ -238,7 +234,7 @@ export abstract class LoginBaseService<E = any, U = any, V = any> extends Loadab
     }
 }
 
-export enum LoginBaseServiceEvent {
+export enum LoginServiceBaseEvent {
     LOGIN_ERROR = 'LOGIN_ERROR',
     LOGIN_STARTED = 'LOGIN_STARTED',
     LOGIN_COMPLETE = 'LOGIN_COMPLETE',

@@ -1,16 +1,16 @@
 import { Inject, Injectable } from '@angular/core';
-import { LoginBaseService } from './LoginBaseService';
+import { LoginServiceBase } from './LoginServiceBase';
 import { LoginRequireResolver } from './LoginRequireResolver';
 
 @Injectable({ providedIn: 'root' })
-export class LoginResolver<T extends LoginBaseService> extends LoginRequireResolver<T> {
+export class LoginResolver<T extends LoginServiceBase> extends LoginRequireResolver<T> {
     // --------------------------------------------------------------------------
     //
     // 	Constructor
     //
     // --------------------------------------------------------------------------
 
-    constructor(@Inject(LoginBaseService) login: T) {
+    constructor(@Inject(LoginServiceBase) login: T) {
         super(login);
     }
 }

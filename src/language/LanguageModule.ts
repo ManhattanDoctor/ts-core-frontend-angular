@@ -6,13 +6,14 @@ import { LanguagePipe } from './LanguagePipe';
 import { LanguagePipePure } from './LanguagePipePure';
 import { LanguageResolver } from './LanguageResolver';
 import { LanguageDirective } from './LanguageDirective';
+import { LanguageToggleDirective } from './LanguageToggleDirective';
 import { LanguagePipeHas } from './LanguagePipeHas';
 import { LanguagePipeHasPure } from './LanguagePipeHasPure';
 import { LanguageHasDirective } from './LanguageHasDirective';
 import { CookieModule } from '../cookie/CookieModule';
 import * as _ from 'lodash';
 
-let declarations = [LanguagePipe, LanguagePipePure, LanguagePipeHas, LanguagePipeHasPure, LanguageHasDirective, LanguageDirective];
+let declarations = [LanguagePipe, LanguagePipePure, LanguagePipeHas, LanguagePipeHasPure, LanguageToggleDirective, LanguageHasDirective, LanguageDirective];
 
 @NgModule({
     imports: [CookieModule],

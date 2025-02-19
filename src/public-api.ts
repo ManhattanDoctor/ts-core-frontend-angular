@@ -43,22 +43,26 @@ export * from './language/LanguageResolver';
 export * from './language/LanguageRequireResolver';
 export * from './language/LanguageDirective';
 export * from './language/LanguageHasDirective';
+export * from './language/LanguageToggleDirective';
 //
+export * from './login/Loginable';
 export * from './login/LoginGuard';
-export * from './login/LoginIfCanGuard';
 export * from './login/LoginNotGuard';
 export * from './login/LoginResolver';
-export * from './login/LoginBaseService';
-export * from './login/LoginRequireResolver';
+export * from './login/LoginIfCanGuard';
+export * from './login/LoginServiceBase';
 export * from './login/LoginTokenStorage';
+export * from './login/LoginRequireResolver';
 //
 export * from './manager/FocusManager';
 export * from './manager/ResizeManager';
 //
 export * from './menu/MenuItem';
-export * from './menu/MenuItemBase';
 export * from './menu/MenuItems';
+export * from './menu/MenuItemBase';
 export * from './menu/NavigationMenuItem';
+//
+export * from './resolver/LoadableResolver';
 //
 export * from './list/IListItem';
 export * from './list/ListItem';
@@ -101,7 +105,7 @@ export * from './theme/ThemeModule';
 export * from './theme/ThemeToggleDirective';
 //
 export * from './user/IUser';
-export * from './user/UserBaseService';
+export * from './user/UserServiceBase';
 //
 export * from './window/IWindow';
 export * from './window/WindowBase';
@@ -123,6 +127,7 @@ export * from './bottomSheet/BottomSheetService';
 //
 export * from './storage/LocalStorageService';
 export * from './storage/ValueStorage';
+export * from './storage/JSONValueStorage';
 export * from './storage/IValueStorage';
 export * from './storage/DateValueStorage';
 export * from './storage/BooleanValueStorage';

@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { LoginBaseService } from './LoginBaseService';
+import { LoginServiceBase } from './LoginServiceBase';
 import { LoginRequireResolver } from './LoginRequireResolver';
 import * as _ from 'lodash';
 
 @Injectable({ providedIn: 'root' })
-export class LoginNotGuard<T extends LoginBaseService = LoginBaseService> extends LoginRequireResolver<T> implements CanActivate {
+export class LoginNotGuard<T extends LoginServiceBase = LoginServiceBase> extends LoginRequireResolver<T> implements CanActivate {
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -21,7 +21,7 @@ export class LoginNotGuard<T extends LoginBaseService = LoginBaseService> extend
     // --------------------------------------------------------------------------
 
     constructor(
-        @Inject(LoginBaseService) login: T,
+        @Inject(LoginServiceBase) login: T,
         protected router: Router
     ) {
         super(login);

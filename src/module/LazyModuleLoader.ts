@@ -1,8 +1,5 @@
 import { Compiler, Injectable, Injector, NgModuleFactory, NgModuleRef, Type } from '@angular/core';
-import { Loadable, LoadableEvent } from '@ts-core/common';
-import { ExtendedError } from '@ts-core/common';
-import { MapCollection } from '@ts-core/common';
-import { ObservableData } from '@ts-core/common';
+import { ObservableData, MapCollection, ExtendedError, Loadable, LoadableEvent } from '@ts-core/common';
 import * as _ from 'lodash';
 
 @Injectable({ providedIn: 'root' })

@@ -1,6 +1,6 @@
 {
     "name": "@ts-core/angular",
-    "version": "19.0.1",
+    "version": "19.0.8",
     "description": "Modules for frontend based on angular",
     "main": "public-api.js",
     "author": {
@@ -18,7 +18,7 @@
         "@angular/service-worker": "^19.0.6",
         "@angular/platform-browser-dynamic": "^19.0.6",
         "@angular/router": "^19.0.6",
-        "@ts-core/common": "~3.0.56",
+        "@ts-core/common": "~3.0.57",
         "@ts-core/frontend": "~3.0.15",
         "@types/numeral": "^2.0.5",
         "interactjs": "1.10.11",

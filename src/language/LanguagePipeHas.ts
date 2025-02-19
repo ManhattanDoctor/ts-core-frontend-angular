@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DestroyableContainer } from '@ts-core/common';
+import { Destroyable } from '@ts-core/common';
 import { LanguageService } from '@ts-core/frontend';
 import { takeUntil } from 'rxjs';
 import * as _ from 'lodash';
@@ -9,7 +9,7 @@ import * as _ from 'lodash';
     pure: false,
     standalone: false
 })
-export class LanguagePipeHas extends DestroyableContainer implements PipeTransform {
+export class LanguagePipeHas extends Destroyable implements PipeTransform {
     // --------------------------------------------------------------------------
     //
     //	Properties

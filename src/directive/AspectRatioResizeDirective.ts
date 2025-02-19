@@ -1,5 +1,5 @@
 import { AfterViewInit, Directive, ElementRef, Input, numberAttribute } from '@angular/core';
-import { DestroyableContainer } from '@ts-core/common';
+import { Destroyable } from '@ts-core/common';
 import * as _ from 'lodash';
 import { debounceTime, takeUntil } from 'rxjs';
 import { ResizeManager } from '../manager/ResizeManager';
@@ -9,7 +9,7 @@ import { ViewUtil } from '../util/ViewUtil';
     selector: '[vi-aspect-ratio]',
     standalone: false
 })
-export class AspectRatioResizeDirective extends DestroyableContainer implements AfterViewInit {
+export class AspectRatioResizeDirective extends Destroyable implements AfterViewInit {
     // --------------------------------------------------------------------------
     //
     //	Static Properties

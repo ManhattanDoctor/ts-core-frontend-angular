@@ -45,7 +45,7 @@ export class ViewUtil {
     private static copyToClipboard(): void {
         try {
             ViewUtil.document.execCommand('copy');
-        } catch (error) {}
+        } catch (error) { }
     }
 
     // --------------------------------------------------------------------------
@@ -75,7 +75,7 @@ export class ViewUtil {
             context.drawImage(element, 0, 0, element.offsetWidth, element.offsetHeight);
             value = canvas.toDataURL('image/jpeg', 1.0);
             value = value.replace('data:image/jpeg;base64,', '');
-        } catch (error) {}
+        } catch (error) { }
         return value;
     }
 
@@ -126,6 +126,9 @@ export class ViewUtil {
     }
 
     public static getBackgroundUrl(item: string): string {
+        if (_.isEmpty(item)) {
+            return '';
+        }
         return !item.includes('url(') ? `url(${item})` : item;
     }
 

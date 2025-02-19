@@ -1,9 +1,9 @@
 import { Directive, ElementRef, Input, booleanAttribute } from '@angular/core';
 import { Destroyable } from '@ts-core/common';
 import { LanguageService } from '@ts-core/frontend';
-import * as _ from 'lodash';
 import { takeUntil } from 'rxjs';
 import { ViewUtil } from '../util/ViewUtil';
+import * as _ from 'lodash';
 
 @Directive({
     selector: '[vi-translate]',
@@ -33,7 +33,7 @@ export class LanguageDirective extends Destroyable {
         protected language: LanguageService
     ) {
         super();
-        language.completed.pipe(takeUntil(this.destroyed)).subscribe(() => this.translate);
+        language.completed.pipe(takeUntil(this.destroyed)).subscribe(this.translate);
     }
 
     // --------------------------------------------------------------------------
@@ -42,17 +42,16 @@ export class LanguageDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    protected translate(): void {
+    protected translate = (): void => {
         if (_.isNil(this.key)) {
             return;
         }
-
         let value = this.language.translate(this.key, this.params);
         ViewUtil.setProperty(this.element, 'innerHTML', value);
         if (this.isNeedTitle) {
             ViewUtil.setProperty(this.element, 'title', value);
         }
-    }
+    };
 
     // --------------------------------------------------------------------------
     //
