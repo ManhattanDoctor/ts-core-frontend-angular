@@ -50,7 +50,7 @@ export abstract class UserServiceBase<U extends IUser = any, V = void, T extends
     //
     // --------------------------------------------------------------------------
 
-    public isUser(item: Partial<U> | UserUid): boolean {
+    public isEquals(item: Partial<U> | UserUid): boolean {
         if (!this.has || _.isNil(item)) {
             return false;
         }
