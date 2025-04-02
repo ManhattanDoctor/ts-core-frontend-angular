@@ -17,6 +17,8 @@ import { SelectOnFocusDirective } from './directive/SelectOnFocusDirective';
 import { HTMLTitleDirective } from './directive/HTMLTitleDirective';
 import { HTMLContentTitleDirective } from './directive/HTMLContentTitleDirective';
 import { InfiniteScrollDirective } from './directive/InfiniteScrollDirective';
+import { UppercaseValueDirective } from './directive/UppercaseValueDirective';
+import { NullEmptyValueDirective } from './directive/NullEmptyValueDirective';
 import { ResizeDirective } from './directive/ResizeDirective';
 import { ScrollCheckDirective } from './directive/ScrollCheckDirective';
 import { ScrollDirective } from './directive/ScrollDirective';
@@ -72,6 +74,8 @@ let declarations = [
     SelectOnFocusDirective,
     ClickToSelectDirective,
     InfiniteScrollDirective,
+    NullEmptyValueDirective,
+    UppercaseValueDirective,
     HTMLTitleDirective,
     HTMLContentTitleDirective,
     AutoScrollBottomDirective,

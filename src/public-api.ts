@@ -33,6 +33,8 @@ export * from './directive/HTMLTitleDirective';
 export * from './directive/HTMLContentTitleDirective';
 export * from './directive/IsBrowserDirective';
 export * from './directive/IsServerDirective';
+export * from './directive/NullEmptyValueDirective';
+export * from './directive/UppercaseValueDirective';
 //
 export * from './language/LanguageModule';
 export * from './language/LanguagePipe';

@@ -1,4 +1,4 @@
-import { ObservableData } from '@ts-core/common';
+import { LoadableStatus, ObservableData } from '@ts-core/common';
 import { Observable, filter, map } from 'rxjs';
 import { LoginServiceBase } from '../login/LoginServiceBase';
 import { IUser, UserUid } from './IUser';
@@ -34,11 +34,15 @@ export abstract class UserServiceBase<U extends IUser = any, V = void, T extends
 
     protected async loginedHandler(): Promise<void> {
         await this.initializeUser(this.login.loginData);
+
+        this.status = LoadableStatus.LOADED;
         this.observer.next(new ObservableData(UserServiceBaseEvent.LOGINED, this.user));
     }
 
     protected async logoutedHandler(): Promise<void> {
         await this.deinitializeUser();
+
+        this.status = LoadableStatus.NOT_LOADED;
         this.observer.next(new ObservableData(UserServiceBaseEvent.LOGOUTED));
     }
 
