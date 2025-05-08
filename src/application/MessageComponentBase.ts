@@ -1,10 +1,10 @@
 import { ActivatedRoute } from '@angular/router';
 import { DestroyableContainer } from '@ts-core/common';
 import { LanguageService } from '@ts-core/frontend';
-import * as _ from 'lodash';
 import { takeUntil } from 'rxjs';
+import * as _ from 'lodash';
 
-export abstract class MessageBaseComponent extends DestroyableContainer {
+export abstract class MessageComponentBase extends DestroyableContainer {
     // --------------------------------------------------------------------------
     //
     //	Properties

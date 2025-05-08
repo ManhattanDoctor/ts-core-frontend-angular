@@ -1,7 +1,8 @@
 //
-export * from './application/ApplicationBaseComponent';
+export * from './application/ApplicationInitializerBase';
+export * from './application/ApplicationComponentBase';
 export * from './application/ApplicationComponent';
-export * from './application/MessageBaseComponent';
+export * from './application/MessageComponentBase';
 //
 export * from './ApplicationInjector';
 //
@@ -91,9 +92,9 @@ export * from './pipe/TimePipe';
 export * from './question/IQuestion';
 export * from './question/QuestionManager';
 //
-export * from './service/PipeBaseService';
+export * from './service/PipeServiceBase';
 export * from './service/PlatformService';
-export * from './service/RouterBaseService';
+export * from './service/RouterServiceBase';
 export * from './service/ServiceWorkerService';
 export * from './service/route/CanDeactivateGuard';
 export * from './service/route/IRouterDeactivatable';

@@ -1,6 +1,7 @@
 import { Directive, HostListener } from '@angular/core';
 import { ArrayUtil, Destroyable } from '@ts-core/common';
-import { LanguageService } from '@ts-core/frontend';
+import { LanguageService, SettingsServiceBase } from '@ts-core/frontend';
+import * as _ from 'lodash';
 
 @Directive({
     selector: '[vi-language-toggle]',
@@ -13,7 +14,10 @@ export class LanguageToggleDirective extends Destroyable {
     //
     // --------------------------------------------------------------------------
 
-    constructor(private language: LanguageService) {
+    constructor(
+        private language: LanguageService,
+        private settings: SettingsServiceBase
+    ) {
         super();
     }
 
@@ -25,9 +29,10 @@ export class LanguageToggleDirective extends Destroyable {
 
     @HostListener('click')
     protected clickHandler() {
-        let items = this.language.languages.collection;
-        if (items.length > 1) {
-            this.language.language = ArrayUtil.nextItem(this.language.language, items, true);
+        let items = this.settings.languages.collection;
+        let item = ArrayUtil.nextItem(_.find(items, { locale: this.language.locale }), items, true);
+        if (!_.isNil(item)) {
+            this.language.locale = item.locale;
         }
     }
 

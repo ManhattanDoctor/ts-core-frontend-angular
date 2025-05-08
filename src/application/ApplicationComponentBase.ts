@@ -4,14 +4,13 @@ import { PromiseHandler } from '@ts-core/common';
 import * as _ from 'lodash';
 
 @Component({ template: '' })
-export abstract class ApplicationBaseComponent extends DestroyableContainer implements AfterViewInit {
+export abstract class ApplicationComponentBase extends DestroyableContainer implements AfterViewInit {
     // --------------------------------------------------------------------------
     //
     // 	Properties
     //
     // --------------------------------------------------------------------------
 
-    protected timeout: any;
     protected isReadyAlreadyCalled: boolean;
 
     protected viewReadyDelay: number = NaN;
@@ -86,11 +85,6 @@ export abstract class ApplicationBaseComponent extends DestroyableContainer impl
             this.viewReadyPromise.reject();
             this.viewReadyPromise = null;
         }
-
-        if (!_.isNil(this.timeout)) {
-            clearTimeout(this.timeout);
-            this.timeout = null;
-        }
     }
 
     // --------------------------------------------------------------------------
@@ -99,10 +93,10 @@ export abstract class ApplicationBaseComponent extends DestroyableContainer impl
     //
     // --------------------------------------------------------------------------
 
-    public get isViewReady(): boolean {
-        return !_.isNil(this.viewReadyPromise) ? this.viewReadyPromise.isResolved : false;
-    }
     public get viewReady(): Promise<void> {
         return !_.isNil(this.viewReadyPromise) ? this.viewReadyPromise.promise : null;
+    }
+    public get isViewReady(): boolean {
+        return !_.isNil(this.viewReadyPromise) ? this.viewReadyPromise.isResolved : false;
     }
 }

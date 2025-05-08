@@ -14,7 +14,7 @@ import { SanitizePipe } from '../pipe/SanitizePipe';
 import { TimePipe } from '../pipe/TimePipe';
 import { TruncatePipe } from '../pipe/TruncatePipe';
 
-export class PipeBaseService extends Destroyable {
+export class PipeServiceBase extends Destroyable {
     // --------------------------------------------------------------------------
     //
     // 	Constants
@@ -68,11 +68,11 @@ export class PipeBaseService extends Destroyable {
     // --------------------------------------------------------------------------
 
     protected commitLanguageProperties(): void {
-        let locale = this.language.locale ? this.language.language.locale : 'en';
+        let locale = this.language.locale ? this.language.locale : 'en';
         this._locale = locale === 'en' ? 'en-US' : locale;
 
-        if (PipeBaseService.DATE) {
-            PipeBaseService.DATE = new DatePipe(this.locale);
+        if (PipeServiceBase.DATE) {
+            PipeServiceBase.DATE = new DatePipe(this.locale);
         }
     }
 
@@ -83,80 +83,80 @@ export class PipeBaseService extends Destroyable {
     // --------------------------------------------------------------------------
 
     public get date(): DatePipe {
-        if (!PipeBaseService.DATE) {
-            PipeBaseService.DATE = new DatePipe(this.locale);
+        if (!PipeServiceBase.DATE) {
+            PipeServiceBase.DATE = new DatePipe(this.locale);
         }
-        return PipeBaseService.DATE;
+        return PipeServiceBase.DATE;
     }
 
     public get time(): TimePipe {
-        if (!PipeBaseService.TIME) {
-            PipeBaseService.TIME = new TimePipe();
+        if (!PipeServiceBase.TIME) {
+            PipeServiceBase.TIME = new TimePipe();
         }
-        return PipeBaseService.TIME;
+        return PipeServiceBase.TIME;
     }
 
     public get finance(): FinancePipe {
-        if (!PipeBaseService.FINANCE) {
-            PipeBaseService.FINANCE = new FinancePipe();
+        if (!PipeServiceBase.FINANCE) {
+            PipeServiceBase.FINANCE = new FinancePipe();
         }
-        return PipeBaseService.FINANCE;
+        return PipeServiceBase.FINANCE;
     }
 
     public get truncate(): TruncatePipe {
-        if (!PipeBaseService.TRUNCATE) {
-            PipeBaseService.TRUNCATE = new TruncatePipe();
+        if (!PipeServiceBase.TRUNCATE) {
+            PipeServiceBase.TRUNCATE = new TruncatePipe();
         }
-        return PipeBaseService.TRUNCATE;
+        return PipeServiceBase.TRUNCATE;
     }
 
     public get prettify(): PrettifyPipe {
-        if (!PipeBaseService.PRETTIFY) {
-            PipeBaseService.PRETTIFY = new PrettifyPipe();
+        if (!PipeServiceBase.PRETTIFY) {
+            PipeServiceBase.PRETTIFY = new PrettifyPipe();
         }
-        return PipeBaseService.PRETTIFY;
+        return PipeServiceBase.PRETTIFY;
     }
 
     public get momentDate(): MomentDatePipe {
-        if (!PipeBaseService.MOMENT_DATE) {
-            PipeBaseService.MOMENT_DATE = new MomentDatePipe();
+        if (!PipeServiceBase.MOMENT_DATE) {
+            PipeServiceBase.MOMENT_DATE = new MomentDatePipe();
         }
-        return PipeBaseService.MOMENT_DATE;
+        return PipeServiceBase.MOMENT_DATE;
     }
 
     public get momentDateFromNow(): MomentDateFromNowPipe {
-        if (!PipeBaseService.MOMENT_DATE_FROM_NOW) {
-            PipeBaseService.MOMENT_DATE_FROM_NOW = new MomentDateFromNowPipe();
+        if (!PipeServiceBase.MOMENT_DATE_FROM_NOW) {
+            PipeServiceBase.MOMENT_DATE_FROM_NOW = new MomentDateFromNowPipe();
         }
-        return PipeBaseService.MOMENT_DATE_FROM_NOW;
+        return PipeServiceBase.MOMENT_DATE_FROM_NOW;
     }
 
     public get momentDateAdaptive(): MomentDateAdaptivePipe {
-        if (!PipeBaseService.MOMENT_ADAPTIVE_DATE) {
-            PipeBaseService.MOMENT_ADAPTIVE_DATE = new MomentDateAdaptivePipe();
+        if (!PipeServiceBase.MOMENT_ADAPTIVE_DATE) {
+            PipeServiceBase.MOMENT_ADAPTIVE_DATE = new MomentDateAdaptivePipe();
         }
-        return PipeBaseService.MOMENT_ADAPTIVE_DATE;
+        return PipeServiceBase.MOMENT_ADAPTIVE_DATE;
     }
 
     public get momentTime(): MomentTimePipe {
-        if (!PipeBaseService.MOMENT_TIME) {
-            PipeBaseService.MOMENT_TIME = new MomentTimePipe();
+        if (!PipeServiceBase.MOMENT_TIME) {
+            PipeServiceBase.MOMENT_TIME = new MomentTimePipe();
         }
-        return PipeBaseService.MOMENT_TIME;
+        return PipeServiceBase.MOMENT_TIME;
     }
 
     public get sanitize(): SanitizePipe {
-        if (!PipeBaseService.SANITIZE) {
-            PipeBaseService.SANITIZE = new SanitizePipe(this.sanitizer);
+        if (!PipeServiceBase.SANITIZE) {
+            PipeServiceBase.SANITIZE = new SanitizePipe(this.sanitizer);
         }
-        return PipeBaseService.SANITIZE;
+        return PipeServiceBase.SANITIZE;
     }
 
     public get camelCase(): CamelCasePipe {
-        if (!PipeBaseService.CAMEL_CASE) {
-            PipeBaseService.CAMEL_CASE = new CamelCasePipe();
+        if (!PipeServiceBase.CAMEL_CASE) {
+            PipeServiceBase.CAMEL_CASE = new CamelCasePipe();
         }
-        return PipeBaseService.CAMEL_CASE;
+        return PipeServiceBase.CAMEL_CASE;
     }
 
     public get locale(): string {

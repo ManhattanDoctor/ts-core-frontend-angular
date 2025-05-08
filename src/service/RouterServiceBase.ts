@@ -14,7 +14,7 @@ import { NativeWindowService } from '@ts-core/frontend';
 import { Subject, takeUntil } from 'rxjs';
 import * as _ from 'lodash';
 
-export class RouterBaseService extends Loadable<void, RouterBaseServiceEventData> {
+export class RouterServiceBase extends Loadable<void, RouterServiceBaseEventData> {
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -283,7 +283,7 @@ export class RouterBaseService extends Loadable<void, RouterBaseServiceEventData
     }
 }
 
-export interface RouterBaseServiceEventData {
+export interface RouterServiceBaseEventData {
     url: string;
     previousUrl: string;
 }

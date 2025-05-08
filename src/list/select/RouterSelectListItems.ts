@@ -1,7 +1,7 @@
 import { LanguageService } from '@ts-core/frontend';
 import { SelectListItems } from './SelectListItems';
 import { ISelectListItem } from './ISelectListItem';
-import { RouterBaseService } from '../../service/RouterBaseService';
+import { RouterServiceBase } from '../../service/RouterServiceBase';
 import { filter, takeUntil } from 'rxjs';
 import * as _ from 'lodash';
 
@@ -21,7 +21,7 @@ export class RouterSelectListItems<U = string> extends SelectListItems<ISelectLi
     //--------------------------------------------------------------------------
 
     constructor(
-        protected router: RouterBaseService,
+        protected router: RouterServiceBase,
         language: LanguageService
     ) {
         super(language, true);

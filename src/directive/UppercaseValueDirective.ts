@@ -3,6 +3,7 @@ import { NgControl } from '@angular/forms';
 import * as _ from 'lodash';
 
 @Directive({
+    standalone: false,
     selector: 'input[uppercaseValue]'
 })
 export class UppercaseValueDirective {
@@ -12,7 +13,7 @@ export class UppercaseValueDirective {
     //
     //--------------------------------------------------------------------------
 
-    constructor(protected control: NgControl) { }
+    constructor(protected control: NgControl) {}
 
     //--------------------------------------------------------------------------
     //

@@ -1,13 +1,12 @@
 import { LoadableEvent } from '@ts-core/common';
-import { Assets, AssetUrlProvider, ThemeService, LanguageService, SettingsBaseService } from '@ts-core/frontend';
-import { Language } from '@ts-core/language';
-import { takeUntil } from 'rxjs';
-import { ApplicationBaseComponent } from './ApplicationBaseComponent';
-import * as _ from 'lodash';
+import { LanguageService } from '@ts-core/frontend';
+import { filter, takeUntil } from 'rxjs';
+import { ApplicationComponentBase } from './ApplicationComponentBase';
 import moment from 'moment';
 import numeral from 'numeral';
+import * as _ from 'lodash';
 
-export abstract class ApplicationComponent<T extends SettingsBaseService> extends ApplicationBaseComponent {
+export abstract class ApplicationComponent extends ApplicationComponentBase {
     // --------------------------------------------------------------------------
     //
     // 	Properties
@@ -23,31 +22,17 @@ export abstract class ApplicationComponent<T extends SettingsBaseService> extend
     // --------------------------------------------------------------------------
 
     protected initialize(): void {
-        this.initializeAssets();
-        this.initializeTheme();
         this.initializeLanguage();
     }
 
-    protected initializeAssets(): void {
-        Assets.provider = new AssetUrlProvider(this.settings.assetsUrl);
-    }
-
-    protected initializeTheme(): void {
-        this.theme.initialize(this.settings.themes);
-    }
-
     protected initializeLanguage(): void {
-        this.language.initialize(`${this.settings.assetsUrl}language/`, this.settings.languages);
-        this.language.events.pipe(takeUntil(this.destroyed)).subscribe(data => {
-            switch (data.type) {
-                case LoadableEvent.COMPLETE:
-                    this.languageLoadingComplete(data.data as Language);
-                    break;
-                case LoadableEvent.ERROR:
-                    this.languageLoadingError(data.data as Language, data.error);
-                    break;
-            }
-        });
+        this.language.events
+            .pipe(
+                filter(item => item.type === LoadableEvent.ERROR),
+                takeUntil(this.destroyed)
+            )
+            .subscribe(item => this.languageLoadingError(item.data.toString(), item.error));
+        this.language.completed.pipe(takeUntil(this.destroyed)).subscribe(item => this.languageLoadingComplete(item));
     }
 
     protected isReady(): boolean {
@@ -60,21 +45,21 @@ export abstract class ApplicationComponent<T extends SettingsBaseService> extend
     //
     // --------------------------------------------------------------------------
 
-    protected languageLoadingComplete(item: Language): void {
+    protected languageLoadingComplete(locale: string): void {
         this.isLanguageLoaded = true;
-        this.setLocale(item);
+        this.setLocale(locale);
         this.checkReady();
     }
 
-    protected abstract languageLoadingError(item: Language, error: Error): void;
+    protected abstract languageLoadingError(locale: string, error: Error): void;
 
     protected viewReadyHandler(): void {
         this.initialize();
     }
 
-    protected setLocale(item: Language): void {
-        moment.locale(item.locale);
-        numeral.locale(item.locale);
+    protected setLocale(item: string): void {
+        moment.locale(item);
+        numeral.locale(item);
     }
 
     // --------------------------------------------------------------------------
@@ -83,8 +68,5 @@ export abstract class ApplicationComponent<T extends SettingsBaseService> extend
     //
     // --------------------------------------------------------------------------
 
-    protected abstract get settings(): T;
-
-    protected abstract get theme(): ThemeService;
     protected abstract get language(): LanguageService;
 }
