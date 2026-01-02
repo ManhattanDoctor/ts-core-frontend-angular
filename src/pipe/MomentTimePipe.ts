@@ -17,18 +17,27 @@ export class MomentTimePipe implements PipeTransform {
 
     // --------------------------------------------------------------------------
     //
+    //	Static Methods
+    //
+    // --------------------------------------------------------------------------
+
+    public static transform(timeMilliseconds: number, format?: string): string {
+        if (_.isNil(timeMilliseconds)) {
+            return '---';
+        }
+        return moment()
+            .startOf('day')
+            .add(timeMilliseconds, 'milliseconds')
+            .format(format || MomentTimePipe.DEFAULT_FORMAT);
+    }
+
+    // --------------------------------------------------------------------------
+    //
     //	Public Methods
     //
     // --------------------------------------------------------------------------
 
     public transform(timeMilliseconds: number, format?: string): string {
-        if (_.isNil(timeMilliseconds)) {
-            return '---';
-        }
-
-        return moment()
-            .startOf('day')
-            .add(timeMilliseconds, 'milliseconds')
-            .format(format || MomentTimePipe.DEFAULT_FORMAT);
+        return MomentTimePipe.transform(timeMilliseconds, format);
     }
 }

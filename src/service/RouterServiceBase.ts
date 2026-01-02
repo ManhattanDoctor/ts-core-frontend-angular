@@ -129,7 +129,8 @@ export class RouterServiceBase extends Loadable<void, RouterServiceBaseEventData
         if (!_.isNil(extras)) {
             Object.assign(params, extras);
         }
-        return this.router.navigateByUrl(url, params);
+        // return this.router.navigateByUrl(url, params);
+        return this.router.navigate([url], params);
     }
 
     public navigateToExternalUrl(url: string, target: string = '_blank'): void {

@@ -16,11 +16,11 @@ export class PrettifyPipe implements PipeTransform {
 
     // --------------------------------------------------------------------------
     //
-    // 	Public Methods
+    // 	Static Methods
     //
     // --------------------------------------------------------------------------
 
-    public transform(value: any): string {
+    public static transform(value: any): string {
         let isNil = _.isNil(value);
         if (!isNil && !_.isNumber(value)) {
             isNil = _.isEmpty(value);
@@ -30,9 +30,11 @@ export class PrettifyPipe implements PipeTransform {
 
     // --------------------------------------------------------------------------
     //
-    //	Constructor
+    // 	Public Methods
     //
     // --------------------------------------------------------------------------
 
-    constructor() {}
+    public transform(value: any): string {
+        return PrettifyPipe.transform(value);
+    }
 }

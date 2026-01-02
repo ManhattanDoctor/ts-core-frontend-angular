@@ -5,7 +5,9 @@
         "close": "Close",
         "locale": "Language",
         "refresh": "Refresh",
-        "noDataFound": "No data"
+        "question": "Question",
+        "noDataFound": "No data",
+        "information": "Information"
     },
     "paginator": {
         "firstPage": "First page",
@@ -30,9 +32,9 @@
             "min": "Minimal number {min}",
             "required": "Required",
             "email": "Invalid email",
-            "pattern": "Не выполнено условие {requiredPattern}",
+            "pattern": "Condition not fulfilled {requiredPattern}",
             "minlength": "Minimal length {minlength,plural,one {# symbol} other{# symbols}}",
-            "maxlength": "Максимальная длина {maxlength,plural,one {# symbol} other{# symbols}}"
+            "maxlength": "Maximum length {maxlength,plural,one {# symbol} other{# symbols}}"
         }
     }
 }

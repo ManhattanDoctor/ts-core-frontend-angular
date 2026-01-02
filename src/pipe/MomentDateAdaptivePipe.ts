@@ -22,11 +22,11 @@ export class MomentDateAdaptivePipe implements PipeTransform {
 
     // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    //	Static Methods
     //
     // --------------------------------------------------------------------------
 
-    public transform(value: Date | Moment): string {
+    public static transform(value: Date | Moment): string {
         if (_.isNaN(value)) {
             return '---';
         }
@@ -45,5 +45,14 @@ export class MomentDateAdaptivePipe implements PipeTransform {
             format = MomentDateAdaptivePipe.HOUR_FORMAT;
         }
         return item.format(format);
+    }
+    // --------------------------------------------------------------------------
+    //
+    //	Public Methods
+    //
+    // --------------------------------------------------------------------------
+
+    public transform(value: Date | Moment): string {
+        return MomentDateAdaptivePipe.transform(value);
     }
 }

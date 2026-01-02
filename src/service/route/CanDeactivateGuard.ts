@@ -1,7 +1,6 @@
-import { CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-import * as _ from 'lodash';
-import { Observable } from 'rxjs';
+import { CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot, GuardResult, MaybeAsync, CanDeactivateFn } from '@angular/router';
 import { IRouterDeactivatable } from './IRouterDeactivatable';
+import * as _ from 'lodash';
 
 export class CanDeactivateGuard<T extends IRouterDeactivatable = IRouterDeactivatable> implements CanDeactivate<T> {
     // --------------------------------------------------------------------------
@@ -15,7 +14,14 @@ export class CanDeactivateGuard<T extends IRouterDeactivatable = IRouterDeactiva
         currentRoute: ActivatedRouteSnapshot,
         currentState: RouterStateSnapshot,
         nextState?: RouterStateSnapshot
-    ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        return !component.isForceDeactivate ? component.isCanDeactivate(currentRoute, currentState, nextState) : true;
+    ): MaybeAsync<GuardResult> {
+        return CanDeactivateFunction(component, currentRoute, currentState, nextState);
     }
 }
+
+export const CanDeactivateFunction: CanDeactivateFn<IRouterDeactivatable> = (
+    component: IRouterDeactivatable,
+    currentRoute: ActivatedRouteSnapshot,
+    currentState: RouterStateSnapshot,
+    nextState: RouterStateSnapshot
+): MaybeAsync<GuardResult> => (!component.isForceDeactivate ? component.isCanDeactivate(currentRoute, currentState, nextState) : true);

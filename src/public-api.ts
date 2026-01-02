@@ -129,12 +129,13 @@ export * from './notification/NotificationServiceEvent';
 //
 export * from './bottomSheet/BottomSheetService';
 //
-export * from './storage/LocalStorageService';
 export * from './storage/ValueStorage';
-export * from './storage/JSONValueStorage';
 export * from './storage/IValueStorage';
 export * from './storage/DateValueStorage';
+export * from './storage/JSONValueStorage';
+export * from './storage/LocalStorageService';
 export * from './storage/BooleanValueStorage';
+export * from './storage/ClassTypeValueStorage';
 //
 export * from './module/LazyModuleLoader';
 //

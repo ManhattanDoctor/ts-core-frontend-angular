@@ -1,7 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DateUtil } from '@ts-core/common';
 import { FinancePipe } from './FinancePipe';
-import { PrettifyPipe } from './PrettifyPipe';
 import * as _ from 'lodash';
 
 @Pipe({
@@ -19,18 +18,28 @@ export class TimePipe implements PipeTransform {
 
     // --------------------------------------------------------------------------
     //
-    //	Public Methods
+    //	Static Methods
     //
     // --------------------------------------------------------------------------
 
-    public transform(milliseconds: number | string, format?: string): string {
+    public static transform(milliseconds: number | string, format?: string): string {
         milliseconds = Number(milliseconds);
         if (_.isNaN(milliseconds)) {
-            return PrettifyPipe.EMPTY_SYMBOL;
+            return null;
         }
         if (_.isNil(format)) {
             format = TimePipe.DEFAULT_FORMAT;
         }
         return FinancePipe.format(milliseconds / DateUtil.MILLISECONDS_SECOND, format);
+    }
+
+    // --------------------------------------------------------------------------
+    //
+    //	Public Methods
+    //
+    // --------------------------------------------------------------------------
+
+    public transform(milliseconds: number | string, format?: string): string {
+        return TimePipe.transform(milliseconds, format);
     }
 }

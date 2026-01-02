@@ -59,6 +59,15 @@ export class MomentDatePipe implements PipeTransform {
         return item.isValid() ? `${GetFilterableCondition(value) || '='}${item.toDate().toString()}` : undefined;
     }
 
+    public static transform(value: MomentAvailableType, format?: string): string {
+        if (_.isNil(value)) {
+            return '---';
+        }
+
+        let moment = MomentDatePipe.parseMoment(value);
+        return moment.format(format || MomentDatePipe.DEFAULT_FORMAT);
+    }
+
     // --------------------------------------------------------------------------
     //
     //	Public Methods
@@ -66,12 +75,7 @@ export class MomentDatePipe implements PipeTransform {
     // --------------------------------------------------------------------------
 
     public transform(value: MomentAvailableType, format?: string): string {
-        if (_.isNil(value)) {
-            return '---';
-        }
-
-        let moment = MomentDatePipe.parseMoment(value);
-        return moment.format(format || MomentDatePipe.DEFAULT_FORMAT);
+        return MomentDatePipe.transform(value, format);
     }
 }
 export type MomentAvailableType = Date | Moment | string | number;

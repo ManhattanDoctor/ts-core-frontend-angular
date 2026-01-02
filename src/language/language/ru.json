@@ -5,7 +5,9 @@
         "close": "Закрыть",
         "locale": "Язык",
         "refresh": "Обновить",
-        "noDataFound": "Нет данных"
+        "question": "Вопрос",
+        "noDataFound": "Нет данных",
+        "information": "Информация"
     },
     "paginator": {
         "firstPage": "На первую страницу",
@@ -29,7 +31,6 @@
             "max": "Максимальное число {max}",
             "min": "Минимальное число {min}",
             "required": "Необходимо заполнить",
-            "email": "Неверный формат электронной почты",
             "pattern": "Не выполнено условие {requiredPattern}",
             "minlength": "Минимальная длина {requiredLength,plural,one {# символ} few {# символа} many{# символов} other{}}",
             "maxlength": "Максимальная длина {maxlength,plural,one {# символ} few {# символа} many{# символов} other{}}"

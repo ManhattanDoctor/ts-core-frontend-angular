@@ -66,7 +66,7 @@ export abstract class ApplicationInitializerBase<
     protected async initializeTheme(): Promise<void> {
         this.theme.initialize(this.settings.themes);
     }
-    
+
     //--------------------------------------------------------------------------
     //
     // 	Language Methods
@@ -109,9 +109,8 @@ export abstract class ApplicationInitializerBase<
         try {
             let { data } = await axios.get<T>(url);
             return data;
-        }
-        catch (error: any) {
-            throw new ExtendedError(`Unable to load config from "${url}": ${error.message}`)
+        } catch (error: any) {
+            throw new ExtendedError(`Unable to load config from "${url}": ${error.message}`);
         }
     }
 

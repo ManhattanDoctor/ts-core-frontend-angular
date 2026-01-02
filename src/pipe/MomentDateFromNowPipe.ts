@@ -9,11 +9,21 @@ import { MomentDatePipe } from './MomentDatePipe';
 export class MomentDateFromNowPipe implements PipeTransform {
     // --------------------------------------------------------------------------
     //
+    //	Static Methods
+    //
+    // --------------------------------------------------------------------------
+
+    public static transform(value: Date | Moment, format?: string): string {
+        return MomentDatePipe.fromNow(value, format);
+    }
+
+    // --------------------------------------------------------------------------
+    //
     //	Public Methods
     //
     // --------------------------------------------------------------------------
 
     public transform(value: Date | Moment, format?: string): string {
-        return MomentDatePipe.fromNow(value, format);
+        return MomentDateFromNowPipe.transform(value, format);
     }
 }
