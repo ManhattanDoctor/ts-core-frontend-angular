@@ -1,7 +1,7 @@
 {
     "name": "@ts-core/angular",
-    "version": "19.0.16",
-    "description": "Modules for frontend based on angular",
+    "version": "21.0.1",
+    "description": "Angular frontend framework utilities and components with TypeScript support, including directives, services, and window management",
     "main": "public-api.js",
     "author": {
         "name": "Renat Gubaev",
@@ -9,17 +9,18 @@
     },
     "license": "ISC",
     "peerDependencies": {
-        "@angular/animations": "^19.0.6",
-        "@angular/common": "^19.0.6",
-        "@angular/compiler": "^19.0.6",
-        "@angular/core": "^19.0.6",
-        "@angular/forms": "^19.0.6",
-        "@angular/platform-browser": "^19.0.6",
-        "@angular/service-worker": "^19.0.6",
-        "@angular/platform-browser-dynamic": "^19.0.6",
-        "@angular/router": "^19.0.6",
-        "@ts-core/common": "~3.0.57",
-        "@ts-core/frontend": "~3.0.16",
+        "@angular/animations": "^21.0.8",
+        "@angular/common": "^21.0.8",
+        "@angular/compiler": "^21.0.8",
+        "@angular/core": "^21.0.8",
+        "@angular/forms": "^21.0.8",
+        "@angular/platform-browser": "^21.0.8",
+        "@angular/service-worker": "^21.0.8",
+        "@angular/platform-browser-dynamic": "^21.0.8",
+        "@angular/router": "^21.0.8",
+        "@ts-core/common": "~3.0.69",
+        "@ts-core/language": "~3.0.38",
+        "@ts-core/frontend": "~3.0.20",
         "@types/numeral": "^2.0.5",
         "interactjs": "1.10.11",
         "moment": "^2.30.1",
@@ -34,7 +35,16 @@
         "url": "git+https://github.com/ManhattanDoctor/ts-core-frontend-angular.git"
     },
     "keywords": [
-        "typescript"
+        "typescript",
+        "angular",
+        "angular21",
+        "frontend",
+        "ui",
+        "components",
+        "directives",
+        "utilities",
+        "framework",
+        "window-management"
     ],
     "bugs": {
         "url": "https://github.com/ManhattanDoctor/ts-core-frontend-angular/issues"

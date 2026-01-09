@@ -24,7 +24,7 @@ export class ClickToCopyDirective extends Destroyable {
     // --------------------------------------------------------------------------
 
     @HostListener('click', ['$event'])
-    private clickHandler(event: MouseEvent) {
+    protected clickHandler(event: MouseEvent) {
         ViewUtil.selectContent(this.element, true);
 
         clearTimeout(this.selectionClearTimer);

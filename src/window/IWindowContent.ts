@@ -5,6 +5,9 @@ import { IWindow, WindowEvent } from './IWindow';
 import { IWindowConfig } from './IWindowConfig';
 import * as _ from 'lodash';
 
+export type WindowContentContainer = ElementRef | ViewContainerRef;
+export const WINDOW_CONTENT_CONTAINER = new InjectionToken<WindowContentContainer>('WINDOW_CONTENT_CONTAINER');
+
 @Component({ template: '' })
 export abstract class IWindowContent<T = any> extends DestroyableContainer implements AfterViewInit {
     // --------------------------------------------------------------------------
@@ -151,6 +154,3 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
         }
     }
 }
-
-export type WindowContentContainer = ElementRef | ViewContainerRef;
-export const WINDOW_CONTENT_CONTAINER = new InjectionToken<WindowContentContainer>('WINDOW_CONTENT_CONTAINER');

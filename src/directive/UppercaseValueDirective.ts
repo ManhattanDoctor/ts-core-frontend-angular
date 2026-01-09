@@ -21,11 +21,11 @@ export class UppercaseValueDirective {
     //
     //--------------------------------------------------------------------------
 
-    @HostListener('input', ['$event.target'])
-    public onEvent(target: HTMLInputElement) {
-        let { value } = target;
-        if (!_.isEmpty(value)) {
-            target.value = value.toUpperCase();
+    @HostListener('input', ['$event'])
+    public onEvent(event: Event) {
+        let target = event.target as HTMLInputElement;
+        if (!_.isEmpty(target.value)) {
+            target.value = target.value.toUpperCase();
         }
     }
 }

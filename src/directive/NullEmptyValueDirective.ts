@@ -21,8 +21,9 @@ export class NullEmptyValueDirective {
     //
     //--------------------------------------------------------------------------
 
-    @HostListener('input', ['$event.target'])
-    public onEvent(target: HTMLInputElement) {
+    @HostListener('input', ['$event'])
+    public onEvent(event: Event) {
+        let target = event.target as HTMLInputElement;
         this.control.viewToModelUpdate(_.isEmpty(target.value) ? null : target.value);
     }
 }

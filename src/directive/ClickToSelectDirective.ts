@@ -33,7 +33,7 @@ export class ClickToSelectDirective extends Destroyable {
     // --------------------------------------------------------------------------
 
     @HostListener('click', ['$event'])
-    private clickHandler(event: MouseEvent) {
+    protected clickHandler(event: MouseEvent) {
         if (event.detail >= 3) {
             ViewUtil.selectContent(this.element, true);
         }
