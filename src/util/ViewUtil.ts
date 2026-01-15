@@ -307,7 +307,7 @@ export class ViewUtil {
             return NaN;
         }
         let value = parseFloat(ViewUtil.getStyle(container, 'minHeight'));
-        if (isNaN(value)) {
+        if (_.isNaN(value)) {
             value = 0;
         }
         return value;

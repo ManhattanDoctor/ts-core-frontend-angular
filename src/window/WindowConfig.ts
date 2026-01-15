@@ -113,7 +113,7 @@ export class WindowConfig<T = any> implements IWindowConfig<T>, IDestroyable {
         if (!_.isNaN(this._elementMinY)) {
             return this._elementMinY;
         }
-        this._elementMinY = 0 - ViewUtil.getStageHeight();
+        this._elementMinY = -ViewUtil.getStageHeight();
         if (!_.isNaN(this.paddingTop)) {
             this._elementMinY += this.paddingTop;
         }
@@ -152,11 +152,11 @@ export class WindowConfig<T = any> implements IWindowConfig<T>, IDestroyable {
     }
 
     public get elementWidth(): string {
-        if (this._elementWidth) {
+        if (!_.isNil(this._elementWidth)) {
             return this._elementWidth;
         }
         this._elementWidth = 'auto';
-        if (this.defaultWidth) {
+        if (!_.isNaN(this.defaultWidth)) {
             this._elementWidth = this.defaultWidth + 'px';
         }
         return this._elementWidth;
@@ -196,11 +196,11 @@ export class WindowConfig<T = any> implements IWindowConfig<T>, IDestroyable {
     }
 
     public get elementHeight(): string {
-        if (this._elementHeight) {
+        if (!_.isNil(this._elementHeight)) {
             return this._elementHeight;
         }
         this._elementHeight = 'auto';
-        if (this.defaultHeight) {
+        if (!_.isNaN(this.defaultHeight)) {
             this._elementHeight = this.defaultHeight + 'px';
         }
         return this._elementHeight;

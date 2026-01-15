@@ -61,10 +61,10 @@ export class ScrollCheckDirective extends Destroyable {
 
         let offset = !_.isNaN(this.offset) ? this.offset : 0;
         value = this.scrollValue + this.clientHeight + offset >= this.scrollHeight;
-        this.bottom.next(value);
+        this.bottom.emit(value);
 
         value = this.scrollValue <= offset;
-        this.top.next(value);
+        this.top.emit(value);
     };
 
     //--------------------------------------------------------------------------
@@ -97,7 +97,7 @@ export class ScrollCheckDirective extends Destroyable {
 
     @Input('vi-scroll-check')
     public set scrollLimit(value: number) {
-        if (value == this._scrollLimit) {
+        if (value === this._scrollLimit) {
             return;
         }
         this._scrollLimit = value;

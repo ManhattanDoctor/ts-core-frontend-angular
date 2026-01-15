@@ -13,6 +13,7 @@ import { PrettifyPipe } from '../pipe/PrettifyPipe';
 import { SanitizePipe } from '../pipe/SanitizePipe';
 import { TimePipe } from '../pipe/TimePipe';
 import { TruncatePipe } from '../pipe/TruncatePipe';
+import * as _ from 'lodash';
 
 export class PipeServiceBase extends Destroyable {
     // --------------------------------------------------------------------------
@@ -71,7 +72,7 @@ export class PipeServiceBase extends Destroyable {
         let locale = this.language.locale ? this.language.locale : 'en';
         this._locale = locale === 'en' ? 'en-US' : locale;
 
-        if (PipeServiceBase.DATE) {
+        if (!_.isNil(PipeServiceBase.DATE)) {
             PipeServiceBase.DATE = new DatePipe(this.locale);
         }
     }
@@ -83,7 +84,7 @@ export class PipeServiceBase extends Destroyable {
     // --------------------------------------------------------------------------
 
     public get date(): DatePipe {
-        if (!PipeServiceBase.DATE) {
+        if (_.isNil(PipeServiceBase.DATE)) {
             PipeServiceBase.DATE = new DatePipe(this.locale);
         }
         return PipeServiceBase.DATE;

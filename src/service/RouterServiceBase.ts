@@ -201,7 +201,7 @@ export class RouterServiceBase extends Loadable<void, RouterServiceBaseEventData
         } else {
             this.params.delete(name);
         }
-        if (!_.isNil(extras)) {
+        if (_.isNil(extras)) {
             extras = { replaceUrl: true };
         }
         this.applyExtras(extras);
@@ -215,7 +215,7 @@ export class RouterServiceBase extends Loadable<void, RouterServiceBaseEventData
 
     public clearParams(extras?: NavigationExtras): void {
         this.params.clear();
-        if (!_.isNil(extras)) {
+        if (_.isNil(extras)) {
             extras = { replaceUrl: true };
         }
         this.applyExtras(extras);

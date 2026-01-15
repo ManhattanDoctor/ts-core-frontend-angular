@@ -119,7 +119,7 @@ export class AutoScrollBottomDirective extends InfiniteScrollDirective {
         if (value === this._trigger) {
             return;
         }
-        if (!isNaN(this._trigger) && !isNaN(value)) {
+        if (!_.isNaN(this._trigger) && !_.isNaN(value)) {
             this.triggerDelta = value - this._trigger;
         }
 

@@ -102,7 +102,7 @@ export class MenuItems extends DestroyableContainer {
     public remove(item: MenuItemBase): MenuItemBase {
         let index = this._items.indexOf(item);
         if (index > -1) {
-            this._items.slice(index, 1);
+            this._items.splice(index, 1);
         }
         return item;
     }

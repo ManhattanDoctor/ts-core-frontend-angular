@@ -1,4 +1,15 @@
-import { AfterViewInit, ElementRef, ViewContainerRef, Inject, Optional, Component, InjectionToken, Input, booleanAttribute } from '@angular/core';
+import {
+    AfterViewInit,
+    ElementRef,
+    ViewContainerRef,
+    Inject,
+    Optional,
+    Component,
+    InjectionToken,
+    Input,
+    booleanAttribute,
+    Signal
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { DestroyableContainer } from '@ts-core/common';
 import { IWindow, WindowEvent } from './IWindow';
@@ -12,7 +23,7 @@ export const WINDOW_CONTENT_CONTAINER = new InjectionToken<WindowContentContaine
 export abstract class IWindowContent<T = any> extends DestroyableContainer implements AfterViewInit {
     // --------------------------------------------------------------------------
     //
-    //  Properties=
+    //  Properties
     //
     // --------------------------------------------------------------------------
 
@@ -38,7 +49,7 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
         this.commitConfigProperties();
     }
 
-    protected commitConfigProperties(): void {}
+    protected commitConfigProperties(): void { }
 
     // --------------------------------------------------------------------------
     //
@@ -105,12 +116,24 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
         return !_.isNil(this.window) ? this.window.isOnTop : false;
     }
 
+    public get onTop(): Signal<boolean> {
+        return !_.isNil(this.window) ? this.window.onTop : null;
+    }
+
     public get isMinimized(): boolean {
         return !_.isNil(this.window) ? this.window.isMinimized : false;
     }
 
+    public get minimized(): Signal<boolean> {
+        return !_.isNil(this.window) ? this.window.minimized : null;
+    }
+
     public get events(): Observable<string> {
         return !_.isNil(this.window) ? this.window.events : null;
+    }
+
+    public get disabled(): Signal<boolean> {
+        return !_.isNil(this.window) ? this.window.disabled : null;
     }
 
     @Input({ transform: booleanAttribute })

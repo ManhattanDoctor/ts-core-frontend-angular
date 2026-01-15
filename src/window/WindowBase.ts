@@ -159,7 +159,7 @@ export abstract class WindowBase<T = any> extends DestroyableContainer {
         return this._height;
     }
     protected set height(value: number) {
-        value = WindowBase.parseWidth(value, this.getConfig());
+        value = WindowBase.parseHeight(value, this.getConfig());
         if (value === this._height) {
             return;
         }

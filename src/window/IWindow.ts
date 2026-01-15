@@ -2,11 +2,34 @@ import { Observable } from 'rxjs';
 import { Destroyable } from '@ts-core/common';
 import { IWindowContent } from './IWindowContent';
 import { IWindowConfig } from './IWindowConfig';
+import { Signal } from '@angular/core';
 
 export abstract class IWindow<T = any> extends Destroyable {
     // --------------------------------------------------------------------------
     //
-    //  Public Methods
+    //  Properties
+    //
+    // --------------------------------------------------------------------------
+
+    public isOnTop: boolean = false;
+    public isDisabled: boolean = false;
+    public isMinimized: boolean = false;
+
+    readonly events: Observable<string>;
+    readonly container: HTMLElement;
+    readonly wrapper: HTMLElement;
+    readonly backdrop: HTMLElement;
+
+    readonly config: IWindowConfig<T>;
+    readonly content: IWindowContent<T>;
+
+    readonly onTop: Signal<boolean>;
+    readonly disabled: Signal<boolean>;
+    readonly minimized: Signal<boolean>;
+
+    // --------------------------------------------------------------------------
+    //
+    //  Abstract Methods
     //
     // --------------------------------------------------------------------------
 
@@ -32,21 +55,9 @@ export abstract class IWindow<T = any> extends Destroyable {
 
     // --------------------------------------------------------------------------
     //
-    //  Public Properties
+    //  Public Methods
     //
     // --------------------------------------------------------------------------
-
-    public isOnTop: boolean = false;
-    public isDisabled: boolean = false;
-    public isMinimized: boolean = false;
-
-    readonly events: Observable<string>;
-    readonly container: HTMLElement;
-    readonly wrapper: HTMLElement;
-    readonly backdrop: HTMLElement;
-
-    readonly config: IWindowConfig<T>;
-    readonly content: IWindowContent<T>;
 }
 
 export enum WindowEvent {
@@ -56,9 +67,10 @@ export enum WindowEvent {
 
     MOVED = 'MOVED',
     RESIZED = 'RESIZED',
-    DISABLED_CHANGED = 'DISABLED_CHANGED',
-    MINIMIZED_CHANGED = 'MINIMIZED_CHANGED',
+
     IS_ON_TOP_CHANGED = 'IS_ON_TOP_CHANGED',
+    IS_DISABLED_CHANGED = 'IS_DISABLED_CHANGED',
+    IS_MINIMIZED_CHANGED = 'IS_MINIMIZED_CHANGED',
 
     EXPAND = 'EXPAND',
     SET_ON_TOP = 'SET_ON_TOP'

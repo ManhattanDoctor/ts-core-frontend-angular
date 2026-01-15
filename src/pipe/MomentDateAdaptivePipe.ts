@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Moment } from 'moment';
 import moment from 'moment';
 import { MomentDatePipe } from './MomentDatePipe';
+import { PrettifyPipe } from './PrettifyPipe';
 import * as _ from 'lodash';
 
 @Pipe({
@@ -27,8 +28,8 @@ export class MomentDateAdaptivePipe implements PipeTransform {
     // --------------------------------------------------------------------------
 
     public static transform(value: Date | Moment): string {
-        if (_.isNaN(value)) {
-            return '---';
+        if (_.isNil(value)) {
+            return PrettifyPipe.EMPTY_SYMBOL;
         }
 
         let item = MomentDatePipe.parseMoment(value);

@@ -51,8 +51,7 @@ export class RouterSelectListItems<U = string> extends SelectListItems<ISelectLi
     }
 
     protected setFragment(item: ISelectListItem<U>): void {
-        let index = _.indexOf(this.collection, item);
-        this.router.setFragment(index > 0 ? item.data.toString() : null);
+        this.router.setFragment(_.indexOf(this.collection, item) > -1 ? item.data.toString() : null);
     }
 
     protected getRouterSelectedItem(): ISelectListItem<U> {

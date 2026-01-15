@@ -76,7 +76,7 @@ export class StructureDirective<T = any> extends Destroyable {
     //--------------------------------------------------------------------------
 
     protected set isNeedAdd(value: boolean) {
-        if (value == this._isNeedAdd) {
+        if (value === this._isNeedAdd) {
             return;
         }
         this._isNeedAdd = value;
