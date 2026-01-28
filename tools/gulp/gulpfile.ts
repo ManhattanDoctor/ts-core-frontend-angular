@@ -101,6 +101,8 @@ const packageBuild = async (): Promise<void> => {
     await filesCopy([`${projectDirectory}/src/language/**/*.json`], `${output}/asset`);
     // Copy htdocs
     await filesCopy([`${projectDirectory}/src/htdocs/**/*.js`], `${output}/htdocs`);
+    // Copy README.MD
+    await filesCopy([`README.MD`], `${output}`);
 };
 
 const packagePublish = async (type: 'patch' | 'minor' | 'major'): Promise<void> => {

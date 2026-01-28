@@ -8,7 +8,10 @@ import {
     InjectionToken,
     Input,
     booleanAttribute,
-    Signal
+    Signal,
+    computed,
+    signal,
+    WritableSignal
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DestroyableContainer } from '@ts-core/common';
@@ -29,6 +32,11 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
 
     protected _window: IWindow<T>;
 
+    public windowSignal: WritableSignal<IWindow<T>>;
+    public isOnTopSignal: Signal<boolean>;
+    public isDisabledSignal: Signal<boolean>;
+    public isMinimizedSignal: Signal<boolean>;
+
     // --------------------------------------------------------------------------
     //
     //  Constructor
@@ -37,6 +45,10 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
 
     constructor(@Optional() @Inject(WINDOW_CONTENT_CONTAINER) public container: WindowContentContainer) {
         super();
+        this.windowSignal = signal(null);
+        this.isOnTopSignal = computed(() => this.windowSignal?.()?.isOnTopSignal?.() ?? false);
+        this.isDisabledSignal = computed(() => this.windowSignal?.()?.isDisabledSignal?.() ?? false);
+        this.isMinimizedSignal = computed(() => this.windowSignal?.()?.isMinimizedSignal?.() ?? false);
     }
 
     // --------------------------------------------------------------------------
@@ -49,7 +61,7 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
         this.commitConfigProperties();
     }
 
-    protected commitConfigProperties(): void { }
+    protected commitConfigProperties(): void {}
 
     // --------------------------------------------------------------------------
     //
@@ -98,6 +110,11 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
         }
         super.destroy();
 
+        this.windowSignal = null;
+        this.isOnTopSignal = null;
+        this.isDisabledSignal = null;
+        this.isMinimizedSignal = null;
+
         this.window = null;
         this.container = null;
     }
@@ -116,24 +133,12 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
         return !_.isNil(this.window) ? this.window.isOnTop : false;
     }
 
-    public get onTop(): Signal<boolean> {
-        return !_.isNil(this.window) ? this.window.onTop : null;
-    }
-
     public get isMinimized(): boolean {
         return !_.isNil(this.window) ? this.window.isMinimized : false;
     }
 
-    public get minimized(): Signal<boolean> {
-        return !_.isNil(this.window) ? this.window.minimized : null;
-    }
-
     public get events(): Observable<string> {
         return !_.isNil(this.window) ? this.window.events : null;
-    }
-
-    public get disabled(): Signal<boolean> {
-        return !_.isNil(this.window) ? this.window.disabled : null;
     }
 
     @Input({ transform: booleanAttribute })
@@ -172,6 +177,7 @@ export abstract class IWindowContent<T = any> extends DestroyableContainer imple
             return;
         }
         this._window = value;
+        this.windowSignal?.set(value);
         if (!_.isNil(value)) {
             this.commitWindowProperties();
         }

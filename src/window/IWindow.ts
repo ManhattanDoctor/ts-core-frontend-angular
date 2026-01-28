@@ -16,16 +16,16 @@ export abstract class IWindow<T = any> extends Destroyable {
     public isMinimized: boolean = false;
 
     readonly events: Observable<string>;
-    readonly container: HTMLElement;
     readonly wrapper: HTMLElement;
     readonly backdrop: HTMLElement;
+    readonly container: HTMLElement;
 
     readonly config: IWindowConfig<T>;
     readonly content: IWindowContent<T>;
 
-    readonly onTop: Signal<boolean>;
-    readonly disabled: Signal<boolean>;
-    readonly minimized: Signal<boolean>;
+    readonly isOnTopSignal: Signal<boolean>;
+    readonly isDisabledSignal: Signal<boolean>;
+    readonly isMinimizedSignal: Signal<boolean>;
 
     // --------------------------------------------------------------------------
     //
