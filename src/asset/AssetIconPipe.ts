@@ -2,8 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Assets } from '@ts-core/frontend';
 
 @Pipe({
-    name: 'viAssetIcon',
-    standalone: false
+    name: 'viAssetIcon'
 })
 export class AssetIconPipe implements PipeTransform {
     // --------------------------------------------------------------------------

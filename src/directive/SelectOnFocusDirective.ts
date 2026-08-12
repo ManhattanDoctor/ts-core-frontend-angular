@@ -4,8 +4,7 @@ import { ViewUtil } from '../util/ViewUtil';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: '[vi-select-on-focus]',
-    standalone: false
+    selector: '[vi-select-on-focus]'
 })
 export class SelectOnFocusDirective extends Destroyable {
     // --------------------------------------------------------------------------

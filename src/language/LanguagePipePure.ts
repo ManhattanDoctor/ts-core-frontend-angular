@@ -3,8 +3,7 @@ import { Destroyable } from '@ts-core/common';
 import { LanguageService } from '@ts-core/frontend';
 
 @Pipe({
-    name: 'viTranslatePure',
-    standalone: false
+    name: 'viTranslatePure'
 })
 export class LanguagePipePure extends Destroyable implements PipeTransform {
     // --------------------------------------------------------------------------

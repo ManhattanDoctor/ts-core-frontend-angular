@@ -4,8 +4,7 @@ import { FocusManager } from '../manager/FocusManager';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: '[vi-focus]',
-    standalone: false
+    selector: '[vi-focus]'
 })
 export class FocusDirective<T = any> extends Destroyable {
     // --------------------------------------------------------------------------

@@ -5,8 +5,7 @@ import { ViewUtil } from '../util/ViewUtil';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: '[vi-html-content-title]',
-    standalone: false
+    selector: '[vi-html-content-title]'
 })
 export class HTMLContentTitleDirective extends Destroyable {
     // --------------------------------------------------------------------------

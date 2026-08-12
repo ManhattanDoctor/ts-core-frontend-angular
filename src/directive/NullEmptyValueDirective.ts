@@ -3,8 +3,7 @@ import { NgControl } from '@angular/forms';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: 'input[nullEmptyValue]',
-    standalone: false
+    selector: 'input[nullEmptyValue]'
 })
 export class NullEmptyValueDirective {
     //--------------------------------------------------------------------------

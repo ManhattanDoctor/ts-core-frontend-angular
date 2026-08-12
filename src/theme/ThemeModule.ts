@@ -1,4 +1,4 @@
-import { InjectionToken, ModuleWithProviders, NgModule } from '@angular/core';
+import { EnvironmentProviders, InjectionToken, ModuleWithProviders, NgModule, Provider, makeEnvironmentProviders } from '@angular/core';
 import { ICookieService, NativeWindowService } from '@ts-core/frontend';
 import { IThemeServiceOptions, ThemeService, ThemeAssetService } from '@ts-core/frontend';
 import { CookieModule } from '../cookie/CookieModule';
@@ -21,8 +21,7 @@ let declarations = [
 ];
 
 @NgModule({
-    imports: [CookieModule],
-    declarations,
+    imports: [CookieModule, ...declarations],
     exports: declarations
 })
 export class ThemeModule {
@@ -33,26 +32,32 @@ export class ThemeModule {
     // --------------------------------------------------------------------------
 
     public static forRoot(options?: IThemeServiceOptions): ModuleWithProviders<ThemeModule> {
-        return {
-            ngModule: ThemeModule,
-            providers: [
-                {
-                    provide: THEME_OPTIONS,
-                    useValue: options || {}
-                },
-                {
-                    provide: ThemeService,
-                    deps: [NativeWindowService, CookieService, THEME_OPTIONS],
-                    useFactory: themeServiceFactory
-                },
-                {
-                    provide: ThemeAssetService,
-                    deps: [ThemeService, NativeWindowService],
-                    useFactory: themeAssetServiceFactory
-                }
-            ]
-        };
+        return { ngModule: ThemeModule, providers: themeProviders(options) };
     }
+}
+
+// Настройка для приложения на самостоятельных компонентах: то же, что forRoot, но без модуля
+export function provideTheme(options?: IThemeServiceOptions): EnvironmentProviders {
+    return makeEnvironmentProviders(themeProviders(options));
+}
+
+export function themeProviders(options?: IThemeServiceOptions): Array<Provider> {
+    return [
+        {
+            provide: THEME_OPTIONS,
+            useValue: options || {}
+        },
+        {
+            provide: ThemeService,
+            deps: [NativeWindowService, CookieService, THEME_OPTIONS],
+            useFactory: themeServiceFactory
+        },
+        {
+            provide: ThemeAssetService,
+            deps: [ThemeService, NativeWindowService],
+            useFactory: themeAssetServiceFactory
+        }
+    ];
 }
 
 export function themeServiceFactory(nativeWindow: NativeWindowService, cookie: ICookieService, options?: IThemeServiceOptions): ThemeService {

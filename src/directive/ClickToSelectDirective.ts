@@ -3,8 +3,7 @@ import { Destroyable } from '@ts-core/common';
 import { ViewUtil } from '../util/ViewUtil';
 
 @Directive({
-    selector: '[vi-click-to-select]',
-    standalone: false
+    selector: '[vi-click-to-select]'
 })
 export class ClickToSelectDirective extends Destroyable {
     // --------------------------------------------------------------------------

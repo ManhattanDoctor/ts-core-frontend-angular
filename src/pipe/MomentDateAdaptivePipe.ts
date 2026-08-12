@@ -6,8 +6,7 @@ import { PrettifyPipe } from './PrettifyPipe';
 import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viMomentAdaptiveDate',
-    standalone: false
+    name: 'viMomentAdaptiveDate'
 })
 export class MomentDateAdaptivePipe implements PipeTransform {
     // --------------------------------------------------------------------------

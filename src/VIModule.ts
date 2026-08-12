@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, InjectionToken, ModuleWithProviders, NgModule, Renderer2, RendererFactory2 } from '@angular/core';
+import { EnvironmentProviders, InjectionToken, ModuleWithProviders, NgModule, Provider, Renderer2, RendererFactory2, inject, makeEnvironmentProviders, provideAppInitializer } from '@angular/core';
 import { ILogger, Logger, LoggerLevel } from '@ts-core/common';
 import { ICookieOptions } from '@ts-core/frontend';
 import { ILanguageServiceOptions } from '@ts-core/frontend';
@@ -6,7 +6,7 @@ import { DefaultLogger } from '@ts-core/frontend';
 import { LoadingService, NativeWindowService } from '@ts-core/frontend';
 import { IThemeServiceOptions } from '@ts-core/frontend';
 import { AssetModule } from './asset/AssetModule';
-import { CookieModule } from './cookie/CookieModule';
+import { CookieModule, cookieProviders } from './cookie/CookieModule';
 import { CanDeactivateGuard } from './service/route/CanDeactivateGuard';
 import { AspectRatioResizeDirective } from './directive/AspectRatioResizeDirective';
 import { AutoScrollBottomDirective } from './directive/AutoScrollBottomDirective';
@@ -22,7 +22,7 @@ import { NullEmptyValueDirective } from './directive/NullEmptyValueDirective';
 import { ResizeDirective } from './directive/ResizeDirective';
 import { ScrollCheckDirective } from './directive/ScrollCheckDirective';
 import { ScrollDirective } from './directive/ScrollDirective';
-import { LanguageModule } from './language/LanguageModule';
+import { LanguageModule, languageProviders } from './language/LanguageModule';
 import { CamelCasePipe } from './pipe/CamelCasePipe';
 import { FinancePipe } from './pipe/FinancePipe';
 import { MomentDateAdaptivePipe } from './pipe/MomentDateAdaptivePipe';
@@ -35,7 +35,7 @@ import { StartCasePipe } from './pipe/StartCasePipe';
 import { TimePipe } from './pipe/TimePipe';
 import { TruncatePipe } from './pipe/TruncatePipe';
 import { PrettifyPipe } from './pipe/PrettifyPipe';
-import { ThemeModule } from './theme/ThemeModule';
+import { ThemeModule, themeProviders } from './theme/ThemeModule';
 import { IsServerDirective } from './directive/IsServerDirective';
 import { IsBrowserDirective } from './directive/IsBrowserDirective';
 import { DOCUMENT } from '@angular/common';
@@ -85,8 +85,9 @@ let declarations = [
 let exports = [...imports, ...declarations];
 
 @NgModule({
-    imports,
-    declarations,
+    // Директивы и пайпы стали самостоятельными, поэтому модуль их импортирует и отдаёт дальше:
+    // тем, кто собирает приложение на модулях, ничего менять не нужно
+    imports: [...imports, ...declarations],
     exports
 })
 export class VIModule {
@@ -97,32 +98,37 @@ export class VIModule {
     // --------------------------------------------------------------------------
 
     public static forRoot(options?: IVIOptions): ModuleWithProviders<VIModule> {
-        return {
-            ngModule: VIModule,
-            providers: [
-                {
-                    provide: APP_INITIALIZER,
-                    deps: [NativeWindowService, RendererFactory2],
-                    useFactory: initializerFactory,
-                    multi: true
-                },
-
-                LoadingService,
-                PlatformService,
-                CanDeactivateGuard,
-
-                { provide: VI_ANGULAR_OPTIONS, useValue: options || {} },
-                { provide: Logger, deps: [VI_ANGULAR_OPTIONS], useFactory: loggerServiceFactory },
-                { provide: NativeWindowService, deps: [DOCUMENT], useFactory: nativeWindowServiceFactory },
-                { provide: LocalStorageService, deps: [NativeWindowService], useFactory: localStorageServiceFactory },
-                { provide: LoginTokenStorage, deps: [LocalStorageService, CookieService], useFactory: loginTokenStorageServiceFactory },
-
-                ...CookieModule.forRoot(options).providers,
-                ...ThemeModule.forRoot(options ? options.themeOptions : null).providers,
-                ...LanguageModule.forRoot(options ? options.languageOptions : null).providers
-            ]
-        };
+        return { ngModule: VIModule, providers: viProviders(options) };
     }
+}
+
+//
+// Настройка для приложения на самостоятельных компонентах: то же, что VIModule.forRoot,
+// но без модуля — передаётся в providers при загрузке приложения
+//
+export function provideVI(options?: IVIOptions): EnvironmentProviders {
+    return makeEnvironmentProviders(viProviders(options));
+}
+
+export function viProviders(options?: IVIOptions): Array<Provider | EnvironmentProviders> {
+    return [
+        // Утилита работы с разметкой берёт отрисовщик и документ до первого отображения
+        provideAppInitializer(() => initializerFactory(inject(NativeWindowService), inject(RendererFactory2))),
+
+        LoadingService,
+        PlatformService,
+        CanDeactivateGuard,
+
+        { provide: VI_ANGULAR_OPTIONS, useValue: options || {} },
+        { provide: Logger, deps: [VI_ANGULAR_OPTIONS], useFactory: loggerServiceFactory },
+        { provide: NativeWindowService, deps: [DOCUMENT], useFactory: nativeWindowServiceFactory },
+        { provide: LocalStorageService, deps: [NativeWindowService], useFactory: localStorageServiceFactory },
+        { provide: LoginTokenStorage, deps: [LocalStorageService, CookieService], useFactory: loginTokenStorageServiceFactory },
+
+        ...cookieProviders(options),
+        ...themeProviders(options ? options.themeOptions : null),
+        ...languageProviders(options ? options.languageOptions : null)
+    ];
 }
 
 export class IVIOptions extends ICookieOptions {
@@ -131,10 +137,9 @@ export class IVIOptions extends ICookieOptions {
     languageOptions?: ILanguageServiceOptions;
 }
 
-export function initializerFactory(nativeWindow: NativeWindowService, rendererFactory2: RendererFactory2): ViewUtil {
+export function initializerFactory(nativeWindow: NativeWindowService, rendererFactory2: RendererFactory2): void {
     ViewUtil.renderer = rendererFactory2.createRenderer(null, null);
     ViewUtil.document = nativeWindow.document;
-    return () => Promise.resolve();
 }
 
 export function loggerServiceFactory(options: IVIOptions): ILogger {

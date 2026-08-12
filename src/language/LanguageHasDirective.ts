@@ -5,8 +5,7 @@ import { StructureDirective } from '../directive/StructureDirective';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: '[viTranslateHas]',
-    standalone: false
+    selector: '[viTranslateHas]'
 })
 export class LanguageHasDirective<T = any> extends StructureDirective<T> {
     // --------------------------------------------------------------------------

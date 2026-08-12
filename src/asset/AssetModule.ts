@@ -11,8 +11,7 @@ import { AssetVideoPipe } from './AssetVideoPipe';
 let declarations = [AssetImagePipe, AssetIconPipe, AssetFilePipe, AssetSoundPipe, AssetVideoPipe, AssetBackgroundPipe, AssetBackgroundDirective];
 
 @NgModule({
-    imports: [CommonModule],
-    exports: declarations,
-    declarations
+    imports: [CommonModule, ...declarations],
+    exports: declarations
 })
 export class AssetModule {}

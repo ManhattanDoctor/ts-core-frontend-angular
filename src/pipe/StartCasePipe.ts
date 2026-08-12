@@ -2,8 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viStartCase',
-    standalone: false
+    name: 'viStartCase'
 })
 export class StartCasePipe implements PipeTransform {
     // --------------------------------------------------------------------------

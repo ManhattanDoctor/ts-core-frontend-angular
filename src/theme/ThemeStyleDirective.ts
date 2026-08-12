@@ -6,8 +6,7 @@ import { ViewUtil } from '../util/ViewUtil';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: '[vi-theme-style]',
-    standalone: false
+    selector: '[vi-theme-style]'
 })
 export class ThemeStyleDirective extends Destroyable {
     // --------------------------------------------------------------------------

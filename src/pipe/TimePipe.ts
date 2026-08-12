@@ -4,8 +4,7 @@ import { FinancePipe } from './FinancePipe';
 import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viTime',
-    standalone: false
+    name: 'viTime'
 })
 export class TimePipe implements PipeTransform {
     // --------------------------------------------------------------------------

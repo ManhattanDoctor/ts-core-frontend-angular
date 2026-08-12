@@ -3,8 +3,7 @@ import moment from 'moment';
 import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viMomentTime',
-    standalone: false
+    name: 'viMomentTime'
 })
 export class MomentTimePipe implements PipeTransform {
     // --------------------------------------------------------------------------

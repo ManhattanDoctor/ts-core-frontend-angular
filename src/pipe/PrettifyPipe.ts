@@ -2,8 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viPrettify',
-    standalone: false
+    name: 'viPrettify'
 })
 export class PrettifyPipe implements PipeTransform {
     // --------------------------------------------------------------------------

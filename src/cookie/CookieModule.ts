@@ -1,4 +1,4 @@
-import { InjectionToken, ModuleWithProviders, NgModule } from '@angular/core';
+import { EnvironmentProviders, InjectionToken, ModuleWithProviders, NgModule, Provider, makeEnvironmentProviders } from '@angular/core';
 import { ICookieOptions, NativeWindowService } from '@ts-core/frontend';
 import { CookieService } from './CookieService';
 import { PlatformService } from '../service/PlatformService';
@@ -14,21 +14,27 @@ export class CookieModule {
     // --------------------------------------------------------------------------
 
     public static forRoot(options?: ICookieOptions): ModuleWithProviders<CookieModule> {
-        return {
-            ngModule: CookieModule,
-            providers: [
-                {
-                    provide: COOKIE_OPTIONS,
-                    useValue: options || {}
-                },
-                {
-                    provide: CookieService,
-                    deps: [NativeWindowService, COOKIE_OPTIONS, PlatformService],
-                    useFactory: cookieServiceFactory
-                }
-            ]
-        };
+        return { ngModule: CookieModule, providers: cookieProviders(options) };
     }
+}
+
+// Настройка для приложения на самостоятельных компонентах: то же, что forRoot, но без модуля
+export function provideCookie(options?: ICookieOptions): EnvironmentProviders {
+    return makeEnvironmentProviders(cookieProviders(options));
+}
+
+export function cookieProviders(options?: ICookieOptions): Array<Provider> {
+    return [
+        {
+            provide: COOKIE_OPTIONS,
+            useValue: options || {}
+        },
+        {
+            provide: CookieService,
+            deps: [NativeWindowService, COOKIE_OPTIONS, PlatformService],
+            useFactory: cookieServiceFactory
+        }
+    ];
 }
 
 export function cookieServiceFactory(nativeWindow: NativeWindowService, options: ICookieOptions, platform: PlatformService): CookieService {

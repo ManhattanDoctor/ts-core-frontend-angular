@@ -3,8 +3,7 @@ import { ArrayUtil, Destroyable } from '@ts-core/common';
 import { ThemeService } from '@ts-core/frontend';
 
 @Directive({
-    selector: '[vi-theme-toggle]',
-    standalone: false
+    selector: '[vi-theme-toggle]'
 })
 export class ThemeToggleDirective extends Destroyable {
     // --------------------------------------------------------------------------

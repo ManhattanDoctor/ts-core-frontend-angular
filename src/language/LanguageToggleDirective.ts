@@ -4,8 +4,7 @@ import { LanguageService, SettingsServiceBase } from '@ts-core/frontend';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: '[vi-language-toggle]',
-    standalone: false
+    selector: '[vi-language-toggle]'
 })
 export class LanguageToggleDirective extends Destroyable {
     // --------------------------------------------------------------------------

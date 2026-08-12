@@ -4,8 +4,7 @@ import { ThemeStyleDirective } from './ThemeStyleDirective';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: '[vi-theme-style-hover]',
-    standalone: false
+    selector: '[vi-theme-style-hover]'
 })
 export class ThemeStyleHoverDirective extends ThemeStyleDirective {
     // --------------------------------------------------------------------------

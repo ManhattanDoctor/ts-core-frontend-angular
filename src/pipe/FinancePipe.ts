@@ -3,8 +3,7 @@ import numeral from 'numeral';
 import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viFinance',
-    standalone: false
+    name: 'viFinance'
 })
 export class FinancePipe implements PipeTransform {
     // --------------------------------------------------------------------------

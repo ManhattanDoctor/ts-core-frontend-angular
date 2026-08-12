@@ -6,8 +6,7 @@ import { ViewUtil } from '../util/ViewUtil';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: '[vi-resize]',
-    standalone: false
+    selector: '[vi-resize]'
 })
 export class ResizeDirective extends Destroyable {
     // --------------------------------------------------------------------------

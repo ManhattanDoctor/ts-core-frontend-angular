@@ -2,8 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viTruncate',
-    standalone: false
+    name: 'viTruncate'
 })
 export class TruncatePipe implements PipeTransform {
     // --------------------------------------------------------------------------

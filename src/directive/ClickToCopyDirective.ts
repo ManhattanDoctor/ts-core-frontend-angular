@@ -3,8 +3,7 @@ import { DateUtil, Destroyable } from '@ts-core/common';
 import { ViewUtil } from '../util/ViewUtil';
 
 @Directive({
-    selector: '[vi-click-to-copy]',
-    standalone: false
+    selector: '[vi-click-to-copy]'
 })
 export class ClickToCopyDirective extends Destroyable {
     // --------------------------------------------------------------------------

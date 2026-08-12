@@ -4,8 +4,7 @@ import { ViewUtil } from '../util/ViewUtil';
 import { ThemeAssetDirective } from './ThemeAssetDirective';
 
 @Directive({
-    selector: '[vi-theme-background]',
-    standalone: false
+    selector: '[vi-theme-background]'
 })
 export class ThemeAssetBackgroundDirective extends ThemeAssetDirective {
     // --------------------------------------------------------------------------

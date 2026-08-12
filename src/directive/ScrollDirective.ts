@@ -4,8 +4,7 @@ import { ViewUtil } from '../util/ViewUtil';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: '[vi-scroll]',
-    standalone: false
+    selector: '[vi-scroll]'
 })
 export class ScrollDirective extends Destroyable {
     // --------------------------------------------------------------------------

@@ -3,8 +3,7 @@ import { Moment } from 'moment';
 import { MomentDatePipe } from './MomentDatePipe';
 
 @Pipe({
-    name: 'viMomentDateFromNow',
-    standalone: false
+    name: 'viMomentDateFromNow'
 })
 export class MomentDateFromNowPipe implements PipeTransform {
     // --------------------------------------------------------------------------

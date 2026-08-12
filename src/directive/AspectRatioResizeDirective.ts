@@ -6,8 +6,7 @@ import { ResizeManager } from '../manager/ResizeManager';
 import { ViewUtil } from '../util/ViewUtil';
 
 @Directive({
-    selector: '[vi-aspect-ratio]',
-    standalone: false
+    selector: '[vi-aspect-ratio]'
 })
 export class AspectRatioResizeDirective extends Destroyable implements AfterViewInit {
     // --------------------------------------------------------------------------

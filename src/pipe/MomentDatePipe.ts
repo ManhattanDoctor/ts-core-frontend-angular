@@ -5,8 +5,7 @@ import { GetFilterableCondition, RemoveFilterableCondition } from '@ts-core/comm
 import * as _ from 'lodash';
 
 @Pipe({
-    name: 'viMomentDate',
-    standalone: false
+    name: 'viMomentDate'
 })
 export class MomentDatePipe implements PipeTransform {
     // --------------------------------------------------------------------------

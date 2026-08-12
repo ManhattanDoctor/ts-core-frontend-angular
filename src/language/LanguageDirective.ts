@@ -6,8 +6,7 @@ import { ViewUtil } from '../util/ViewUtil';
 import * as _ from 'lodash';
 
 @Directive({
-    selector: '[vi-translate]',
-    standalone: false
+    selector: '[vi-translate]'
 })
 export class LanguageDirective extends Destroyable {
     // --------------------------------------------------------------------------

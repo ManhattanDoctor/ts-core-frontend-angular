@@ -5,8 +5,7 @@ import * as _ from 'lodash';
 import { ViewUtil } from '../util/ViewUtil';
 
 @Directive({
-    selector: '[vi-asset-background]',
-    standalone: false
+    selector: '[vi-asset-background]'
 })
 export class AssetBackgroundDirective extends Destroyable {
     // --------------------------------------------------------------------------
