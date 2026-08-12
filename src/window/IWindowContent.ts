@@ -1,18 +1,4 @@
-import {
-    AfterViewInit,
-    ElementRef,
-    ViewContainerRef,
-    Inject,
-    Optional,
-    Component,
-    InjectionToken,
-    Input,
-    booleanAttribute,
-    Signal,
-    computed,
-    signal,
-    WritableSignal
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Inject, InjectionToken, Input, Optional, Signal, ViewContainerRef, WritableSignal, booleanAttribute, computed, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DestroyableContainer } from '@ts-core/common';
 import { IWindow, WindowEvent } from './IWindow';
@@ -22,7 +8,7 @@ import * as _ from 'lodash';
 export type WindowContentContainer = ElementRef | ViewContainerRef;
 export const WINDOW_CONTENT_CONTAINER = new InjectionToken<WindowContentContainer>('WINDOW_CONTENT_CONTAINER');
 
-@Component({ template: '' })
+@Component({ template: '', changeDetection: ChangeDetectionStrategy.OnPush })
 export abstract class IWindowContent<T = any> extends DestroyableContainer implements AfterViewInit {
     // --------------------------------------------------------------------------
     //

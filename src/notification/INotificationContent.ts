@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, Input, ViewContainerRef } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import { Observable } from 'rxjs';
 import { INotification } from './INotification';
@@ -6,7 +6,7 @@ import { INotificationConfig } from './INotificationConfig';
 import { WindowEvent } from '../window/IWindow';
 import * as _ from 'lodash';
 
-@Component({ template: '' })
+@Component({ template: '', changeDetection: ChangeDetectionStrategy.OnPush })
 export abstract class INotificationContent<T = any> extends DestroyableContainer implements AfterViewInit {
     // --------------------------------------------------------------------------
     //

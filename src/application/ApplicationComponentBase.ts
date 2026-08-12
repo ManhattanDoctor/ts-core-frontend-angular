@@ -1,9 +1,9 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component } from '@angular/core';
 import { DestroyableContainer } from '@ts-core/common';
 import { PromiseHandler } from '@ts-core/common';
 import * as _ from 'lodash';
 
-@Component({ template: '' })
+@Component({ template: '', changeDetection: ChangeDetectionStrategy.OnPush })
 export abstract class ApplicationComponentBase extends DestroyableContainer implements AfterViewInit {
     // --------------------------------------------------------------------------
     //

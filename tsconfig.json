@@ -1,19 +1,17 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
-        "baseUrl": "./",
         "sourceMap": true,
         "declaration": true,
         "skipLibCheck": true,
-        "downlevelIteration": true,
         "experimentalDecorators": true,
-        "target": "es2015",
-        "module": "es2015",
-        "moduleResolution": "node",
+        "target": "es2022",
+        "module": "es2022",
+        "moduleResolution": "bundler",
         "importHelpers": true,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "lib": ["es2017", "dom"],
+        "lib": ["es2022", "dom"],
 
         "strict": true,
         "strictFunctionTypes": false,
@@ -27,12 +25,10 @@
         "strictInputAccessModifiers": true,
         "strictTemplates": true,
 
-        "enableIvy": true,
         "compilationMode": "partial",
         "skipTemplateCodegen": true,
         "strictMetadataEmit": true,
         "enableResourceInlining": true,
-        "fullTemplateTypeCheck": true,
         "strictInjectionParameters": true
     },
     "include": ["src/*.ts", "src/**/*.ts"],
