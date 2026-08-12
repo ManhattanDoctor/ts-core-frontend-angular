@@ -95,12 +95,6 @@ const packageBuild = async (): Promise<void> => {
     await packageCompile();
     // Build files
     await run(`npm --prefix ${projectDirectory} run build`)();
-    // Copy Styles
-    await filesCopy([`${projectDirectory}/src/style/**/*.scss`], `${output}`);
-    // Copy Languages
-    await filesCopy([`${projectDirectory}/src/language/**/*.json`], `${output}/asset`);
-    // Copy htdocs
-    await filesCopy([`${projectDirectory}/src/htdocs/**/*.js`], `${output}/htdocs`);
     // Copy README.MD
     await filesCopy([`README.MD`], `${output}`);
 };
