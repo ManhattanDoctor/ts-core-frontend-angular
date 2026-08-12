@@ -95,8 +95,8 @@ const packageBuild = async (): Promise<void> => {
     await packageCompile();
     // Build files
     await run(`npm --prefix ${projectDirectory} run build`)();
-    // Copy README.MD
-    await filesCopy([`README.MD`], `${output}`);
+    // Copy README.md
+    await filesCopy([`README.md`], `${output}`);
 };
 
 const packagePublish = async (type: 'patch' | 'minor' | 'major'): Promise<void> => {

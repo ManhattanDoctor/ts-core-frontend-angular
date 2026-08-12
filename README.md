@@ -1,21 +1,49 @@
 # @ts-core/angular
 
-Angular библиотека с базовыми утилитами, директивами, пайпами и сервисами для разработки веб-приложений. Предоставляет инструменты для работы с языками, темами, окнами, авторизацией, хранилищами данных и многим другим.
+> Базовый слой Angular-приложений экосистемы ts-core: настройка одним вызовом, язык, темы, директивы, пайпы и абстракции окон
+
+[![npm version](https://img.shields.io/npm/v/@ts-core/angular.svg)](https://www.npmjs.com/package/@ts-core/angular)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+
+Нижний уровень фронтенда: сервисы языка, тем и загрузки, набор директив и пайпов, хранилища значений, вход в систему, а также абстракции окон, уведомлений и нижних листов. Реализации этих абстракций живут в [`@ts-core/angular-material`](https://www.npmjs.com/package/@ts-core/angular-material), поэтому прикладной код работает с `WindowService`, а не с конкретным диалогом Material.
 
 ## Содержание
 
+- [Описание](#описание)
+  - [Основные возможности](#основные-возможности)
 - [Установка](#установка)
-- [Зависимости](#зависимости)
+  - [Зависимости](#зависимости)
+  - [Полифиллы](#полифиллы)
+  - [Стили и ресурсы](#стили-и-ресурсы)
 - [Быстрый старт](#быстрый-старт)
-- [Модули](#модули)
+- [Настройка приложения](#настройка-приложения)
+  - [provideVI и viProviders](#providevi-и-viproviders)
+  - [Почему остались модули](#почему-остались-модули)
+- [Язык](#язык)
+- [Темы](#темы)
 - [Директивы](#директивы)
 - [Пайпы](#пайпы)
-- [Сервисы](#сервисы)
-- [Авторизация](#авторизация)
-- [Управление окнами](#управление-окнами)
-- [Хранилища данных](#хранилища-данных)
-- [Примеры использования](#примеры-использования)
-- [Связанные пакеты](#связанные-пакеты)
+- [Списки](#списки)
+- [Окна и уведомления](#окна-и-уведомления)
+- [Хранилища значений](#хранилища-значений)
+- [Вход в систему](#вход-в-систему)
+- [Структура проекта](#структура-проекта)
+- [История изменений](#история-изменений)
+- [Лицензия](#лицензия)
+
+## Описание
+
+Пакет решает задачи, которые повторяются в каждом приложении: перевести интерфейс, переключить тему, показать окно, спросить подтверждение, сохранить значение между сессиями. Всё это настраивается одним вызовом в конфигурации приложения и дальше доступно через внедрение зависимостей.
+
+### Основные возможности
+
+- **Настройка одним вызовом** — `provideVI(options)` поднимает язык, темы, куки, журнал и разметку, `NgModule` не нужен
+- **Переводы** — `LanguageService` с загрузчиками из файла, по адресу или из памяти, пайпы `viTranslate` и директива `[vi-translate]`
+- **Темы** — `ThemeService` хранит выбор в куках и вешает имя темы классом на `body`
+- **Директивы и пайпы** — фокус, копирование по нажатию, бесконечная прокрутка, обрезка текста, даты и денежные суммы
+- **Абстракции окон** — `WindowService`, `NotificationService`, `BottomSheetService` без привязки к библиотеке отрисовки
+- **Хранилища значений** — типизированные обёртки над `localStorage` и куками
+- **Вход в систему** — `LoginServiceBase`, охранники маршрутов и хранилище токена
 
 ## Установка
 
@@ -23,1019 +51,307 @@ Angular библиотека с базовыми утилитами, дирек�
 npm install @ts-core/angular
 ```
 
-```bash
-yarn add @ts-core/angular
+### Зависимости
+
+```json
+{
+    "@angular/core": "^22.1.1",
+    "@ts-core/common": "~3.0.69",
+    "@ts-core/frontend": "~3.0.20",
+    "@ts-core/language": "~3.0.38",
+    "moment": "^2.30.1",
+    "numeral": "^2.0.6",
+    "ngx-cookie": "^6.0.1"
+}
 ```
 
-```bash
-pnpm add @ts-core/angular
+Требуется Angular 22 и Node 22.22.3 или новее.
+
+### Полифиллы
+
+`@ts-core/common` использует `util.inspect` для подробного журнала транспорта, поэтому браузерному приложению нужны `process` и `Buffer`:
+
+```ts
+// src/polyfills.ts
+import * as buffer from 'buffer';
+import * as process from 'process';
+
+let value = globalThis as any;
+value.global = value;
+value.Buffer = value.Buffer || buffer.Buffer;
+value.process = value.process || process;
 ```
 
-## Зависимости
+```json
+// angular.json → architect.build.options
+{
+    "polyfills": ["zone.js", "src/polyfills.ts"],
+    "allowedCommonJsDependencies": ["util", "lodash", "moment", "numeral", "axios"]
+}
+```
 
-| Пакет | Описание |
-|-------|----------|
-| `@angular/core` | Angular фреймворк |
-| `@ts-core/common` | Базовые классы и интерфейсы |
-| `@ts-core/frontend` | Фронтенд утилиты |
-| `@ts-core/language` | Поддержка локализации |
-| `moment` | Работа с датами |
-| `numeral` | Форматирование чисел |
-| `ngx-cookie` | Работа с cookies |
-| `interactjs` | Drag-and-drop и resize |
+Без этого сборка падает с `Could not resolve "util"`, а приложение — с `ReferenceError: process is not defined`.
+
+### Стили и ресурсы
+
+Пакет содержит примеси Sass, переводы своих сообщений и вспомогательный скрипт:
+
+```
+_index.scss              примеси прокрутки, текста, курсора и фильтров
+asset/language/*.json    переводы ru и en
+htdocs/common.js         скрипт для страницы
+```
+
+```scss
+// styles.scss
+@use '@ts-core/angular' as vi;
+```
+
+```json
+// angular.json → architect.build.options
+{
+    "stylePreprocessorOptions": { "includePaths": ["./node_modules"] },
+    "assets": [{ "glob": "**/*", "input": "node_modules/@ts-core/angular/asset/language", "output": "/assets/language" }]
+}
+```
 
 ## Быстрый старт
 
-### Подключение модуля
+```ts
+// app.config.ts
+import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { provideVI } from '@ts-core/angular';
+import { LoggerLevel } from '@ts-core/common';
 
-```typescript
-import { NgModule } from '@angular/core';
-import { VIModule } from '@ts-core/angular';
-
-@NgModule({
-    imports: [
-        VIModule.forRoot({
-            loggerLevel: LoggerLevel.ALL,
-            languageOptions: {
-                defaultLocale: 'ru',
-                supportedLocales: ['ru', 'en']
-            },
-            themeOptions: {
-                defaultTheme: 'light',
-                supportedThemes: ['light', 'dark']
-            }
-        })
+export const appConfig: ApplicationConfig = {
+    providers: [
+        provideBrowserGlobalErrorListeners(),
+        provideVI({ loggerLevel: LoggerLevel.LOG })
     ]
-})
-export class AppModule {}
+};
 ```
 
-### Для standalone компонентов
-
-```typescript
-import { Component } from '@angular/core';
-import { VIModule } from '@ts-core/angular';
+```ts
+// app.ts
+import { Component, inject } from '@angular/core';
+import { LanguageService, ThemeService } from '@ts-core/frontend';
+import { ClickToCopyDirective, TimePipe } from '@ts-core/angular';
 
 @Component({
-    standalone: true,
-    imports: [VIModule]
+    selector: 'app-root',
+    imports: [ClickToCopyDirective, TimePipe],
+    template: `
+        <span #source>{{ 3725 | viTime }}</span>
+        <p [vi-click-to-copy]="source">Скопировать</p>
+    `
 })
-export class MyComponent {}
+export class App {
+    private language = inject(LanguageService);
+    private theme = inject(ThemeService);
+}
 ```
 
-## Модули
+## Настройка приложения
 
-### VIModule (главный модуль)
+### provideVI и viProviders
 
-Объединяет все подмодули и предоставляет базовые сервисы:
+`provideVI` возвращает `EnvironmentProviders` и передаётся в `providers` при загрузке приложения:
 
-```typescript
-import { VIModule, IVIOptions } from '@ts-core/angular';
-
-const options: IVIOptions = {
-    loggerLevel: LoggerLevel.DEBUG,
-    languageOptions: {
-        defaultLocale: 'ru',
-        supportedLocales: ['ru', 'en', 'de']
-    },
-    themeOptions: {
-        defaultTheme: 'light',
-        supportedThemes: ['light', 'dark']
-    }
-};
-
-@NgModule({
-    imports: [VIModule.forRoot(options)]
+```ts
+provideVI({
+    loggerLevel: LoggerLevel.LOG,
+    themeOptions: { name: 'theme' },
+    languageOptions: { name: 'language' }
 })
-export class AppModule {}
 ```
 
-### LanguageModule
+Если провайдеры нужно смешать со своими или переопределить часть из них, используется `viProviders` — тот же список без обёртки:
 
-Модуль локализации:
-
-```typescript
-import { LanguageModule } from '@ts-core/angular';
-
-@NgModule({
-    imports: [LanguageModule]
-})
-export class MyModule {}
+```ts
+providers: [
+    ...viProviders(options),
+    { provide: LoginServiceBase, useClass: LoginService }
+]
 ```
 
-### ThemeModule
+Вместе с сервисами регистрируется инициализатор приложения: он заполняет `ViewUtil.renderer` и `ViewUtil.document` до первой отрисовки. Без него утилиты работы с разметкой не смогут менять классы и стили.
 
-Модуль тем:
+### Почему остались модули
 
-```typescript
-import { ThemeModule } from '@ts-core/angular';
+`VIModule.forRoot()` продолжает работать и настраивает то же самое. Все директивы и пайпы стали самостоятельными, а модуль их импортирует и отдаёт дальше — приложениям на `NgModule` менять ничего не нужно, а приложения на самостоятельных компонентах импортируют по отдельности только то, что используют.
 
-@NgModule({
-    imports: [ThemeModule]
-})
-export class MyModule {}
+## Язык
+
+`LanguageService` из `@ts-core/frontend` регистрируется провайдерами пакета. Загрузчик выбирается приложением:
+
+```ts
+import { LanguagePreloadLoader, LanguageUrlLoader } from '@ts-core/language';
+
+language.loader = new LanguageUrlLoader('assets/language/');   // ru.json, en.json рядом с приложением
+language.loader = new LanguagePreloadLoader(new Map([['ru', словарь]]));   // словарь в памяти
+language.loadIfExist('ru');
 ```
 
-### AssetModule
+Переводы стоит загружать до первой отрисовки — тогда подписи попадают в разметку сразу:
 
-Модуль для работы с ресурсами:
-
-```typescript
-import { AssetModule } from '@ts-core/angular';
-
-@NgModule({
-    imports: [AssetModule]
+```ts
+provideAppInitializer(() => {
+    let language = inject(LanguageService);
+    let value = firstValueFrom(language.completed);
+    language.loadIfExist('ru');
+    return value;
 })
-export class MyModule {}
 ```
 
-### CookieModule
+В шаблонах доступны пайпы `viTranslate`, `viTranslatePure`, `viTranslateHas` и директивы `[vi-translate]`, `[vi-language-toggle]`.
 
-Модуль для работы с cookies:
+Подстановка значений использует одинарные фигурные скобки:
 
-```typescript
-import { CookieModule } from '@ts-core/angular';
-
-@NgModule({
-    imports: [CookieModule]
-})
-export class MyModule {}
+```json
+{ "paginator": { "pageRange": "{current} из {total}" } }
 ```
+
+## Темы
+
+Список тем задаёт приложение, выбранная тема сохраняется в куках и вешается классом на `body`:
+
+```ts
+theme.initialize([
+    { name: 'light', isDark: false, styles: { background: '#ffffff' } },
+    { name: 'dark', isDark: true, styles: { background: '#202020' } }
+]);
+theme.loadIfExist('light');
+```
+
+```scss
+body.dark-theme {
+    // палитра тёмной темы
+}
+```
+
+Переключение — директивой `[vi-theme-toggle]` либо присваиванием `theme.theme`. Директивы `[vi-theme-style]`, `[vi-theme-icon]`, `[vi-theme-image]`, `[vi-theme-background]` подставляют значения из описания текущей темы.
 
 ## Директивы
 
-### Интерактивные директивы
-
-#### FocusDirective
-
-Автоматическая фокусировка элемента:
-
-```html
-<input viFocus>
-<input [viFocus]="shouldFocus">
-```
-
-#### ClickToCopyDirective
-
-Копирование текста по клику:
-
-```html
-<span viClickToCopy="Текст для копирования">Кликните чтобы скопировать</span>
-<span [viClickToCopy]="dynamicText">{{ dynamicText }}</span>
-```
-
-#### ClickToSelectDirective
-
-Выделение текста по клику:
-
-```html
-<input viClickToSelect value="Текст будет выделен">
-```
-
-#### SelectOnFocusDirective
-
-Выделение текста при фокусе:
-
-```html
-<input viSelectOnFocus value="Выделится при фокусе">
-```
-
-### Директивы прокрутки
-
-#### InfiniteScrollDirective
-
-Бесконечная прокрутка:
-
-```html
-<div viInfiniteScroll (scrolled)="loadMore()">
-    <div *ngFor="let item of items">{{ item }}</div>
-</div>
-```
-
-#### ScrollDirective
-
-Отслеживание прокрутки:
-
-```html
-<div viScroll (scrollChanged)="onScroll($event)">
-    Контент
-</div>
-```
-
-#### AutoScrollBottomDirective
-
-Автопрокрутка вниз:
-
-```html
-<div viAutoScrollBottom>
-    <div *ngFor="let message of messages">{{ message }}</div>
-</div>
-```
-
-#### ScrollCheckDirective
-
-Проверка возможности прокрутки:
-
-```html
-<div viScrollCheck (canScrollChanged)="canScroll = $event">
-    Контент
-</div>
-```
-
-### Директивы размера
-
-#### ResizeDirective
-
-Отслеживание изменения размера:
-
-```html
-<div viResize (resized)="onResize($event)">
-    Контент
-</div>
-```
-
-```typescript
-onResize(event: { width: number; height: number }): void {
-    console.log('Новый размер:', event);
-}
-```
-
-#### AspectRatioResizeDirective
-
-Сохранение пропорций:
-
-```html
-<div viAspectRatioResize [ratio]="16/9">
-    Видео контейнер
-</div>
-```
-
-### Директивы платформы
-
-#### IsBrowserDirective
-
-Отображение только в браузере:
-
-```html
-<div *viIsBrowser>
-    Отображается только в браузере (не в SSR)
-</div>
-```
-
-#### IsServerDirective
-
-Отображение только на сервере:
-
-```html
-<div *viIsServer>
-    Отображается только на сервере (SSR)
-</div>
-```
-
-### Директивы форм
-
-#### NullEmptyValueDirective
-
-Преобразование пустой строки в null:
-
-```html
-<input viNullEmptyValue [(ngModel)]="value">
-```
-
-#### UppercaseValueDirective
-
-Автоматический uppercase:
-
-```html
-<input viUppercaseValue [(ngModel)]="code">
-```
-
-### Директивы заголовков
-
-#### HTMLTitleDirective
-
-Установка заголовка страницы:
-
-```html
-<div [viHTMLTitle]="pageTitle"></div>
-```
-
-#### HTMLContentTitleDirective
-
-Установка заголовка из контента элемента:
-
-```html
-<h1 viHTMLContentTitle>Заголовок страницы</h1>
-```
+| Селектор | Назначение |
+|---|---|
+| `[vi-focus]` | ставит фокус на элемент после отрисовки |
+| `[vi-select-on-focus]` | выделяет содержимое поля при получении фокуса |
+| `[vi-click-to-copy]` | копирует содержимое указанного элемента по нажатию |
+| `[vi-click-to-select]` | выделяет содержимое элемента по нажатию |
+| `[vi-infinite-scroll]` | сообщает о достижении конца списка |
+| `[vi-scroll]`, `[vi-scroll-check]` | события прокрутки и проверка положения |
+| `[vi-auto-scroll-bottom]` | держит прокрутку внизу при добавлении содержимого |
+| `[vi-resize]`, `[vi-aspect-ratio]` | изменение размера и соотношение сторон |
+| `[vi-html-title]`, `[vi-html-content-title]` | всплывающая подсказка из содержимого |
+| `[viIsBrowser]`, `[viIsServer]` | показ содержимого в зависимости от среды выполнения |
+| `input[nullEmptyValue]`, `input[uppercaseValue]` | нормализация значения поля ввода |
 
 ## Пайпы
 
-### Форматирование дат
+| Имя | Назначение |
+|---|---|
+| `viTranslate`, `viTranslatePure`, `viTranslateHas` | перевод и проверка наличия перевода |
+| `viTime` | длительность в секундах как `ч:мм:сс` |
+| `viTruncate` | обрезка строки до заданной длины |
+| `viFinance` | денежные суммы с разделителями |
+| `viMomentDate`, `viMomentTime`, `viMomentDateFromNow`, `viMomentAdaptiveDate` | даты и время |
+| `viCamelCase`, `viStartCase`, `viPrettify` | преобразование строк |
+| `viSanitize` | доверенное содержимое для `innerHTML` |
+| `viNgModelError` | текст ошибки для поля формы |
+| `viAssetImage`, `viAssetIcon`, `viAssetFile`, `viAssetSound`, `viAssetVideo`, `viAssetBackground` | адреса ресурсов |
 
-#### MomentDatePipe
+## Списки
 
-```html
-{{ date | viMomentDate }}
-{{ date | viMomentDate:'DD.MM.YYYY' }}
-{{ date | viMomentDate:'DD MMMM YYYY':'ru' }}
+`ListItems` — коллекция пунктов меню и действий с переводом подписей и фильтрацией. Подписи переводятся автоматически при смене языка:
+
+```ts
+let items = new ListItems<IListItem>(language);
+
+let item = new ListItem('menu.edit', 0);
+item.iconId = 'edit';
+item.action = () => this.edit();
+items.add(item);
+
+items.complete();   // перевести подписи и отсортировать
+items.refresh();    // пересчитать доступность пунктов
 ```
 
-#### MomentTimePipe
+`SelectListItems` добавляет к этому выбранный элемент и событие `changed`, `RouterSelectListItems` связывает выбор с маршрутом.
 
-```html
-{{ date | viMomentTime }}
-{{ date | viMomentTime:'HH:mm:ss' }}
+## Окна и уведомления
+
+Пакет объявляет абстракции, реализацию подключает `@ts-core/angular-material`:
+
+```ts
+let content = windows.open(EditComponent, new WindowConfig(true, false, 400));
+content.events.pipe(takeUntil(content.destroyed)).subscribe(event => { /* … */ });
+
+await windows.question('common.confirmation').yesNotPromise;
+notifications.info('common.saved', null, undefined, { closeDuration: 4000 });
 ```
 
-#### MomentDateFromNowPipe
+Содержимое окна наследует `IWindowContent`, содержимое уведомления — `INotificationContent`.
 
-```html
-{{ date | viMomentDateFromNow }}
-<!-- "2 часа назад", "вчера", etc. -->
+## Хранилища значений
+
+Типизированные обёртки над `localStorage`:
+
+```ts
+let storage = new BooleanValueStorage(local, 'isMenuOpened', false);
+storage.set(true);
+storage.get();   // true
 ```
 
-#### MomentDateAdaptivePipe
+Есть варианты для строк, дат, JSON и классов: `ValueStorage`, `DateValueStorage`, `JSONValueStorage`, `ClassTypeValueStorage`.
 
-```html
-{{ date | viMomentDateAdaptive }}
-<!-- Показывает время если сегодня, дату если нет -->
+## Вход в систему
+
+`LoginServiceBase` описывает жизненный цикл входа, `LoginTokenStorage` хранит токен в `localStorage` и куках, охранники маршрутов ограничивают доступ:
+
+| Класс | Назначение |
+|---|---|
+| `LoginGuard` | пускает только вошедших |
+| `LoginNotGuard` | пускает только не вошедших |
+| `LoginIfCanGuard` | пробует войти по сохранённому токену и пускает в любом случае |
+| `LoginResolver`, `LoginRequireResolver` | дожидаются завершения входа до отрисовки маршрута |
+
+## Структура проекта
+
+```
+src/
+├── VIModule.ts             provideVI, viProviders, настройка приложения
+├── application/            базовые компоненты приложения
+├── asset/                  адреса ресурсов
+├── cookie/                 работа с куками
+├── directive/              директивы общего назначения
+├── language/               переводы: пайпы, директивы, resolver
+├── list/                   ListItems и SelectListItems
+├── login/                  вход в систему и охранники маршрутов
+├── menu/                   пункты меню и навигация
+├── notification/           абстракции уведомлений
+├── pipe/                   пайпы
+├── question/               вопросы и их состояние
+├── service/                платформа, маршруты, service worker
+├── storage/                хранилища значений
+├── theme/                  темы оформления
+├── transport/              отложенная загрузка модулей транспорта
+├── util/ViewUtil.ts        работа с разметкой
+└── window/                 абстракции окон
 ```
 
-### Форматирование чисел
+## История изменений
 
-#### FinancePipe
+### 22.0.1
 
-```html
-{{ 1234567.89 | viFinance }}
-<!-- "1 234 567.89" -->
+- Поддержка Angular 22 и TypeScript 6
+- Все директивы и пайпы стали самостоятельными, `standalone: false` снят
+- Добавлены `provideVI`, `viProviders`, `provideTheme`, `provideLanguage`, `provideCookie` — настройка без `NgModule`
+- Сборка переведена на `@angular/build:ng-packagr`
+- Стили, переводы и скрипты кладёт в пакет сама сборка, а не отдельный шаг копирования
 
-{{ 1234567.89 | viFinance:'0,0.00' }}
-<!-- "1,234,567.89" -->
-```
-
-#### TimePipe
-
-```html
-{{ 3661 | viTime }}
-<!-- "1:01:01" -->
-
-{{ 125 | viTime }}
-<!-- "2:05" -->
-```
-
-### Преобразование текста
-
-#### TruncatePipe
-
-```html
-{{ longText | viTruncate:50 }}
-{{ longText | viTruncate:50:'...' }}
-```
-
-#### CamelCasePipe
-
-```html
-{{ 'hello world' | viCamelCase }}
-<!-- "helloWorld" -->
-```
-
-#### StartCasePipe
-
-```html
-{{ 'hello world' | viStartCase }}
-<!-- "Hello World" -->
-```
-
-### Безопасность
-
-#### SanitizePipe
-
-```html
-<div [innerHTML]="htmlContent | viSanitize:'html'"></div>
-<a [href]="url | viSanitize:'url'">Ссылка</a>
-<div [style.backgroundImage]="'url(' + imageUrl + ')' | viSanitize:'style'"></div>
-```
-
-### Форматирование
-
-#### PrettifyPipe
-
-```html
-<pre>{{ jsonObject | viPrettify }}</pre>
-<!-- Форматированный JSON -->
-```
-
-#### NgModelErrorPipe
-
-```html
-<span *ngIf="form.controls.email.errors">
-    {{ form.controls.email.errors | viNgModelError }}
-</span>
-```
-
-## Сервисы
-
-### WindowService
-
-Абстрактный сервис для управления окнами:
-
-```typescript
-import { WindowService, IWindowConfig } from '@ts-core/angular';
-
-@Component({...})
-export class MyComponent {
-    constructor(private windowService: WindowService) {}
-
-    openDialog(): void {
-        const content = this.windowService.open(MyDialogComponent, {
-            data: { message: 'Hello!' },
-            width: '400px'
-        });
-
-        content.events.subscribe(event => {
-            console.log('Window event:', event);
-        });
-    }
-
-    showInfo(): void {
-        this.windowService.info('info.message');
-    }
-
-    askQuestion(): void {
-        const question = this.windowService.question('confirm.delete');
-        question.yesClick.subscribe(() => {
-            console.log('Подтверждено');
-        });
-    }
-}
-```
-
-### NotificationService
-
-Сервис уведомлений:
-
-```typescript
-import { NotificationService, NotificationConfig } from '@ts-core/angular';
-
-@Component({...})
-export class MyComponent {
-    constructor(private notifications: NotificationService) {}
-
-    showNotification(): void {
-        this.notifications.show({
-            message: 'Операция выполнена успешно',
-            type: 'success',
-            duration: 3000
-        });
-    }
-}
-```
-
-### BottomSheetService
-
-Сервис нижних листов:
-
-```typescript
-import { BottomSheetService } from '@ts-core/angular';
-
-@Component({...})
-export class MyComponent {
-    constructor(private bottomSheet: BottomSheetService) {}
-
-    openSheet(): void {
-        this.bottomSheet.open(MySheetComponent, {
-            data: { items: this.items }
-        });
-    }
-}
-```
-
-### CookieService
-
-Работа с cookies:
-
-```typescript
-import { CookieService } from '@ts-core/angular';
-
-@Component({...})
-export class MyComponent {
-    constructor(private cookies: CookieService) {}
-
-    setCookie(): void {
-        this.cookies.put('token', 'value', {
-            expires: new Date(Date.now() + 86400000),
-            path: '/'
-        });
-    }
-
-    getCookie(): string {
-        return this.cookies.get('token');
-    }
-
-    removeCookie(): void {
-        this.cookies.remove('token');
-    }
-}
-```
-
-### LocalStorageService
-
-Работа с localStorage:
-
-```typescript
-import { LocalStorageService } from '@ts-core/angular';
-
-@Component({...})
-export class MyComponent {
-    constructor(private storage: LocalStorageService) {}
-
-    saveData(): void {
-        this.storage.setItem('key', 'value');
-    }
-
-    loadData(): string {
-        return this.storage.getItem('key');
-    }
-}
-```
-
-### PlatformService
-
-Определение платформы:
-
-```typescript
-import { PlatformService } from '@ts-core/angular';
-
-@Component({...})
-export class MyComponent {
-    constructor(private platform: PlatformService) {}
-
-    checkPlatform(): void {
-        if (this.platform.isBrowser) {
-            // Код для браузера
-        }
-        if (this.platform.isServer) {
-            // Код для SSR
-        }
-    }
-}
-```
-
-### FocusManager
-
-Управление фокусом:
-
-```typescript
-import { FocusManager } from '@ts-core/angular';
-
-@Component({...})
-export class MyComponent {
-    constructor(private focusManager: FocusManager) {}
-
-    focusElement(): void {
-        this.focusManager.focus(this.inputElement);
-    }
-}
-```
-
-### ResizeManager
-
-Отслеживание изменения размера окна:
-
-```typescript
-import { ResizeManager } from '@ts-core/angular';
-
-@Component({...})
-export class MyComponent implements OnInit {
-    constructor(private resizeManager: ResizeManager) {}
-
-    ngOnInit(): void {
-        this.resizeManager.events.subscribe(event => {
-            console.log('Window resized:', event);
-        });
-    }
-}
-```
-
-## Авторизация
-
-### LoginServiceBase
-
-Базовый класс для сервиса авторизации:
-
-```typescript
-import { LoginServiceBase, LoginServiceBaseEvent } from '@ts-core/angular';
-
-@Injectable({ providedIn: 'root' })
-export class AuthService extends LoginServiceBase<AuthEvent, LoginResponse, UserData> {
-    constructor(private http: HttpClient) {
-        super();
-    }
-
-    // Реализация абстрактных методов
-    protected async loginRequest(credentials: LoginCredentials): Promise<LoginResponse> {
-        return this.http.post<LoginResponse>('/api/auth/login', credentials).toPromise();
-    }
-
-    protected async loginSidRequest(): Promise<UserData> {
-        return this.http.get<UserData>('/api/auth/me').toPromise();
-    }
-
-    protected async logoutRequest(): Promise<void> {
-        await this.http.post('/api/auth/logout', {}).toPromise();
-    }
-
-    protected getSavedSid(): string {
-        return localStorage.getItem('sid');
-    }
-
-    protected parseLoginResponse(response: LoginResponse): void {
-        this._sid = response.token;
-        localStorage.setItem('sid', response.token);
-    }
-
-    // Публичный метод входа
-    public login(credentials: LoginCredentials): void {
-        this.loginByParam(credentials);
-    }
-}
-```
-
-### Использование AuthService
-
-```typescript
-@Component({...})
-export class LoginComponent {
-    constructor(private auth: AuthService) {
-        // Подписка на события
-        this.auth.logined.subscribe(userData => {
-            console.log('Пользователь вошёл:', userData);
-        });
-
-        this.auth.logouted.subscribe(() => {
-            console.log('Пользователь вышел');
-        });
-    }
-
-    login(): void {
-        this.auth.login({ email: 'user@example.com', password: '123' });
-    }
-
-    logout(): void {
-        this.auth.logout();
-    }
-
-    get isLoggedIn(): boolean {
-        return this.auth.isLoggedIn;
-    }
-}
-```
-
-### LoginGuard
-
-Защита маршрутов:
-
-```typescript
-import { LoginGuard, LoginNotGuard, LoginIfCanGuard } from '@ts-core/angular';
-
-const routes: Routes = [
-    {
-        path: 'dashboard',
-        component: DashboardComponent,
-        canActivate: [LoginGuard]  // Только для авторизованных
-    },
-    {
-        path: 'login',
-        component: LoginComponent,
-        canActivate: [LoginNotGuard]  // Только для неавторизованных
-    },
-    {
-        path: 'profile',
-        component: ProfileComponent,
-        canActivate: [LoginIfCanGuard]  // Попытка авторизации если есть токен
-    }
-];
-```
-
-### LoginTokenStorage
-
-Хранение токена авторизации:
-
-```typescript
-import { LoginTokenStorage } from '@ts-core/angular';
-
-@Injectable()
-export class AuthService {
-    constructor(private tokenStorage: LoginTokenStorage) {}
-
-    saveToken(token: string): void {
-        this.tokenStorage.set(token);
-    }
-
-    getToken(): string {
-        return this.tokenStorage.get();
-    }
-
-    clearToken(): void {
-        this.tokenStorage.remove();
-    }
-}
-```
-
-## Управление окнами
-
-### WindowBase
-
-Базовый класс для содержимого окна:
-
-```typescript
-import { WindowBase, IWindowContent } from '@ts-core/angular';
-
-@Component({
-    template: `
-        <div class="window">
-            <h2>{{ config.data.title }}</h2>
-            <p>{{ config.data.message }}</p>
-            <button (click)="close()">Закрыть</button>
-        </div>
-    `
-})
-export class MyWindowComponent extends WindowBase<MyWindowData> implements IWindowContent<MyWindowData> {
-    close(): void {
-        this.config.data.result = 'closed';
-        this.destroy();
-    }
-}
-
-interface MyWindowData {
-    title: string;
-    message: string;
-    result?: string;
-}
-```
-
-### WindowConfig
-
-Конфигурация окна:
-
-```typescript
-import { WindowConfig, IWindowConfig } from '@ts-core/angular';
-
-const config: IWindowConfig<MyData> = {
-    data: { title: 'Заголовок' },
-    width: '500px',
-    height: 'auto',
-    disableClose: false,
-    panelClass: 'my-dialog'
-};
-```
-
-### QuestionManager
-
-Управление вопросами:
-
-```typescript
-import { QuestionManager, IQuestion } from '@ts-core/angular';
-
-@Component({...})
-export class MyComponent {
-    constructor(private questionManager: QuestionManager) {}
-
-    askConfirmation(): void {
-        const question = this.questionManager.question('Вы уверены?');
-
-        question.yesClick.subscribe(() => {
-            this.deleteItem();
-        });
-
-        question.noClick.subscribe(() => {
-            console.log('Отменено');
-        });
-    }
-}
-```
-
-## Хранилища данных
-
-### ValueStorage
-
-Типизированное хранилище:
-
-```typescript
-import { ValueStorage, BooleanValueStorage, DateValueStorage, JSONValueStorage } from '@ts-core/angular';
-
-// Boolean хранилище
-const isDarkMode = new BooleanValueStorage(localStorage, 'darkMode', false);
-isDarkMode.value = true;
-console.log(isDarkMode.value);  // true
-
-// Date хранилище
-const lastVisit = new DateValueStorage(localStorage, 'lastVisit');
-lastVisit.value = new Date();
-console.log(lastVisit.value);  // Date object
-
-// JSON хранилище
-interface UserSettings {
-    theme: string;
-    language: string;
-}
-const settings = new JSONValueStorage<UserSettings>(localStorage, 'settings', {
-    theme: 'light',
-    language: 'ru'
-});
-settings.value = { theme: 'dark', language: 'en' };
-```
-
-## Примеры использования
-
-### Полная настройка приложения
-
-```typescript
-// app.module.ts
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { VIModule, IVIOptions } from '@ts-core/angular';
-import { LoggerLevel } from '@ts-core/common';
-
-const viOptions: IVIOptions = {
-    loggerLevel: LoggerLevel.DEBUG,
-    languageOptions: {
-        defaultLocale: 'ru',
-        supportedLocales: ['ru', 'en', 'de'],
-        loadUrl: '/api/language'
-    },
-    themeOptions: {
-        defaultTheme: 'light',
-        supportedThemes: ['light', 'dark', 'auto']
-    }
-};
-
-@NgModule({
-    imports: [
-        BrowserModule,
-        VIModule.forRoot(viOptions)
-    ],
-    bootstrap: [AppComponent]
-})
-export class AppModule {}
-```
-
-### Компонент с локализацией
-
-```typescript
-import { Component } from '@angular/core';
-import { LanguageService } from '@ts-core/frontend';
-
-@Component({
-    selector: 'app-greeting',
-    template: `
-        <h1>{{ 'greeting.title' | viLanguage }}</h1>
-        <p>{{ 'greeting.message' | viLanguage:{ name: userName } }}</p>
-
-        <select (change)="changeLanguage($event.target.value)">
-            <option *ngFor="let locale of locales" [value]="locale">
-                {{ locale }}
-            </option>
-        </select>
-    `
-})
-export class GreetingComponent {
-    userName = 'Иван';
-    locales = ['ru', 'en', 'de'];
-
-    constructor(private language: LanguageService) {}
-
-    changeLanguage(locale: string): void {
-        this.language.setLocale(locale);
-    }
-}
-```
-
-### Компонент с темами
-
-```typescript
-import { Component } from '@angular/core';
-import { ThemeService } from '@ts-core/frontend';
-
-@Component({
-    selector: 'app-theme-toggle',
-    template: `
-        <button (click)="toggleTheme()">
-            {{ isDark ? 'Светлая тема' : 'Тёмная тема' }}
-        </button>
-
-        <div [viThemeStyle]="{ color: 'primary' }">
-            Текст в цвете темы
-        </div>
-    `
-})
-export class ThemeToggleComponent {
-    constructor(private theme: ThemeService) {}
-
-    get isDark(): boolean {
-        return this.theme.current === 'dark';
-    }
-
-    toggleTheme(): void {
-        this.theme.setTheme(this.isDark ? 'light' : 'dark');
-    }
-}
-```
-
-### Список с бесконечной прокруткой
-
-```typescript
-import { Component } from '@angular/core';
-
-@Component({
-    selector: 'app-infinite-list',
-    template: `
-        <div class="list" viInfiniteScroll (scrolled)="loadMore()">
-            <div *ngFor="let item of items" class="item">
-                {{ item.name }}
-            </div>
-            <div *ngIf="isLoading" class="loading">Загрузка...</div>
-        </div>
-    `
-})
-export class InfiniteListComponent {
-    items: any[] = [];
-    isLoading = false;
-    page = 1;
-
-    async loadMore(): Promise<void> {
-        if (this.isLoading) return;
-
-        this.isLoading = true;
-        const newItems = await this.loadPage(this.page++);
-        this.items = [...this.items, ...newItems];
-        this.isLoading = false;
-    }
-
-    private async loadPage(page: number): Promise<any[]> {
-        // Загрузка данных с сервера
-        return fetch(`/api/items?page=${page}`).then(r => r.json());
-    }
-}
-```
-
-## API Reference
-
-### VIModule
-
-| Метод | Описание |
-|-------|----------|
-| `forRoot(options?)` | Создать модуль с настройками |
-
-### IVIOptions
-
-| Свойство | Тип | Описание |
-|----------|-----|----------|
-| `loggerLevel` | `LoggerLevel` | Уровень логирования |
-| `languageOptions` | `ILanguageServiceOptions` | Настройки локализации |
-| `themeOptions` | `IThemeServiceOptions` | Настройки тем |
-
-### WindowService
-
-| Метод | Описание |
-|-------|----------|
-| `open(component, config)` | Открыть окно |
-| `get(id)` | Получить окно по ID |
-| `has(id)` | Проверить наличие окна |
-| `close(id)` | Закрыть окно |
-| `closeAll()` | Закрыть все окна |
-| `info(translationId, translation?, options?)` | Показать информационное окно |
-| `question(translationId, translation?, options?)` | Показать окно подтверждения |
-
-### LoginServiceBase
-
-| Свойство/Метод | Тип | Описание |
-|----------------|-----|----------|
-| `isLoggedIn` | `boolean` | Авторизован ли пользователь |
-| `isLoading` | `boolean` | Идёт процесс авторизации |
-| `sid` | `string` | Текущий токен сессии |
-| `loginData` | `V` | Данные пользователя |
-| `login(param)` | `void` | Выполнить вход |
-| `logout()` | `Promise<void>` | Выполнить выход |
-| `logined` | `Observable<V>` | Событие успешного входа |
-| `logouted` | `Observable<void>` | Событие выхода |
-
-## Связанные пакеты
-
-| Пакет | Описание |
-|-------|----------|
-| `@ts-core/angular-material` | Material компоненты для Angular |
-| `@ts-core/frontend` | Базовые фронтенд утилиты |
-| `@ts-core/common` | Общие классы и интерфейсы |
-| `@ts-core/language` | Поддержка локализации |
-
-## Автор
-
-**Renat Gubaev** — [renat.gubaev@gmail.com](mailto:renat.gubaev@gmail.com)
-
-- GitHub: [ManhattanDoctor](https://github.com/ManhattanDoctor)
-- Репозиторий: [ts-core-frontend-angular](https://github.com/ManhattanDoctor/ts-core-frontend-angular)
+Публичный API не менялся: `VIModule.forRoot()` работает по-прежнему, селекторы директив и имена пайпов совпадают с предыдущими версиями.
 
 ## Лицензия
 
-ISC
+ISC © Renat Gubaev

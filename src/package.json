@@ -1,6 +1,6 @@
 {
     "name": "@ts-core/angular",
-    "version": "22.0.0",
+    "version": "22.0.1",
     "description": "Angular frontend framework utilities and components with TypeScript support, including directives, services, and window management",
     "main": "public-api.js",
     "author": {
