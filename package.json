@@ -48,28 +48,5 @@
         "prettier": "^3.4.2",
         "ts-node": "^10.9.2",
         "typescript": "^6.0.3"
-    },
-    "description": "Base Angular layer of the ts-core ecosystem: one-call setup, language and theme services, directives, pipes, value storages and window/notification abstractions",
-    "keywords": [
-        "typescript",
-        "angular",
-        "frontend",
-        "theme",
-        "i18n",
-        "language",
-        "directive",
-        "pipe",
-        "window",
-        "notification",
-        "login",
-        "storage"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/ManhattanDoctor/ts-core-frontend-angular.git"
-    },
-    "bugs": {
-        "url": "https://github.com/ManhattanDoctor/ts-core-frontend-angular/issues"
-    },
-    "homepage": "https://github.com/ManhattanDoctor/ts-core-frontend-angular#readme"
+    }
 }
